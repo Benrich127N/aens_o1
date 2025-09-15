@@ -1,0 +1,820 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+// --- Theme Definition ---
+class AppColors {
+  static const Color primaryBackground = Color(0xFF121212);
+  static const Color secondaryBackground = Color(0xFF1C1C1C);
+  static const Color accentColor = Color(0xFFBC914C);
+  static const Color textColor = Color(0xFFFFFFFF);
+  static const Color textSecondary = Color(0xFFA0A0A0);
+}
+
+class AppTextStyles {
+  static TextStyle navBar(double fontSize) => GoogleFonts.lato(
+    color: AppColors.textColor,
+    fontWeight: FontWeight.w500,
+    fontSize: fontSize,
+  );
+  static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
+    color: AppColors.textColor,
+    fontWeight: FontWeight.bold,
+    fontSize: fontSize,
+    letterSpacing: 1.2,
+  );
+  static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
+    color: AppColors.textColor,
+    fontSize: fontSize,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
+    color: AppColors.textColor,
+    fontSize: fontSize,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
+    color: AppColors.textSecondary,
+    fontSize: fontSize,
+    height: 1.7,
+  );
+  static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
+    color: AppColors.textColor,
+    fontSize: fontSize,
+    fontWeight: FontWeight.w600,
+  );
+}
+
+// Reusable InfoRow Widget for Services and Approach
+class InfoRow extends StatefulWidget {
+  final String title;
+  final String description;
+  final String imageUrl;
+  final double fontSize;
+  final bool isWide;
+  final int index;
+
+  const InfoRow({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+    required this.fontSize,
+    required this.isWide,
+    required this.index,
+  });
+
+  @override
+  State<InfoRow> createState() => _InfoRowState();
+}
+
+class _InfoRowState extends State<InfoRow> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.02,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onEnter(PointerEvent details) {
+    _controller.forward();
+  }
+
+  void _onExit(PointerEvent details) {
+    _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: _onEnter,
+      onExit: _onExit,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child:
+            Container(
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.all(widget.isWide ? 24.0 : 16.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryBackground,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: AppTextStyles.sectionTitle(
+                                widget.isWide ? 24 : 20,
+                              ).copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.description,
+                              style: AppTextStyles.bodyText(widget.fontSize),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          widget.imageUrl,
+                          width: widget.isWide ? 160 : 120,
+                          height: widget.isWide ? 100 : 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .animate()
+                .fadeIn(duration: 800.ms, delay: (200 + widget.index * 100).ms)
+                .slideY(begin: 0.1, end: 0, duration: 800.ms),
+      ),
+    );
+  }
+}
+
+// --- Main Services Page ---
+class ServicesPage extends StatelessWidget {
+  const ServicesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.primaryBackground,
+      endDrawer: Builder(
+        builder: (drawerContext) =>
+            isSmallScreen(MediaQuery.of(drawerContext).size.width)
+            ? _buildMobileDrawer(drawerContext)
+            : const SizedBox.shrink(),
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 900;
+          final isMedium =
+              constraints.maxWidth > 600 && constraints.maxWidth <= 900;
+          final double horizontalPadding = isWide
+              ? 64.0
+              : (isMedium ? 32.0 : 16.0);
+          final double verticalPadding = isWide ? 48.0 : 24.0;
+          final double navFontSize = isWide ? 14.0 : 12.0;
+          final double titleFontSize = isWide ? 64.0 : (isMedium ? 48.0 : 32.0);
+          final double sectionTitleFontSize = isWide
+              ? 40.0
+              : (isMedium ? 30.0 : 24.0);
+          final double bodyFontSize = isWide ? 17.0 : (isMedium ? 15.0 : 14.0);
+          final double buttonFontSize = isWide ? 16.0 : 14.0;
+
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(
+                  context,
+                  horizontalPadding,
+                  verticalPadding,
+                  navFontSize,
+                  isWide,
+                ),
+                SizedBox(height: isWide ? 96 : 48),
+                _buildPageTitle(titleFontSize)
+                    .animate()
+                    .fadeIn(duration: 800.ms, delay: 200.ms)
+                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                SizedBox(height: isWide ? 40 : 28),
+                _buildIntroText(
+                      bodyFontSize,
+                      isWide,
+                      horizontalPadding,
+                      isMedium,
+                    )
+                    .animate()
+                    .fadeIn(duration: 800.ms, delay: 300.ms)
+                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                SizedBox(height: isWide ? 56 : 36),
+                _DiscussButton(
+                  context: context,
+                  buttonFontSize: buttonFontSize,
+                ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+                SizedBox(height: isWide ? 120 : 60),
+                _buildSectionTitle(
+                      'Our Array of Services',
+                      sectionTitleFontSize,
+                    )
+                    .animate()
+                    .fadeIn(duration: 800.ms, delay: 200.ms)
+                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                SizedBox(height: isWide ? 40 : 28),
+                _buildServicesList(
+                  bodyFontSize,
+                  isWide,
+                  horizontalPadding,
+                  isMedium,
+                  constraints.maxWidth,
+                ),
+                SizedBox(height: isWide ? 120 : 60),
+                _buildSectionTitle('Our Approach', sectionTitleFontSize)
+                    .animate()
+                    .fadeIn(duration: 800.ms, delay: 200.ms)
+                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                SizedBox(height: isWide ? 40 : 28),
+                _buildApproachSection(
+                  bodyFontSize,
+                  isWide,
+                  horizontalPadding,
+                  isMedium,
+                ),
+                SizedBox(height: isWide ? 96 : 48),
+                _DiscussButton(
+                  context: context,
+                  buttonFontSize: buttonFontSize,
+                ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+                SizedBox(height: isWide ? 80 : 40),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  bool isSmallScreen(double width) => width <= 600;
+
+  Widget _buildMobileDrawer(BuildContext context) {
+    return Drawer(
+      backgroundColor: AppColors.primaryBackground,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: AppColors.secondaryBackground,
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _AppLogo(navFontSize: 18.0),
+            ),
+          ),
+          _DrawerNavItem(
+            label: 'ABOUT US',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/about');
+            },
+          ),
+          _DrawerNavItem(
+            label: 'SERVICES',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/services');
+            },
+          ),
+          _DrawerNavItem(
+            label: 'OUR WORKS',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/works');
+            },
+          ),
+          _DrawerNavItem(
+            label: 'CONTACT US',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/contact');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    double horizontalPadding,
+    double verticalPadding,
+    double navFontSize,
+    bool isWide,
+  ) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _AppLogo(navFontSize: navFontSize + 2),
+          SizedBox(width: isWide ? 64 : 16),
+          Flexible(
+            child: _NavigationMenu(navFontSize: navFontSize, isWide: isWide),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPageTitle(double fontSize) {
+    return Text(
+      'Our Services',
+      textAlign: TextAlign.center,
+      style: AppTextStyles.pageTitle(fontSize),
+    );
+  }
+
+  Widget _buildSectionTitle(String title, double fontSize) {
+    return Text(
+      title,
+      textAlign: TextAlign.center,
+      style: AppTextStyles.sectionTitle(fontSize),
+    );
+  }
+
+  Widget _buildIntroText(
+    double fontSize,
+    bool isWide,
+    double horizontalPadding,
+    bool isMedium,
+  ) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: isWide ? 800 : (isMedium ? 600 : double.infinity),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: isWide ? 0 : horizontalPadding,
+        ),
+        child: Text(
+          'We specialize in offering comprehensive Architectural Services, building developments and project management across diverse development categories, encompassing residential, office, commercial, hospitality and industrial projects. Our expertise lies in crafting cost-effective and ingenious designs, principles that underscore every endeavor we undertake.',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.bodyText(fontSize),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildServicesList(
+    double bodyFontSize,
+    bool isWide,
+    double horizontalPadding,
+    bool isMedium,
+    double maxWidth,
+  ) {
+    final List<Map<String, dynamic>> services = [
+      {
+        'title': 'Architectural Design',
+        'description':
+            'From concept to construction. We translate ideas into architectural realities—from the first sketch to the last brick.',
+        'image': 'assets/images/architecture.jpg',
+      },
+      {
+        'title': 'Interior Design',
+        'description':
+            'Tailored environments that resonate. We craft interiors that reflect identity, inspire emotion, and enhance everyday life.',
+        'image': 'assets/images/interior.jpg',
+      },
+      {
+        'title': '3D Visualization & Concepting',
+        'description':
+            'Vision brought to life. We transform abstract ideas into vivid, immersive visuals—from moodboards to photorealistic renders.',
+        'image': 'assets/images/3d.jpg',
+      },
+      {
+        'title': 'Project Supervision',
+        'description':
+            'Precision in every detail. We oversee the execution of your project with rigorous attention.',
+        'image': 'assets/images/supervision.jpg',
+      },
+    ];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Column(
+        children: services.asMap().entries.map((entry) {
+          return InfoRow(
+            title: entry.value['title'],
+            description: entry.value['description'],
+            imageUrl: entry.value['image'],
+            fontSize: bodyFontSize,
+            isWide: isWide,
+            index: entry.key,
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildApproachSection(
+    double bodyFontSize,
+    bool isWide,
+    double horizontalPadding,
+    bool isMedium,
+  ) {
+    final List<Map<String, dynamic>> approaches = [
+      {
+        'title': 'Dream Weaving',
+        'description':
+            'We believe every project begins as a dream. Our process involves deeply understanding your vision and aspirations, then shaping them into built form.',
+        'image': 'assets/images/approach_dream.webp',
+      },
+      {
+        'title': 'Innovative Design',
+        'description':
+            'We challenge norms by embracing concepts that blend form and function. Our team explores and executes bold, imaginative ideas.',
+        'image': 'assets/images/approach_design.jpg',
+      },
+      {
+        'title': 'Sustainability',
+        'description':
+            'Environmental responsibility is core to our work. We use sustainable materials and efficient design practices to reduce impact.',
+        'image': 'assets/images/approach_sustain.jpg',
+      },
+      {
+        'title': 'Client Collaboration',
+        'description':
+            'Clients are creative partners. We listen, engage, and co-create solutions that honor your input while elevating the design.',
+        'image': 'assets/images/approach_collab.jpg',
+      },
+      {
+        'title': 'Craftsmanship',
+        'description':
+            'Details define the outcome. Our work is built on precision, quality, and timeless execution.',
+        'image': 'assets/images/approach_craft.jpg',
+      },
+      {
+        'title': 'Technology & Tools',
+        'description':
+            'We harness cutting-edge tools to visualize, refine, and deliver optimized results that exceed expectations.',
+        'image': 'assets/images/approach_tech.jpg',
+      },
+    ];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Column(
+        children: approaches.asMap().entries.map((entry) {
+          return InfoRow(
+            title: entry.value['title'],
+            description: entry.value['description'],
+            imageUrl: entry.value['image'],
+            fontSize: bodyFontSize,
+            isWide: isWide,
+            index: entry.key,
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _AppLogo extends StatelessWidget {
+  final double navFontSize;
+
+  const _AppLogo({required this.navFontSize});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/home');
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.architecture_outlined,
+            color: AppColors.accentColor,
+            size: navFontSize + 8,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'AENS ENGINNERING',
+            style: AppTextStyles.appLogo(navFontSize + 2),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NavigationMenu extends StatelessWidget {
+  final double navFontSize;
+  final bool isWide;
+
+  const _NavigationMenu({required this.navFontSize, required this.isWide});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isWide) {
+      return IconButton(
+        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
+        onPressed: () {
+          Scaffold.of(context).openEndDrawer();
+        },
+      );
+    }
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 32.0,
+      runSpacing: 8.0,
+      children: [
+        _NavItem(
+          label: 'ABOUT US',
+          fontSize: navFontSize,
+          onTap: () {
+            Navigator.pushNamed(context, '/about');
+          },
+        ),
+        _NavItem(
+          label: 'SERVICES',
+          fontSize: navFontSize,
+          onTap: () {
+            Navigator.pushNamed(context, '/services');
+          },
+        ),
+        _NavItem(
+          label: 'OUR WORKS',
+          fontSize: navFontSize,
+          onTap: () {
+            Navigator.pushNamed(context, '/works');
+          },
+        ),
+        _NavItem(
+          label: 'CONTACT US',
+          fontSize: navFontSize,
+          onTap: () {
+            Navigator.pushNamed(context, '/contact');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _NavItem extends StatefulWidget {
+  final String label;
+  final double fontSize;
+  final VoidCallback onTap;
+
+  const _NavItem({
+    required this.label,
+    this.fontSize = 16,
+    required this.onTap,
+  });
+
+  @override
+  State<_NavItem> createState() => _NavItemState();
+}
+
+class _NavItemState extends State<_NavItem>
+    with SingleTickerProviderStateMixin {
+  bool _isHovering = false;
+  late AnimationController _controller;
+  late Animation<double> _widthAnimation;
+  late Animation<Color?> _colorAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _widthAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _colorAnimation = ColorTween(
+      begin: AppColors.textColor,
+      end: AppColors.accentColor,
+    ).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onEnter(PointerEvent details) {
+    setState(() {
+      _isHovering = true;
+    });
+    _controller.forward();
+  }
+
+  void _onExit(PointerEvent details) {
+    setState(() {
+      _isHovering = false;
+    });
+    _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: _onEnter,
+      onExit: _onExit,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedBuilder(
+              animation: _colorAnimation,
+              builder: (context, child) {
+                return Text(
+                  widget.label,
+                  style: AppTextStyles.navBar(widget.fontSize).copyWith(
+                    color: _colorAnimation.value,
+                    decoration: TextDecoration.none,
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 4,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: SizeTransition(
+                  sizeFactor: _widthAnimation,
+                  axis: Axis.horizontal,
+                  child: Container(
+                    height: 2,
+                    width: widget.fontSize * widget.label.length * 0.7,
+                    color: AppColors.accentColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DiscussButton extends StatefulWidget {
+  final BuildContext context;
+  final double buttonFontSize;
+
+  const _DiscussButton({required this.context, required this.buttonFontSize});
+
+  @override
+  State<_DiscussButton> createState() => _DiscussButtonState();
+}
+
+class _DiscussButtonState extends State<_DiscussButton>
+    with SingleTickerProviderStateMixin {
+  bool _isHovering = false;
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<Color?> _backgroundColorAnimation;
+  late Animation<double> _arrowSlideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.03,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _backgroundColorAnimation = ColorTween(
+      begin: Colors.transparent,
+      end: AppColors.accentColor.withOpacity(0.1),
+    ).animate(_controller);
+    _arrowSlideAnimation = Tween<double>(
+      begin: 0,
+      end: 4,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onEnter(PointerEvent details) {
+    setState(() => _isHovering = true);
+    _controller.forward();
+  }
+
+  void _onExit(PointerEvent details) {
+    setState(() => _isHovering = false);
+    _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: _onEnter,
+      onExit: _onExit,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: AnimatedBuilder(
+          animation: _backgroundColorAnimation,
+          builder: (context, child) {
+            return TextButton(
+              onPressed: () {
+                Navigator.pushNamed(widget.context, '/discuss');
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.textColor,
+                backgroundColor: _backgroundColorAnimation.value,
+                side: const BorderSide(color: AppColors.textColor, width: 1.5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 18,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'DISCUSS A PROJECT',
+                    style: AppTextStyles.buttonText(widget.buttonFontSize),
+                  ),
+                  AnimatedBuilder(
+                    animation: _arrowSlideAnimation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(_arrowSlideAnimation.value, 0),
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          size: widget.buttonFontSize + 4,
+                          color: AppColors.accentColor,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _DrawerNavItem extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _DrawerNavItem({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        label,
+        style: AppTextStyles.navBar(
+          16.0,
+        ).copyWith(color: AppColors.textColor, fontWeight: FontWeight.w600),
+      ),
+      onTap: onTap,
+      hoverColor: AppColors.secondaryBackground,
+    );
+  }
+}
