@@ -1,7 +1,9 @@
 // Example of a page that uses the CustomNavBar
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../utils/custom_nav_bar.dart'; // Adjust the import path as needed
+import '../utils/custom_nav_bar.dart';
+import 'shuffle_text.dart'; // Adjust the import path as needed
 
 class Test extends StatelessWidget {
   const Test({super.key});
@@ -86,15 +88,29 @@ class Test extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "WE DESIGN\nFOR YOUR SPACE",
+                    ShuffleText(
+                      text: "WE DESIGN\nFOR YOUR SPACE",
                       style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 42,
                         fontWeight: FontWeight.bold,
                         height: 1.2,
                       ),
+                      duration: const Duration(seconds: 3), // one cycle length
+                      pause: const Duration(
+                        milliseconds: 700,
+                      ), // pause before repeating
+                      repeat: true, // loop forever
                     ),
+                    // Text(
+                    //   "WE DESIGN\nFOR YOUR SPACE",
+                    //   style: GoogleFonts.lato(
+                    //     color: Colors.white,
+                    //     fontSize: 42,
+                    //     fontWeight: FontWeight.bold,
+                    //     height: 1.2,
+                    //   ),
+                    // ),
                     const SizedBox(height: 16),
                     Text(
                       "Engineering, Procurement, Construction, Maintenance, & Project Management Services RC 793235",
