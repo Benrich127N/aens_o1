@@ -117,7 +117,13 @@ class WorksPage extends StatelessWidget {
                   context: context,
                   buttonFontSize: buttonFontSize,
                 ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
-                SizedBox(height: isWide ? 80 : 40),
+                SizedBox(height: isWide ? 70 : 30),
+                // After _DiscussButton and SizedBox
+                _ProjectSection(
+                  isWide: isWide,
+                  isMedium: isMedium,
+                  horizontalPadding: horizontalPadding,
+                ),
               ],
             ),
           );
@@ -204,6 +210,130 @@ class WorksPage extends StatelessWidget {
 }
 
 // Reusable Widgets
+class _ProjectSection extends StatelessWidget {
+  final bool isWide;
+  final bool isMedium;
+  final double horizontalPadding;
+
+  const _ProjectSection({
+    required this.isWide,
+    required this.isMedium,
+    required this.horizontalPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final projects = [
+      {
+        "title": "Commercial Complex Dev",
+        "subtitle": "New Classic | Dubai, UAE | 2022",
+        "image": "assets/images/3d.jpg",
+      },
+      {
+        "title": "Luxury Design",
+        "subtitle": "",
+        "image": "assets/images/box.jpg",
+      },
+      {
+        "title": "Planning & Project Management",
+        "subtitle": "",
+        "image": "assets/images/man_fix.jpg",
+      },
+      {
+        "title": "Interior and Exterior Design",
+        "subtitle": "",
+        "image": "assets/images/fix_mann.jpg",
+      },
+    ];
+
+    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+    // final subtitleFontSize = isWide ? 14.0 : 12.0;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8),
+
+          // Section Title
+          Text("Our Projects", style: AppTextStyles.pageTitle(titleFontSize)),
+          const SizedBox(height: 24),
+
+          // Projects Grid
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: isWide ? 4 : (isMedium ? 2 : 1),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 1,
+            ),
+            itemCount: projects.length,
+            itemBuilder: (context, index) {
+              final project = projects[index];
+              return Stack(
+                children: [
+                  // Image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      project["image"]!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
+                  // Gradient overlay
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0.6),
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                  // Text
+                  Positioned(
+                    left: 12,
+                    right: 12,
+                    bottom: 12,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          project["title"]!,
+                          style: AppTextStyles.sectionTitle(16),
+                        ),
+                        if (project["subtitle"]!.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              project["subtitle"]!,
+                              style: AppTextStyles.bodyText(
+                                12,
+                              ).copyWith(color: Colors.white70),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _AppLogo extends StatelessWidget {
   final double navFontSize;
   const _AppLogo({required this.navFontSize});

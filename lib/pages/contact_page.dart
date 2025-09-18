@@ -117,7 +117,164 @@ class ContactPage extends StatelessWidget {
                   context: context,
                   buttonFontSize: buttonFontSize,
                 ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+
                 SizedBox(height: isWide ? 80 : 40),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Flex(
+                    direction: isWide ? Axis.horizontal : Axis.vertical,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left - Contact Details
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryBackground,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Contact Details",
+                                style: AppTextStyles.sectionTitle(20),
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.phone,
+                                    color: AppColors.accentColor,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      "NEED HELP? TALK TO AN EXPERT :\n	+234-703-253-8441",
+                                      style: AppTextStyles.bodyText(14),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.email,
+                                    color: AppColors.accentColor,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      "EMAIL :\ninfo@aensengineering.com",
+                                      style: AppTextStyles.bodyText(14),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: AppColors.accentColor,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      "Plot 2, Ohaeto street, D-line Port Harcourt, Rivers state, Nigeria (By Obito street, off Aba road, between Eastern Garden Chinese Restaurant and CFC Bus-stop).",
+                                      style: AppTextStyles.bodyText(14),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: isWide ? 24 : 0, height: isWide ? 0 : 24),
+
+                      // Right - Send Message Form
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "SEND A MESSAGE",
+                              style: AppTextStyles.sectionTitle(22),
+                            ),
+                            const SizedBox(height: 20),
+
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: "Company Name*",
+                                labelStyle: AppTextStyles.bodyText(14),
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: "Email Id*",
+                                      labelStyle: AppTextStyles.bodyText(14),
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: "Contact*",
+                                      labelStyle: AppTextStyles.bodyText(14),
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+
+                            TextField(
+                              maxLines: 5,
+                              decoration: InputDecoration(
+                                labelText: "Message",
+                                labelStyle: AppTextStyles.bodyText(14),
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.accentColor,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 15,
+                                ),
+                              ),
+                              onPressed: () {
+                                // Handle submit
+                              },
+                              child: Text(
+                                "Submit Now →",
+                                style: AppTextStyles.buttonText(16),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
