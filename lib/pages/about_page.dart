@@ -210,50 +210,6 @@ class _AppLogo extends StatelessWidget {
   }
 }
 
-class _NavigationMenu extends StatelessWidget {
-  final double navFontSize;
-  final bool isWide;
-  const _NavigationMenu({required this.navFontSize, required this.isWide});
-  @override
-  Widget build(BuildContext context) {
-    if (!isWide) {
-      return IconButton(
-        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
-      );
-    }
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 32.0,
-      runSpacing: 8.0,
-      children: [
-        _NavItem(
-          label: 'ABOUT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/about'),
-        ),
-        _NavItem(
-          label: 'SERVICES',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/services'),
-        ),
-        _NavItem(
-          label: 'OUR WORKS',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/works'),
-        ),
-        _NavItem(
-          label: 'CONTACT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/contact'),
-        ),
-      ],
-    );
-  }
-}
-
 class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
@@ -518,7 +474,8 @@ class _ProcessSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      color: const Color(0xFF0D1B3D), // deep blue background
+
+      color: AppColors.primaryBackground, // deep blue background
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
         vertical: isWide ? 80 : 48,
@@ -570,8 +527,18 @@ class _ProcessSection extends StatelessWidget {
                           style: AppTextStyles.buttonText(bodyFontSize),
                         ),
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            32,
+                            27,
+                            27,
+                          ),
+                          foregroundColor: const Color.fromARGB(
+                            255,
+                            165,
+                            141,
+                            141,
+                          ),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 14,
@@ -700,7 +667,7 @@ class _ProcessSection extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 20),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: AppColors.secondaryBackground,
+                            color: const Color.fromARGB(255, 156, 48, 48),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
                               color: index == 1
