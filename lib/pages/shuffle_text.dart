@@ -18,7 +18,7 @@ class ShuffleText extends StatefulWidget {
     this.duration = const Duration(seconds: 3),
     this.pause = const Duration(milliseconds: 800),
     this.chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*',
+        'IJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*',
     this.repeat = true,
   });
 

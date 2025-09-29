@@ -71,17 +71,7 @@ class Test extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const CustomNavBar(),
-                // Navigation Bar
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     navItem("Home"),
-                //     navItem("About"),
-                //     navItem("Pages"),
-                //     navItem("Blog"),
-                //     navItem("Contact"),
-                //   ],
-                // ),
+
                 const Spacer(),
 
                 // Headline text
@@ -89,7 +79,8 @@ class Test extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ShuffleText(
-                      text: "WE DESIGN\nFOR YOUR SPACE",
+                      text:
+                          "Providing innovative \n and dependable engineering solutions...",
                       style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 42,

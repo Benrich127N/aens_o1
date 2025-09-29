@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tailored_space/pages/home_engine.dart';
-import 'package:tailored_space/pages/home_page.dart';
 import 'package:tailored_space/pages/about_page.dart';
 import 'package:tailored_space/pages/our_services_engine.dart';
-import 'package:tailored_space/pages/services_page.dart';
 import 'package:tailored_space/pages/test.dart';
 import 'package:tailored_space/pages/works_page.dart';
 import 'package:tailored_space/pages/contact_page.dart';
