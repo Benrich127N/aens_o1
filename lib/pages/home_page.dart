@@ -128,13 +128,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildHeader(
-                              context,
-                              horizontalPadding,
-                              verticalPadding,
-                              navFontSize,
-                              isWide,
-                            ),
+                            
                             SizedBox(height: isWide ? 96 : 48),
                             Text(
                                   'AENS ENGINNERING',
@@ -305,31 +299,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildHeader(
-    BuildContext context,
-    double horizontalPadding,
-    double verticalPadding,
-    double navFontSize,
-    bool isWide,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _AppLogo(navFontSize: navFontSize + 2),
-          SizedBox(width: isWide ? 64 : 16),
-          Flexible(
-            child: _NavigationMenu(navFontSize: navFontSize, isWide: isWide),
-          ),
-        ],
-      ),
-    );
-  }
+  
 }
 
 // Reusable Widgets

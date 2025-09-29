@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../utils/custom_nav_bar.dart';
+
 class AppColors {
   static const Color primaryBackground = Color(0xFF121212);
   static const Color secondaryBackground = Color(0xFF1C1C1C);
@@ -79,13 +81,8 @@ class AboutPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHeader(
-                  context,
-                  horizontalPadding,
-                  verticalPadding,
-                  navFontSize,
-                  isWide,
-                ),
+                const CustomNavBar(),
+
                 SizedBox(height: isWide ? 96 : 48),
                 Text(
                       'About Us',
@@ -117,7 +114,14 @@ class AboutPage extends StatelessWidget {
                   context: context,
                   buttonFontSize: buttonFontSize,
                 ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+
                 SizedBox(height: isWide ? 80 : 40),
+
+                _ProcessSection(
+                  isWide: isWide,
+                  isMedium: isMedium,
+                  horizontalPadding: horizontalPadding,
+                ),
               ],
             ),
           );
@@ -170,32 +174,6 @@ class AboutPage extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/contact');
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    double horizontalPadding,
-    double verticalPadding,
-    double navFontSize,
-    bool isWide,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _AppLogo(navFontSize: navFontSize + 2),
-          SizedBox(width: isWide ? 64 : 16),
-          Flexible(
-            child: _NavigationMenu(navFontSize: navFontSize, isWide: isWide),
           ),
         ],
       ),
@@ -495,6 +473,288 @@ class _DrawerNavItem extends StatelessWidget {
       ),
       onTap: onTap,
       hoverColor: AppColors.secondaryBackground,
+    );
+  }
+}
+
+class _ProcessSection extends StatelessWidget {
+  final bool isWide;
+  final bool isMedium;
+  final double horizontalPadding;
+
+  const _ProcessSection({
+    required this.isWide,
+    required this.isMedium,
+    required this.horizontalPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = [
+      {
+        "title": "Discovery & Consultation",
+        "desc":
+            "We start by understanding your goals and analyzing project needs to define the right direction.",
+      },
+      {
+        "title": "Design & Innovation",
+        "desc":
+            "Ideas are transformed into detailed engineering plans that blend creativity with practical solutions.",
+      },
+      {
+        "title": "Detailed Engineering",
+        "desc":
+            "Using advanced tools and certified expertise, we create accurate drawings and models.",
+      },
+      {
+        "title": "Permitting & Approvals",
+        "desc":
+            "We handle the preparation and submission of all necessary documentation to ensure smooth approvals.",
+      },
+    ];
+
+    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+    final bodyFontSize = isWide ? 16.0 : 14.0;
+
+    return Container(
+      width: double.infinity,
+      color: const Color(0xFF0D1B3D), // deep blue background
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: isWide ? 80 : 48,
+      ),
+      child: isWide
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // LEFT SIDE
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "From Vision To Completion",
+                        style: AppTextStyles.bodyText(bodyFontSize).copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ).animate().fadeIn().slideX(
+                        begin: -0.2,
+                        duration: 600.ms,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                            "Our Process to Bring Your Ideas to Life",
+                            style: AppTextStyles.pageTitle(titleFontSize),
+                          )
+                          .animate()
+                          .fadeIn(delay: 200.ms)
+                          .slideX(begin: -0.2, duration: 600.ms),
+                      const SizedBox(height: 16),
+                      Text(
+                            "At AENS, we guide each project through a proven, step-by-step process to ensure clarity, precision, and lasting results.",
+                            style: AppTextStyles.bodyText(bodyFontSize),
+                          )
+                          .animate()
+                          .fadeIn(delay: 400.ms)
+                          .slideX(begin: -0.2, duration: 600.ms),
+                      const SizedBox(height: 24),
+                      TextButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/contact');
+                        },
+                        icon: const Icon(Icons.arrow_outward, size: 16),
+                        label: Text(
+                          "Get Started",
+                          style: AppTextStyles.buttonText(bodyFontSize),
+                        ),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 14,
+                          ),
+                        ),
+                      ).animate().fadeIn(delay: 600.ms),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 48),
+
+                // RIGHT SIDE (Steps)
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: steps.asMap().entries.map((entry) {
+                      final index = entry.key + 1;
+                      final step = entry.value;
+                      return Container(
+                            margin: const EdgeInsets.only(bottom: 20),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryBackground,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: index == 1
+                                    ? AppColors.accentColor
+                                    : Colors.transparent,
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 14,
+                                  backgroundColor: AppColors.accentColor,
+                                  child: Text(
+                                    "$index",
+                                    style: GoogleFonts.lato(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        step["title"]!,
+                                        style: AppTextStyles.sectionTitle(
+                                          bodyFontSize,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        step["desc"]!,
+                                        style: AppTextStyles.bodyText(
+                                          bodyFontSize,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .animate()
+                          .fadeIn(delay: (200 * index).ms)
+                          .slideY(begin: 0.2, duration: 600.ms);
+                    }).toList(),
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "From Vision To Completion",
+                  style: AppTextStyles.bodyText(bodyFontSize).copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ).animate().fadeIn().slideX(begin: -0.2),
+                const SizedBox(height: 8),
+                Text(
+                  "Our Process to Bring Your Ideas to Life",
+                  style: AppTextStyles.pageTitle(titleFontSize),
+                ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
+                const SizedBox(height: 16),
+                Text(
+                  "At AENS, we guide each project through a proven, step-by-step process to ensure clarity, precision, and lasting results.",
+                  style: AppTextStyles.bodyText(bodyFontSize),
+                ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.2),
+                const SizedBox(height: 24),
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/contact');
+                  },
+                  icon: const Icon(Icons.arrow_outward, size: 16),
+                  label: Text(
+                    "Get Started",
+                    style: AppTextStyles.buttonText(bodyFontSize),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 14,
+                    ),
+                  ),
+                ).animate().fadeIn(delay: 600.ms),
+                const SizedBox(height: 32),
+
+                Column(
+                  children: steps.asMap().entries.map((entry) {
+                    final index = entry.key + 1;
+                    final step = entry.value;
+                    return Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryBackground,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: index == 1
+                                  ? AppColors.accentColor
+                                  : Colors.transparent,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 14,
+                                backgroundColor: AppColors.accentColor,
+                                child: Text(
+                                  "$index",
+                                  style: GoogleFonts.lato(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      step["title"]!,
+                                      style: AppTextStyles.sectionTitle(
+                                        bodyFontSize,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      step["desc"]!,
+                                      style: AppTextStyles.bodyText(
+                                        bodyFontSize,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: (200 * index).ms)
+                        .slideY(begin: 0.2, duration: 600.ms);
+                  }).toList(),
+                ),
+              ],
+            ),
     );
   }
 }

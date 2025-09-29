@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../utils/custom_nav_bar.dart';
+
 class AppColors {
   static const Color primaryBackground = Color(0xFF121212);
   static const Color secondaryBackground = Color(0xFF1C1C1C);
@@ -79,13 +81,8 @@ class ContactPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHeader(
-                  context,
-                  horizontalPadding,
-                  verticalPadding,
-                  navFontSize,
-                  isWide,
-                ),
+                const CustomNavBar(),
+
                 SizedBox(height: isWide ? 96 : 48),
                 Text(
                       'Contact Us',
@@ -327,32 +324,6 @@ class ContactPage extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/contact');
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    double horizontalPadding,
-    double verticalPadding,
-    double navFontSize,
-    bool isWide,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _AppLogo(navFontSize: navFontSize + 2),
-          SizedBox(width: isWide ? 64 : 16),
-          Flexible(
-            child: _NavigationMenu(navFontSize: navFontSize, isWide: isWide),
           ),
         ],
       ),

@@ -201,13 +201,7 @@ class ServicesPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHeader(
-                  context,
-                  horizontalPadding,
-                  verticalPadding,
-                  navFontSize,
-                  isWide,
-                ),
+               
                 SizedBox(height: isWide ? 96 : 48),
                 _buildPageTitle(titleFontSize)
                     .animate()
@@ -320,31 +314,7 @@ class ServicesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(
-    BuildContext context,
-    double horizontalPadding,
-    double verticalPadding,
-    double navFontSize,
-    bool isWide,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _AppLogo(navFontSize: navFontSize + 2),
-          SizedBox(width: isWide ? 64 : 16),
-          Flexible(
-            child: _NavigationMenu(navFontSize: navFontSize, isWide: isWide),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   Widget _buildPageTitle(double fontSize) {
     return Text(
