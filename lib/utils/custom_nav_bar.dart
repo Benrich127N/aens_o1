@@ -125,7 +125,7 @@ class _NavigationMenu extends StatelessWidget {
           onTap: () => Navigator.pushNamed(context, '/services'),
         ),
         _NavItem(
-          label: 'OUR WORKS',
+          label: 'OUR PRODUCTS',
           fontSize: navFontSize,
           onTap: () => Navigator.pushNamed(context, '/works'),
         ),

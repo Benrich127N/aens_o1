@@ -15,33 +15,32 @@ class _Our_services_engineState extends State<Our_services_engine> {
 
   final List<Map<String, String>> services = [
     {
-      "title": "Civil Engineering & Infrastructure",
-      "desc":
-          "Creative and functional designs tailored to the project’s context and client requirements.",
-      "image": "assets/images/stand2.jpg",
+      "title": "Electrical Panels, Switchboards Design,",
+      "desc": "Build and Support Services",
+      "image": "assets/images/swtich.jpg ",
     },
     {
-      "title": "Interior Design",
+      "title": "Facilities Management Services",
       "desc": "Modern and functional interior design solutions.",
       "image": "assets/images/man_fix.jpg",
     },
     {
-      "title": "Structural Design",
+      "title": "Medium / Low Voltage (MV/LV) Products Retailers",
       "desc": "Engineering precision with innovative structural solutions.",
       "image": "assets/images/conc.jpg",
     },
     {
-      "title": "Planning & Project Management",
+      "title": "Project And Construction Management Services",
       "desc": "Efficient planning and seamless project execution.",
       "image": "assets/images/wind.jpg",
     },
     {
-      "title": "Mechanical, Electrical & Plumbing",
+      "title": "Electrical Equipment Testing and Calibration",
       "desc": "Reliable MEP services with innovative engineering.",
-      "image": "assets/images/long_room.jpg",
+      "image": "assets/images/stand2.jpg",
     },
     {
-      "title": "Management & Site Supervision",
+      "title": "Project Engineering, Design and Construction",
       "desc": "End-to-end site supervision ensuring quality delivery.",
       "image": "assets/images/field.jpg",
     },

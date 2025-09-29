@@ -85,13 +85,14 @@ class WorksPage extends StatelessWidget {
 
                 SizedBox(height: isWide ? 96 : 48),
                 Text(
-                      'Our Works',
+                      'Our Products',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.pageTitle(titleFontSize),
                     )
                     .animate()
                     .fadeIn(duration: 800.ms, delay: 200.ms)
                     .slideY(begin: 0.1, end: 0, duration: 800.ms),
+
                 SizedBox(height: isWide ? 40 : 28),
                 ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: isWide ? 800 : 600),
@@ -100,7 +101,7 @@ class WorksPage extends StatelessWidget {
                           horizontal: isWide ? 0 : horizontalPadding,
                         ),
                         child: Text(
-                          'Explore our portfolio of completed projects, showcasing our expertise in residential, commercial, hospitality, and industrial designs. Each project reflects our commitment to innovative design, sustainability, and client collaboration, delivering spaces that inspire and endure.',
+                          'Delivering World-Class Electrical & Instrumentation Solutions At AENS, we offer a premium selection of Electrical and Instrumentation / Control devices from industry-leading brands including Schneider Electric, ABB, and Siemens.We are a trusted stockist and solutions provider, delivering products that ensure safety, performance, and reliability across industrial and commercial sectors.',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.bodyText(bodyFontSize),
                         ),
@@ -201,6 +202,11 @@ class _ProjectSection extends StatelessWidget {
         "image": "assets/images/3d.jpg",
       },
       {
+        "title": "Commercial Complex Dev",
+        "subtitle": "New Classic | Dubai, UAE | 2022",
+        "image": "assets/images/3d.jpg",
+      },
+      {
         "title": "Luxury Design",
         "subtitle": "",
         "image": "assets/images/box.jpg",
@@ -228,9 +234,17 @@ class _ProjectSection extends StatelessWidget {
           const SizedBox(height: 8),
 
           // Section Title
-          Text("Our Projects", style: AppTextStyles.pageTitle(titleFontSize)),
+          Text("Our Products", style: AppTextStyles.pageTitle(titleFontSize)),
           const SizedBox(height: 24),
 
+          SizedBox(height: isWide ? 20 : 16),
+
+          // 👉 Sub-section text
+          Text(
+            'Electrical Devices',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.sectionTitle(isWide ? 28 : 22),
+          ),
           // Projects Grid
           GridView.builder(
             shrinkWrap: true,
