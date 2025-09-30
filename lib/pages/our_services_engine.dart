@@ -50,261 +50,35 @@ class _Our_services_engineState extends State<Our_services_engine> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 768;
+    
     return Scaffold(
-      backgroundColor: Colors.black,
-      // The `endDrawer` from the original code handles the mobile menu,
-      // and it needs to be placed on every page where you want to use it.
-      // You could also create a common Scaffold widget to reuse this.
-      // endDrawer: Drawer(
-      //   backgroundColor: AppColors.primaryBackground,
-      //   child: ListView(
-      //     padding: EdgeInsets.zero,
-      //     children: <Widget>[
-      //       DrawerHeader(
-      //         decoration: const BoxDecoration(
-      //           color: AppColors.secondaryBackground,
-      //         ),
-      //         child: Align(
-      //           alignment: Alignment.centerLeft,
-      //           child: Row(
-      //             mainAxisSize: MainAxisSize.min,
-      //             children: [
-      //               Icon(
-      //                 Icons.architecture_outlined,
-      //                 color: AppColors.accentColor,
-      //                 size: 22.0,
-      //               ),
-      //               const SizedBox(width: 8),
-      //               Text(
-      //                 'AENS ENGINNERING',
-      //                 style: GoogleFonts.montserrat(
-      //                   color: AppColors.textColor,
-      //                   fontWeight: FontWeight.bold,
-      //                   fontSize: 20.0,
-      //                   letterSpacing: 1.2,
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //       _DrawerNavItem(
-      //         label: 'ABOUT US',
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Navigator.pushNamed(context, '/about');
-      //         },
-      //       ),
-      //       _DrawerNavItem(
-      //         label: 'SERVICES',
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Navigator.pushNamed(context, '/services');
-      //         },
-      //       ),
-      //       _DrawerNavItem(
-      //         label: 'OUR WORKS',
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Navigator.pushNamed(context, '/works');
-      //         },
-      //       ),
-      //       _DrawerNavItem(
-      //         label: 'CONTACT US',
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           Navigator.pushNamed(context, '/contact');
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
+      backgroundColor: AppColors.primaryBackground,
       body: SingleChildScrollView(
         child: Column(
-          // Place the CustomNavBar widget directly here as the first child
-          // of the main Column.
           children: [
             const nav.CustomNavBar(currentRoute: '/services'),
-
-            // Then, place your existing page content inside a Padding widget
-            // to maintain the horizontal spacing.
+            
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 16 : 40,
+                vertical: isMobile ? 24 : 60,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top text section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "to Meet Your Needs",
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  // Our Services heading
-                  Text(
-                    "Our Services",
-                    style: GoogleFonts.poppins(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Services content row
-                  SizedBox(
-                    height:
-                        MediaQuery.of(context).size.height *
-                        0.7, // Adjust height as needed
-                    child: Row(
-                      children: [
-                        // Left side: Selected Service Image & Details
-                        Expanded(
-                          flex: 2,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  services[selectedIndex]["image"]!,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
-                              ),
-                              Container(color: Colors.black.withOpacity(0.4)),
-                              Positioned(
-                                bottom: 20,
-                                left: 20,
-                                right: 20,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      services[selectedIndex]["title"]!,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      services[selectedIndex]["desc"]!,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        // Right side: Vertical service list
-                        Expanded(
-                          flex: 1,
-                          child: ListView.builder(
-                            itemCount: services.length,
-                            itemBuilder: (context, index) {
-                              final isSelected = selectedIndex == index;
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 20,
-                                    horizontal: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    color: isSelected
-                                        ? Colors.blue[50]
-                                        : Colors.transparent,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: isSelected
-                                            ? Colors.blue[900]
-                                            : Colors.grey.shade300,
-                                        child: Text(
-                                          (index + 1).toString().padLeft(
-                                            2,
-                                            "0",
-                                          ),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : const Color.fromARGB(
-                                                    255,
-                                                    0,
-                                                    0,
-                                                    0,
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      /////// ghtyhjghjkhj
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      ///
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Text(
-                                          services[index]["title"]!,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14,
-                                            color: isSelected
-                                                ? Colors.blue[900]
-                                                : const Color.fromARGB(
-                                                    221,
-                                                    142,
-                                                    140,
-                                                    140,
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
+                  // Header Section
+                  _buildHeaderSection(isMobile),
+                  
+                  SizedBox(height: isMobile ? 32 : 48),
+                  
+                  // Services Content
+                  isMobile 
+                    ? _buildMobileLayout()
+                    : _buildDesktopLayout(context),
+                  
+                  const SizedBox(height: 60),
                   const CustomFooter(),
                 ],
               ),
@@ -314,10 +88,303 @@ class _Our_services_engineState extends State<Our_services_engine> {
       ),
     );
   }
+
+  Widget _buildHeaderSection(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Subtitle
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.accentColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            "WHAT WE OFFER",
+            style: GoogleFonts.poppins(
+              color: AppColors.accentColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        
+        // Main Title
+        Text(
+          "Our Services",
+          style: GoogleFonts.poppins(
+            fontSize: isMobile ? 32 : 48,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        // Description
+        Container(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: Text(
+            "Comprehensive engineering solutions tailored to meet your needs with excellence and innovation.",
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? 14 : 16,
+              color: AppColors.textColor.withOpacity(0.7),
+              height: 1.6,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.75,
+      child: Row(
+        children: [
+          // Left side: Selected Service Display
+          Expanded(
+            flex: 3,
+            child: _buildSelectedServiceCard(),
+          ),
+          
+          const SizedBox(width: 24),
+          
+          // Right side: Services List
+          Expanded(
+            flex: 2,
+            child: _buildServicesList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMobileLayout() {
+    return Column(
+      children: [
+        _buildSelectedServiceCard(),
+        const SizedBox(height: 24),
+        SizedBox(
+          height: 500,
+          child: _buildServicesList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSelectedServiceCard() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Background Image
+            Image.asset(
+              services[selectedIndex]["image"]!,
+              fit: BoxFit.cover,
+            ),
+            
+            // Gradient Overlay
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.85),
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+            ),
+            
+            // Content
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Service Number Badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "0${selectedIndex + 1}",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 20),
+                    
+                    // Title
+                    Text(
+                      services[selectedIndex]["title"]!,
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.3,
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 12),
+                    
+                    // Description
+                    Text(
+                      services[selectedIndex]["desc"]!,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(0.9),
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildServicesList() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.secondaryBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.textColor.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: ListView.separated(
+        padding: const EdgeInsets.all(8),
+        itemCount: services.length,
+        separatorBuilder: (context, index) => Divider(
+          color: AppColors.textColor.withOpacity(0.1),
+          height: 1,
+        ),
+        itemBuilder: (context, index) {
+          final isSelected = selectedIndex == index;
+          return _buildServiceListItem(index, isSelected);
+        },
+      ),
+    );
+  }
+
+  Widget _buildServiceListItem(int index, bool isSelected) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.accentColor.withOpacity(0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.accentColor
+                : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          children: [
+            // Number Badge
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.accentColor
+                    : AppColors.textColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  "0${index + 1}",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected
+                        ? Colors.white
+                        : AppColors.textColor.withOpacity(0.6),
+                  ),
+                ),
+              ),
+            ),
+            
+            const SizedBox(width: 16),
+            
+            // Service Title
+            Expanded(
+              child: Text(
+                services[index]["title"]!,
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected
+                      ? AppColors.accentColor
+                      : AppColors.textColor.withOpacity(0.8),
+                  height: 1.4,
+                ),
+              ),
+            ),
+            
+            // Arrow Icon
+            if (isSelected)
+              Icon(
+                Icons.arrow_forward_rounded,
+                color: AppColors.accentColor,
+                size: 20,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-// NOTE: You'll also need to include the _DrawerNavItem class to make the endDrawer functional.
-// This is not part of the `CustomNavBar` widget itself, but it's required for the mobile menu to work on this page.
 class _DrawerNavItem extends StatelessWidget {
   final String label;
   final VoidCallback onTap;

@@ -60,7 +60,7 @@ class CustomFooter extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'AENS ENGINNERING',
+                          'AENS ENGINEERING',
                           style: FooterTextStyles.footerTitle(titleFontSize),
                         ),
                         const SizedBox(height: 8),
@@ -141,7 +141,7 @@ class CustomFooter extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '© ${DateTime.now().year} AENS ENGINNERING. All rights reserved.',
+                      '© ${DateTime.now().year} AENS ENGINEERING. All rights reserved.',
                       style: FooterTextStyles.footerText(bodyFontSize),
                       overflow: TextOverflow.ellipsis,
                     ),

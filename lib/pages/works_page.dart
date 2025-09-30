@@ -68,11 +68,7 @@ class WorksPage extends StatelessWidget {
                     .fadeIn(duration: 800.ms, delay: 300.ms)
                     .slideY(begin: 0.1, end: 0, duration: 800.ms),
                 SizedBox(height: isWide ? 56 : 36),
-                _DiscussButton(
-                  context: context,
-                  buttonFontSize: buttonFontSize,
-                ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
-                SizedBox(height: isWide ? 70 : 30),
+
                 // After _DiscussButton and SizedBox
                 _ProjectSection(
                   isWide: isWide,
@@ -336,7 +332,7 @@ class _AppLogo extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'AENS ENGINNERING',
+            'AENS ENGINEERING',
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],

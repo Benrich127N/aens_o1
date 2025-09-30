@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             SizedBox(height: isWide ? 96 : 48),
                             Text(
-                                  'AENS ENGINNERING',
+                                  'AENS ENGINEERING',
                                   textAlign: TextAlign.center,
                                   style: AppTextStyles.pageTitle(titleFontSize),
                                 )
@@ -272,7 +272,7 @@ class _AppLogo extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'AENS ENGINNERING',
+            'AENS ENGINEERING',
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],

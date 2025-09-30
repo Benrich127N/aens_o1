@@ -77,6 +77,12 @@ class AboutPage extends StatelessWidget {
                   isMedium: isMedium,
                   horizontalPadding: horizontalPadding,
                 ),
+                SizedBox(height: isWide ? 0 : 40),
+                _WhyChooseUsSection(
+                  isWide: isWide,
+                  isMedium: isMedium,
+                  horizontalPadding: horizontalPadding,
+                ),
                 const CustomFooter(),
               ],
             ),
@@ -157,7 +163,7 @@ class _AppLogo extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'AENS ENGINNERING',
+            'AENS ENGINEERING',
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],
@@ -388,6 +394,199 @@ class _DrawerNavItem extends StatelessWidget {
       ),
       onTap: onTap,
       hoverColor: AppColors.secondaryBackground,
+    );
+  }
+}
+
+class _WhyChooseUsSection extends StatelessWidget {
+  final bool isWide;
+  final bool isMedium;
+  final double horizontalPadding;
+
+  const _WhyChooseUsSection({
+    required this.isWide,
+    required this.isMedium,
+    required this.horizontalPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final features = [
+      {
+        "title": "Multidisciplinary Expertise",
+        "desc":
+            "We deliver integrated solutions across electrical, mechanical, civil, and instrumentation disciplines.",
+      },
+      {
+        "title": "Proven Track Record",
+        "desc":
+            "Over 15 years of successfully executed projects across key industries.",
+      },
+      {
+        "title": "Skilled Workforce",
+        "desc":
+            "We recruit, train, and manage certified professionals for high-performance delivery.",
+      },
+      {
+        "title": "Commitment to Quality & Safety",
+        "desc":
+            "We prioritize safety, compliance, and international best practices in every project.",
+      },
+    ];
+
+    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+    final bodyFontSize = isWide ? 16.0 : 14.0;
+
+    return Container(
+      width: double.infinity,
+      color: AppColors.secondaryBackground,
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: isWide ? 80 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "WHY CHOOSE AENS",
+            style: AppTextStyles.bodyText(bodyFontSize).copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ).animate().fadeIn().slideY(begin: 0.2),
+          const SizedBox(height: 12),
+          Text(
+            "Excellence in Every Project",
+            style: AppTextStyles.pageTitle(titleFontSize),
+          ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2),
+          const SizedBox(height: 48),
+
+          isWide
+              ? Wrap(
+                  spacing: 24,
+                  runSpacing: 24,
+                  alignment: WrapAlignment.center,
+                  children: features.asMap().entries.map((entry) {
+                    final index = entry.key + 1;
+                    final feature = entry.value;
+                    return Container(
+                          width:
+                              (MediaQuery.of(context).size.width -
+                                  horizontalPadding * 2 -
+                                  24) /
+                              2,
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBackground,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.accentColor.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.accentColor.withOpacity(
+                                        0.1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "0$index",
+                                      style: GoogleFonts.lato(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.accentColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                feature["title"]!,
+                                style: AppTextStyles.sectionTitle(
+                                  bodyFontSize + 2,
+                                ).copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                feature["desc"]!,
+                                style: AppTextStyles.bodyText(
+                                  bodyFontSize,
+                                ).copyWith(color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: (200 * index).ms)
+                        .slideY(begin: 0.2, duration: 600.ms);
+                  }).toList(),
+                )
+              : Column(
+                  children: features.asMap().entries.map((entry) {
+                    final index = entry.key + 1;
+                    final feature = entry.value;
+                    return Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBackground,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.accentColor.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: AppColors.accentColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  "0$index",
+                                  style: GoogleFonts.lato(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.accentColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                feature["title"]!,
+                                style: AppTextStyles.sectionTitle(
+                                  bodyFontSize + 2,
+                                ).copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                feature["desc"]!,
+                                style: AppTextStyles.bodyText(
+                                  bodyFontSize,
+                                ).copyWith(color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: (200 * index).ms)
+                        .slideY(begin: 0.2, duration: 600.ms);
+                  }).toList(),
+                ),
+        ],
+      ),
     );
   }
 }

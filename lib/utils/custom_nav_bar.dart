@@ -63,7 +63,7 @@ class _AppLogo extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'AENS ENGINNERING',
+            'AENS ENGINEERING',
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],

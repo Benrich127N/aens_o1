@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../utils/custom_nav_bar.dart';
 import '../utils/theme.dart';
@@ -55,7 +57,7 @@ class ContactPage extends StatelessWidget {
                           horizontal: isWide ? 0 : horizontalPadding,
                         ),
                         child: Text(
-                          'Get in touch with AENS ENGINNERING Address Plot 2, Ohaeto street, D-line Port Harcourt, Rivers state, Nigeria (By Obito street, off Aba road, between Eastern Garden Chinese Restaurant and CFC Bus-stop). Mobile +234-703-253-8441',
+                          'Get in touch with AENS ENGINEERING Address Plot 2, Ohaeto street, D-line Port Harcourt, Rivers state, Nigeria (By Obito street, off Aba road, between Eastern Garden Chinese Restaurant and CFC Bus-stop). Mobile +234-703-253-8441',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.bodyText(bodyFontSize),
                         ),
@@ -65,11 +67,11 @@ class ContactPage extends StatelessWidget {
                     .fadeIn(duration: 800.ms, delay: 300.ms)
                     .slideY(begin: 0.1, end: 0, duration: 800.ms),
                 SizedBox(height: isWide ? 56 : 36),
+
                 // _DiscussButton(
                 //   context: context,
                 //   buttonFontSize: buttonFontSize,
                 // ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
-
                 SizedBox(height: isWide ? 80 : 40),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -228,6 +230,53 @@ class ContactPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: isWide ? 80 : 40),
+
+                // Fixed Map Section
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                      height: 300,
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(
+                            4.8242,
+                            7.0336,
+                          ), // Port Harcourt coords
+                          initialZoom: 16,
+                          interactionOptions: const InteractionOptions(
+                            flags: InteractiveFlag
+                                .all, // Allow pan & zoom (or set to none for static)
+                          ),
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            subdomains: const ['a', 'b', 'c'],
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                point: LatLng(4.8242, 7.0336),
+                                width: 40,
+                                height: 40,
+                                child: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 40,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: isWide ? 80 : 40),
                 const CustomFooter(),
               ],
             ),
@@ -308,7 +357,7 @@ class _AppLogo extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'AENS ENGINNERING',
+            'AENS ENGINEERING',
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],
