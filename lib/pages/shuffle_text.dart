@@ -8,6 +8,7 @@ class ShuffleText extends StatefulWidget {
   final TextStyle? style;
   final Duration duration; // how long one reveal cycle takes
   final Duration pause; // pause after full reveal before restarting
+  final Duration extraPause; // additional wait before next cycle
   final String chars; // characters used while scrambling
   final bool repeat;
 
@@ -17,6 +18,7 @@ class ShuffleText extends StatefulWidget {
     this.style,
     this.duration = const Duration(seconds: 3),
     this.pause = const Duration(milliseconds: 800),
+    this.extraPause = const Duration(seconds: 20), // 👈 new param
     this.chars =
         'IJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*',
     this.repeat = true,
@@ -47,7 +49,6 @@ class _ShuffleTextState extends State<ShuffleText> {
     _timer = Timer.periodic(const Duration(milliseconds: 16), (t) {
       if (!mounted) return;
 
-      // reveal progress based on time instead of step count
       final progress = t.tick * 16 / widget.duration.inMilliseconds;
       _revealed = (progress * total).clamp(0, total).toInt();
 
@@ -57,9 +58,14 @@ class _ShuffleTextState extends State<ShuffleText> {
 
       if (_revealed >= total) {
         t.cancel();
+
+        // First pause (text fully revealed)
         Future.delayed(widget.pause, () {
           if (widget.repeat && mounted) {
-            _startCycle();
+            // Then extra pause before starting shuffle again
+            Future.delayed(widget.extraPause, () {
+              if (mounted) _startCycle();
+            });
           }
         });
       }
@@ -70,7 +76,6 @@ class _ShuffleTextState extends State<ShuffleText> {
     final buffer = StringBuffer();
     for (var i = 0; i < widget.text.length; i++) {
       final ch = widget.text[i];
-      // preserve spaces and newlines
       if (ch == ' ' || ch == '\n') {
         buffer.write(ch);
         continue;
