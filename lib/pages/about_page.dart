@@ -214,14 +214,13 @@ class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
-    final bool isActive;
+  final bool isActive;
 
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
-        this.isActive = false,
-
+    this.isActive = false,
   });
   @override
   State<_NavItem> createState() => _NavItemState();
@@ -452,24 +451,20 @@ class _ProcessSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final steps = [
       {
-        "title": "Discovery & Consultation",
+        "title": "Vision",
         "desc":
-            "We start by understanding your goals and analyzing project needs to define the right direction.",
+            "To provide exellent quality of services and products that deliver maximum value to our clients in Nigeria and around the world.",
       },
       {
-        "title": "Design & Innovation",
+        "title": "Mission",
         "desc":
-            "Ideas are transformed into detailed engineering plans that blend creativity with practical solutions.",
+            "To be one of the leading Engineering Services and Solutions providers in Africa, by providing our valued clients with dedication, cooperation, innovation, competitive pricing, highest service qualities and operational efficiencies in the Energy, Oil and Gas, manufacturing, and Construction Industries.",
       },
+
       {
-        "title": "Detailed Engineering",
+        "title": "Values",
         "desc":
-            "Using advanced tools and certified expertise, we create accurate drawings and models.",
-      },
-      {
-        "title": "Permitting & Approvals",
-        "desc":
-            "We handle the preparation and submission of all necessary documentation to ensure smooth approvals.",
+            "In AENS, we must concurrently build shareholders value while respecting the environment, addressing the concerns of our neighbours/ host communities, and providing for future needs.",
       },
     ];
 
@@ -495,7 +490,7 @@ class _ProcessSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "From Vision To Completion",
+                        "HERE'S WHAT SETS US APART",
                         style: AppTextStyles.bodyText(bodyFontSize).copyWith(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.w500,
@@ -506,7 +501,7 @@ class _ProcessSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                            "Our Process to Bring Your Ideas to Life",
+                            "We don't just deliver projects, we deliver value.",
                             style: AppTextStyles.pageTitle(titleFontSize),
                           )
                           .animate()
@@ -671,7 +666,7 @@ class _ProcessSection extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 20),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 156, 48, 48),
+                            color: AppColors.secondaryBackground,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
                               color: index == 1
