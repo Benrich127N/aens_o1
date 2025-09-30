@@ -1,60 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../utils/theme.dart';
+import '../utils/footer.dart' show CustomFooter;
 
 // Theme Definition (AppColors & AppTextStyles)
-class AppColors {
-  static const Color primaryBackground = Color(
-    0xFF121212,
-  ); // Deep Charcoal Grey
-  static const Color secondaryBackground = Color(
-    0xFF1C1C1C,
-  ); // Dark Grey for subtle depth
-  static const Color accentColor = Color(0xFFBC914C); // Refined Muted Gold
-  static const Color textColor = Color(0xFFFFFFFF); // Pure White
-  static const Color textSecondary = Color(
-    0xFFA0A0A0,
-  ); // Medium Grey for subtle text
-}
-
-class AppTextStyles {
-  static TextStyle navBar(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.w500,
-    fontSize: fontSize,
-  );
-  static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.bold,
-    fontSize: fontSize,
-    letterSpacing: 1.2,
-  );
-  static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
-    fontSize: fontSize,
-    height: 1.7,
-  );
-  static TextStyle bulletPoint(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
-    fontSize: fontSize,
-    height: 1.8,
-  );
-  static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-}
+// Use centralized AppColors/AppTextStyles from theme.dart
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,7 +79,6 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            
                             SizedBox(height: isWide ? 96 : 48),
                             Text(
                                   'AENS ENGINNERING',
@@ -188,10 +138,10 @@ class _HomePageState extends State<HomePage> {
                                 .fadeIn(duration: 800.ms, delay: 300.ms)
                                 .slideY(begin: 0.1, end: 0, duration: 800.ms),
                             SizedBox(height: isWide ? 56 : 36),
-                            _DiscussButton(
-                              context: context,
-                              buttonFontSize: buttonFontSize,
-                            ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+                            // _DiscussButton(
+                            //   context: context,
+                            //   buttonFontSize: buttonFontSize,
+                            // ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
                           ],
                         ),
                       ),
@@ -241,6 +191,8 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                SizedBox(height: isWide ? 80 : 40),
+                const CustomFooter(),
               ],
             ),
           );
@@ -298,8 +250,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
 }
 
 // Reusable Widgets
@@ -331,62 +281,17 @@ class _AppLogo extends StatelessWidget {
   }
 }
 
-class _NavigationMenu extends StatelessWidget {
-  final double navFontSize;
-  final bool isWide;
-  const _NavigationMenu({required this.navFontSize, required this.isWide});
-  @override
-  Widget build(BuildContext context) {
-    if (!isWide) {
-      return IconButton(
-        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
-      );
-    }
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 32.0,
-      runSpacing: 8.0,
-      children: [
-        _NavItem(
-          label: 'ABOUT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/about'),
-        ),
-        _NavItem(
-          label: 'SERVICES',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/services'),
-        ),
-        _NavItem(
-          label: 'OUR WORKS',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/works'),
-        ),
-        _NavItem(
-          label: 'CONTACT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/contact'),
-        ),
-      ],
-    );
-  }
-}
-
 class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
-    final bool isActive;
+  final bool isActive;
 
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
-        this.isActive = false,
-
+    this.isActive = false,
   });
   @override
   State<_NavItem> createState() => _NavItemState();

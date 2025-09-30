@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../utils/custom_nav_bar.dart';
+import '../utils/custom_nav_bar.dart' as nav;
+import '../utils/footer.dart' show CustomFooter;
+import '../utils/theme.dart';
 
 class Our_services_engine extends StatefulWidget {
   const Our_services_engine({super.key});
@@ -122,7 +124,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           // Place the CustomNavBar widget directly here as the first child
           // of the main Column.
           children: [
-            const CustomNavBar(currentRoute: '/services'),
+            const nav.CustomNavBar(currentRoute: '/services'),
 
             // Then, place your existing page content inside a Padding widget
             // to maintain the horizontal spacing.
@@ -302,6 +304,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 20),
+                  const CustomFooter(),
                 ],
               ),
             ),

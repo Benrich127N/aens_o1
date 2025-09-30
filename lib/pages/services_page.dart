@@ -1,49 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
-// --- Theme Definition ---
-class AppColors {
-  static const Color primaryBackground = Color(0xFF121212);
-  static const Color secondaryBackground = Color(0xFF1C1C1C);
-  static const Color accentColor = Color(0xFFBC914C);
-  static const Color textColor = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFA0A0A0);
-}
-
-class AppTextStyles {
-  static TextStyle navBar(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.w500,
-    fontSize: fontSize,
-  );
-  static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.bold,
-    fontSize: fontSize,
-    letterSpacing: 1.2,
-  );
-  static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
-    fontSize: fontSize,
-    height: 1.7,
-  );
-  static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-}
+import '../utils/footer.dart' show CustomFooter;
+import '../utils/theme.dart';
 
 // Reusable InfoRow Widget for Services and Approach
 class InfoRow extends StatefulWidget {
@@ -201,7 +160,6 @@ class ServicesPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-               
                 SizedBox(height: isWide ? 96 : 48),
                 _buildPageTitle(titleFontSize)
                     .animate()
@@ -218,10 +176,10 @@ class ServicesPage extends StatelessWidget {
                     .fadeIn(duration: 800.ms, delay: 300.ms)
                     .slideY(begin: 0.1, end: 0, duration: 800.ms),
                 SizedBox(height: isWide ? 56 : 36),
-                _DiscussButton(
-                  context: context,
-                  buttonFontSize: buttonFontSize,
-                ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
+                // _DiscussButton(
+                //   context: context,
+                //   buttonFontSize: buttonFontSize,
+                // ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
                 SizedBox(height: isWide ? 120 : 60),
                 _buildSectionTitle(
                       'Our Array of Services',
@@ -256,6 +214,7 @@ class ServicesPage extends StatelessWidget {
                   buttonFontSize: buttonFontSize,
                 ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
                 SizedBox(height: isWide ? 80 : 40),
+                const CustomFooter(),
               ],
             ),
           );
@@ -313,8 +272,6 @@ class ServicesPage extends StatelessWidget {
       ),
     );
   }
-
-  
 
   Widget _buildPageTitle(double fontSize) {
     return Text(
@@ -499,74 +456,17 @@ class _AppLogo extends StatelessWidget {
   }
 }
 
-class _NavigationMenu extends StatelessWidget {
-  final double navFontSize;
-  final bool isWide;
-
-  const _NavigationMenu({required this.navFontSize, required this.isWide});
-
-  @override
-  Widget build(BuildContext context) {
-    if (!isWide) {
-      return IconButton(
-        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
-      );
-    }
-
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 32.0,
-      runSpacing: 8.0,
-      children: [
-        _NavItem(
-          label: 'ABOUT US',
-          fontSize: navFontSize,
-          onTap: () {
-            Navigator.pushNamed(context, '/about');
-          },
-        ),
-        _NavItem(
-          label: 'SERVICES',
-          fontSize: navFontSize,
-          onTap: () {
-            Navigator.pushNamed(context, '/services');
-          },
-        ),
-        _NavItem(
-          label: 'OUR WORKS',
-          fontSize: navFontSize,
-          onTap: () {
-            Navigator.pushNamed(context, '/works');
-          },
-        ),
-        _NavItem(
-          label: 'CONTACT US',
-          fontSize: navFontSize,
-          onTap: () {
-            Navigator.pushNamed(context, '/contact');
-          },
-        ),
-      ],
-    );
-  }
-}
-
 class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
-    final bool isActive;
-
+  final bool isActive;
 
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
-        this.isActive = false,
-
+    this.isActive = false,
   });
 
   @override

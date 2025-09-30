@@ -4,8 +4,6 @@ import 'package:tailored_space/pages/our_services_engine.dart';
 import 'package:tailored_space/pages/test.dart';
 import 'package:tailored_space/pages/works_page.dart';
 import 'package:tailored_space/pages/contact_page.dart';
-import 'package:tailored_space/pages/discuss_page.dart';
-import 'package:tailored_space/pages/learn_more_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,8 +23,7 @@ class MyApp extends StatelessWidget {
         '/services': (context) => const Our_services_engine(),
         '/works': (context) => const WorksPage(),
         '/contact': (context) => const ContactPage(),
-        '/discuss': (context) => const DiscussPage(),
-        '/learn-more': (context) => const LearnMorePage(),
+        // '/discuss': (context) => const DiscussPage(),
       },
     );
   }

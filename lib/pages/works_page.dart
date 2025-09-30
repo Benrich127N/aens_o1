@@ -3,53 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../utils/custom_nav_bar.dart';
+import '../utils/footer.dart' show CustomFooter;
+import '../utils/theme.dart';
 
-class AppColors {
-  static const Color primaryBackground = Color(0xFF121212);
-  static const Color secondaryBackground = Color(0xFF1C1C1C);
-  static const Color accentColor = Color(0xFFBC914C);
-  static const Color textColor = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFA0A0A0);
-}
-
-class AppTextStyles {
-  static TextStyle navBar(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.w500,
-    fontSize: fontSize,
-  );
-  static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.bold,
-    fontSize: fontSize,
-    letterSpacing: 1.2,
-  );
-  static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
-    fontSize: fontSize,
-    height: 1.7,
-  );
-  static TextStyle bulletPoint(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
-    fontSize: fontSize,
-    height: 1.8,
-  );
-  static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontSize: fontSize,
-    fontWeight: FontWeight.w600,
-  );
-}
+// Use centralized AppColors/AppTextStyles from theme.dart
 
 class WorksPage extends StatelessWidget {
   const WorksPage({super.key});
@@ -122,6 +79,8 @@ class WorksPage extends StatelessWidget {
                   isMedium: isMedium,
                   horizontalPadding: horizontalPadding,
                 ),
+                SizedBox(height: isWide ? 80 : 40),
+                const CustomFooter(),
               ],
             ),
           );
