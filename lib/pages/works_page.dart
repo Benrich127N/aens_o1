@@ -81,7 +81,7 @@ class WorksPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CustomNavBar(),
+                const CustomNavBar(currentRoute: '/works'),
 
                 SizedBox(height: isWide ? 96 : 48),
                 Text(
@@ -195,57 +195,91 @@ class _ProjectSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final projects = [
+    // Schneider Electric products
+    final schneiderProjects = [
       {
-        "title": "Commercial Complex Dev",
-        "subtitle": "New Classic | Dubai, UAE | 2022",
-        "image": "assets/images/3d.jpg",
-      },
-      {
-        "title": "Commercial Complex Dev",
-        "subtitle": "New Classic | Dubai, UAE | 2022",
-        "image": "assets/images/3d.jpg",
-      },
-      {
-        "title": "Luxury Design",
+        "title": "Schneider Product 1",
         "subtitle": "",
-        "image": "assets/images/box.jpg",
+        "image": "assets/images/Schneider1.jpeg",
       },
       {
-        "title": "Planning & Project Management",
+        "title": "Schneider Product 2",
         "subtitle": "",
-        "image": "assets/images/man_fix.jpg",
+        "image": "assets/images/Schneider2.jpeg",
       },
       {
-        "title": "Interior and Exterior Design",
+        "title": "Schneider Product 3",
         "subtitle": "",
-        "image": "assets/images/fix_mann.jpg",
+        "image": "assets/images/Schneider3.jpeg",
       },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider10.jpeg",
+      },
+      // ... continue until all 18 Schneider products
     ];
 
-    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
-    // final subtitleFontSize = isWide ? 14.0 : 12.0;
+    // ABB products
+    final abbProjects = [
+      {
+        "title": "ABB Product 1",
+        "subtitle": "",
+        "image": "assets/images/Schneider4.jpeg",
+      },
+      {
+        "title": "ABB Product 2",
+        "subtitle": "",
+        "image": "assets/images/Schneider5.jpeg",
+      },
+      {
+        "title": "ABB Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider6.jpg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider11.jpeg",
+      },
+      // ... continue until all 18 ABB products
+    ];
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Column(
+    // Siemens products
+    final siemensProjects = [
+      {
+        "title": "Siemens Product 1",
+        "subtitle": "",
+        "image": "assets/images/Schneider7.jpg",
+      },
+      {
+        "title": "Siemens Product 2",
+        "subtitle": "",
+        "image": "assets/images/Schneider8.jpeg",
+      },
+      {
+        "title": "Siemens Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider9.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider12.jpeg",
+      },
+      // ... continue until all 18 Siemens products
+    ];
+
+    Widget buildProductSection(
+      String title,
+      List<Map<String, String>> projects,
+    ) {
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8),
-
-          // Section Title
-          Text("Our Products", style: AppTextStyles.pageTitle(titleFontSize)),
-          const SizedBox(height: 24),
-
-          SizedBox(height: isWide ? 20 : 16),
-
-          // 👉 Sub-section text
-          Text(
-            'Electrical Devices',
-            textAlign: TextAlign.center,
-            style: AppTextStyles.sectionTitle(isWide ? 28 : 22),
-          ),
-          // Projects Grid
+          const SizedBox(height: 32),
+          Text(title, style: AppTextStyles.sectionTitle(isWide ? 28 : 22)),
+          const SizedBox(height: 16),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -260,17 +294,15 @@ class _ProjectSection extends StatelessWidget {
               final project = projects[index];
               return Stack(
                 children: [
-                  // Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
+                    child: Image.asset(
                       project["image"]!,
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
                     ),
                   ),
-                  // Gradient overlay
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -284,35 +316,42 @@ class _ProjectSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Text
                   Positioned(
                     left: 12,
                     right: 12,
                     bottom: 12,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          project["title"]!,
-                          style: AppTextStyles.sectionTitle(16),
-                        ),
-                        if (project["subtitle"]!.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(
-                              project["subtitle"]!,
-                              style: AppTextStyles.bodyText(
-                                12,
-                              ).copyWith(color: Colors.white70),
-                            ),
-                          ),
-                      ],
+                    child: Text(
+                      project["title"]!,
+                      style: AppTextStyles.sectionTitle(14),
                     ),
                   ),
                 ],
               );
             },
           ),
+        ],
+      );
+    }
+
+    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8),
+          Text("Our Products", style: AppTextStyles.pageTitle(titleFontSize)),
+          const SizedBox(height: 24),
+
+          // Schneider Section
+          buildProductSection("Schneider Electric", schneiderProjects),
+
+          // ABB Section
+          buildProductSection("ABB", abbProjects),
+
+          // SIEMENS Section
+          buildProductSection("SIEMENS", siemensProjects),
         ],
       ),
     );
@@ -342,146 +381,6 @@ class _AppLogo extends StatelessWidget {
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _NavigationMenu extends StatelessWidget {
-  final double navFontSize;
-  final bool isWide;
-  const _NavigationMenu({required this.navFontSize, required this.isWide});
-  @override
-  Widget build(BuildContext context) {
-    if (!isWide) {
-      return IconButton(
-        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
-      );
-    }
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 32.0,
-      runSpacing: 8.0,
-      children: [
-        _NavItem(
-          label: 'ABOUT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/about'),
-        ),
-        _NavItem(
-          label: 'SERVICES',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/services'),
-        ),
-        _NavItem(
-          label: 'OUR WORKS',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/works'),
-        ),
-        _NavItem(
-          label: 'CONTACT US',
-          fontSize: navFontSize,
-          onTap: () => Navigator.pushNamed(context, '/contact'),
-        ),
-      ],
-    );
-  }
-}
-
-class _NavItem extends StatefulWidget {
-  final String label;
-  final double fontSize;
-  final VoidCallback onTap;
-  const _NavItem({
-    required this.label,
-    this.fontSize = 16,
-    required this.onTap,
-  });
-  @override
-  State<_NavItem> createState() => _NavItemState();
-}
-
-class _NavItemState extends State<_NavItem>
-    with SingleTickerProviderStateMixin {
-  bool _isHovering = false;
-  late AnimationController _controller;
-  late Animation<double> _widthAnimation;
-  late Animation<Color?> _colorAnimation;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    _widthAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _colorAnimation = ColorTween(
-      begin: AppColors.textColor,
-      end: AppColors.accentColor,
-    ).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onEnter(PointerEvent details) {
-    setState(() => _isHovering = true);
-    _controller.forward();
-  }
-
-  void _onExit(PointerEvent details) {
-    setState(() => _isHovering = false);
-    _controller.reverse();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: _onEnter,
-      onExit: _onExit,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedBuilder(
-              animation: _colorAnimation,
-              builder: (context, child) {
-                return Text(
-                  widget.label,
-                  style: AppTextStyles.navBar(widget.fontSize).copyWith(
-                    color: _colorAnimation.value,
-                    decoration: TextDecoration.none,
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 4,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: SizeTransition(
-                  sizeFactor: _widthAnimation,
-                  axis: Axis.horizontal,
-                  child: Container(
-                    height: 2,
-                    width: widget.fontSize * widget.label.length * 0.7,
-                    color: AppColors.accentColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

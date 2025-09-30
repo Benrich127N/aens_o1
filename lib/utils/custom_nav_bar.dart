@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// You might want to define these in a separate file like 'theme.dart'
-// and import them to keep your code clean and organized.
 class AppColors {
   static const Color primaryBackground = Color(0xFF121212);
   static const Color secondaryBackground = Color(0xFF1C1C1C);
@@ -13,21 +11,22 @@ class AppColors {
 
 class AppTextStyles {
   static TextStyle navBar(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.w500,
-    fontSize: fontSize,
-  );
+        color: AppColors.textColor,
+        fontWeight: FontWeight.w500,
+        fontSize: fontSize,
+      );
   static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
-    fontWeight: FontWeight.bold,
-    fontSize: fontSize,
-    letterSpacing: 1.2,
-  );
+        color: AppColors.textColor,
+        fontWeight: FontWeight.bold,
+        fontSize: fontSize,
+        letterSpacing: 1.2,
+      );
 }
 
-// The main reusable widget
+// Now accepts currentRoute
 class CustomNavBar extends StatelessWidget {
-  const CustomNavBar({super.key});
+  final String currentRoute;
+  const CustomNavBar({super.key, required this.currentRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +54,7 @@ class CustomNavBar extends StatelessWidget {
                 child: _NavigationMenu(
                   navFontSize: navFontSize,
                   isWide: isWide,
+                  currentRoute: currentRoute, // pass it down
                 ),
               ),
             ],
@@ -65,8 +65,6 @@ class CustomNavBar extends StatelessWidget {
   }
 }
 
-// All other helper widgets remain the same, but are now encapsulated
-// within this single file or can be moved to a separate file.
 class _AppLogo extends StatelessWidget {
   final double navFontSize;
   const _AppLogo({required this.navFontSize});
@@ -98,7 +96,12 @@ class _AppLogo extends StatelessWidget {
 class _NavigationMenu extends StatelessWidget {
   final double navFontSize;
   final bool isWide;
-  const _NavigationMenu({required this.navFontSize, required this.isWide});
+  final String currentRoute;
+  const _NavigationMenu({
+    required this.navFontSize,
+    required this.isWide,
+    required this.currentRoute,
+  });
   @override
   Widget build(BuildContext context) {
     if (!isWide) {
@@ -117,21 +120,25 @@ class _NavigationMenu extends StatelessWidget {
         _NavItem(
           label: 'ABOUT US',
           fontSize: navFontSize,
+          isActive: currentRoute == '/about',
           onTap: () => Navigator.pushNamed(context, '/about'),
         ),
         _NavItem(
           label: 'SERVICES',
           fontSize: navFontSize,
+          isActive: currentRoute == '/services',
           onTap: () => Navigator.pushNamed(context, '/services'),
         ),
         _NavItem(
           label: 'OUR PRODUCTS',
           fontSize: navFontSize,
+          isActive: currentRoute == '/works',
           onTap: () => Navigator.pushNamed(context, '/works'),
         ),
         _NavItem(
           label: 'CONTACT US',
           fontSize: navFontSize,
+          isActive: currentRoute == '/contact',
           onTap: () => Navigator.pushNamed(context, '/contact'),
         ),
       ],
@@ -143,11 +150,15 @@ class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
+  final bool isActive;
+
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
+    this.isActive = false,
   });
+
   @override
   State<_NavItem> createState() => _NavItemState();
 }
@@ -158,6 +169,7 @@ class _NavItemState extends State<_NavItem>
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
   late Animation<Color?> _colorAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -165,14 +177,21 @@ class _NavItemState extends State<_NavItem>
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
+
     _widthAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
     _colorAnimation = ColorTween(
       begin: AppColors.textColor,
       end: AppColors.accentColor,
     ).animate(_controller);
+
+    // if item is active make it show highlighted state initially
+    if (widget.isActive) {
+      _controller.value = 1.0;
+    }
   }
 
   @override
@@ -188,7 +207,8 @@ class _NavItemState extends State<_NavItem>
 
   void _onExit(PointerEvent details) {
     setState(() => _isHovering = false);
-    _controller.reverse();
+    // do not reverse if the item is active so underline stays visible when not hovered
+    if (!widget.isActive) _controller.reverse();
   }
 
   @override
@@ -204,28 +224,44 @@ class _NavItemState extends State<_NavItem>
             AnimatedBuilder(
               animation: _colorAnimation,
               builder: (context, child) {
+                final isGlowing = widget.isActive || _isHovering;
                 return Text(
                   widget.label,
                   style: AppTextStyles.navBar(widget.fontSize).copyWith(
-                    color: _colorAnimation.value,
+                    color: widget.isActive ? AppColors.accentColor : _colorAnimation.value,
                     decoration: TextDecoration.none,
+                    shadows: isGlowing
+                        ? [
+                            Shadow(
+                              color: AppColors.accentColor.withOpacity(0.85),
+                              blurRadius: 12,
+                              offset: Offset(0, 0),
+                            ),
+                          ]
+                        : null,
                   ),
                 );
               },
             ),
             SizedBox(
-              height: 4,
+              height: 6,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: SizeTransition(
-                  sizeFactor: _widthAnimation,
-                  axis: Axis.horizontal,
-                  child: Container(
-                    height: 2,
-                    width: widget.fontSize * widget.label.length * 0.7,
-                    color: AppColors.accentColor,
-                  ),
-                ),
+                child: widget.isActive
+                    ? Container(
+                        height: 3,
+                        width: widget.fontSize * widget.label.length * 0.7,
+                        color: AppColors.accentColor,
+                      )
+                    : SizeTransition(
+                        sizeFactor: _widthAnimation,
+                        axis: Axis.horizontal,
+                        child: Container(
+                          height: 2,
+                          width: widget.fontSize * widget.label.length * 0.7,
+                          color: AppColors.accentColor,
+                        ),
+                      ),
               ),
             ),
           ],

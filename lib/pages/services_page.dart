@@ -558,11 +558,15 @@ class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
+    final bool isActive;
+
 
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
+        this.isActive = false,
+
   });
 
   @override

@@ -17,7 +17,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
     {
       "title": "Electrical Panels, Switchboards Design,",
       "desc": "Build and Support Services",
-      "image": "assets/images/swtich.jpg ",
+      "image": "assets/images/swtich.jpg",
     },
     {
       "title": "Facilities Management Services",
@@ -122,7 +122,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           // Place the CustomNavBar widget directly here as the first child
           // of the main Column.
           children: [
-            const CustomNavBar(),
+            const CustomNavBar(currentRoute: '/services'),
 
             // Then, place your existing page content inside a Padding widget
             // to maintain the horizontal spacing.

@@ -70,7 +70,7 @@ class Test extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomNavBar(),
+                const CustomNavBar(currentRoute: '/test'),
 
                 const Spacer(),
 

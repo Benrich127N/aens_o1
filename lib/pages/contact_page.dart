@@ -81,7 +81,7 @@ class ContactPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CustomNavBar(),
+                const CustomNavBar(currentRoute: '/contact'),
 
                 SizedBox(height: isWide ? 96 : 48),
                 Text(
@@ -408,10 +408,14 @@ class _NavItem extends StatefulWidget {
   final String label;
   final double fontSize;
   final VoidCallback onTap;
+    final bool isActive;
+
   const _NavItem({
     required this.label,
     this.fontSize = 16,
     required this.onTap,
+        this.isActive = false,
+
   });
   @override
   State<_NavItem> createState() => _NavItemState();
