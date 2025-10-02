@@ -11,7 +11,7 @@ class FooterTextStyles {
   static TextStyle footerText(double fontSize) => GoogleFonts.lato(
     color: AppColors.textSecondary,
     fontSize: fontSize,
-    height: 1.6,
+    height: 1.5,
   );
   static TextStyle footerLink(double fontSize) => GoogleFonts.lato(
     color: AppColors.textColor,
@@ -30,12 +30,13 @@ class CustomFooter extends StatelessWidget {
         final bool isWide = constraints.maxWidth > 900;
         final bool isMedium =
             constraints.maxWidth > 600 && constraints.maxWidth <= 900;
+
         final double horizontalPadding = isWide
-            ? 64.0
-            : (isMedium ? 32.0 : 16.0);
-        final double verticalPadding = isWide ? 40.0 : 24.0;
-        final double titleFontSize = isWide ? 18.0 : 16.0;
-        final double bodyFontSize = isWide ? 14.0 : 13.0;
+            ? 48.0
+            : (isMedium ? 24.0 : 16.0);
+        final double verticalPadding = isWide ? 20.0 : 12.0;
+        final double titleFontSize = isWide ? 16.0 : 14.0;
+        final double bodyFontSize = isWide ? 13.0 : 12.0;
 
         return Container(
           decoration: const BoxDecoration(
@@ -52,10 +53,10 @@ class CustomFooter extends StatelessWidget {
             children: [
               Wrap(
                 spacing: 24,
-                runSpacing: 16,
+                runSpacing: 12,
                 children: [
                   SizedBox(
-                    width: isWide ? 360 : 300,
+                    width: isWide ? 280 : double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -63,7 +64,7 @@ class CustomFooter extends StatelessWidget {
                           'AENS ENGINEERING',
                           style: FooterTextStyles.footerTitle(titleFontSize),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         Text(
                           'Providing innovative and dependable engineering solutions across Electrical, Instrumentation/Control, Mechanical, and Civil disciplines.',
                           style: FooterTextStyles.footerText(bodyFontSize),
@@ -72,7 +73,7 @@ class CustomFooter extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 220,
+                    width: isWide ? 200 : double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -80,7 +81,7 @@ class CustomFooter extends StatelessWidget {
                           'Quick Links',
                           style: FooterTextStyles.footerTitle(titleFontSize),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         _FooterLink(
                           label: 'About Us',
                           route: '/about',
@@ -105,7 +106,7 @@ class CustomFooter extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: isWide ? 320 : 280,
+                    width: isWide ? 260 : double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -113,17 +114,17 @@ class CustomFooter extends StatelessWidget {
                           'Contact',
                           style: FooterTextStyles.footerTitle(titleFontSize),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         Text(
                           'Plot 2, Ohaeto street, D-line Port Harcourt, Rivers State, Nigeria.',
                           style: FooterTextStyles.footerText(bodyFontSize),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(
                           'Mobile: +234-703-253-8441',
                           style: FooterTextStyles.footerText(bodyFontSize),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(
                           'Email: info@aensengineering.com',
                           style: FooterTextStyles.footerText(bodyFontSize),
@@ -133,9 +134,9 @@ class CustomFooter extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Divider(color: Colors.white.withOpacity(0.12), height: 1),
               const SizedBox(height: 12),
+              Divider(color: Colors.white.withOpacity(0.12), height: 1),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -171,7 +172,7 @@ class _FooterLink extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.pushNamed(context, route),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
         child: Text(label, style: FooterTextStyles.footerLink(fontSize)),
       ),
     );

@@ -140,7 +140,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
               ),
             ),
             const SizedBox(height: 60),
-            const CustomFooter(),
+
+            const CustomFooter(), // ✅ correct placement
           ],
         ),
       ),
@@ -644,60 +645,9 @@ class _Our_services_engineState extends State<Our_services_engine> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ======== TOP ROW: Badge + Dots + Play/Pause ========
-                      Row(
-                        children: [
-                          // Badge
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.accentColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              "0${selectedIndex + 1}",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-
-                          // Dots
-                          Row(
-                            children: List.generate(
-                              services.length,
-                              (index) => Container(
-                                margin: const EdgeInsets.only(right: 6),
-                                width: index == selectedIndex ? 24 : 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: index == selectedIndex
-                                      ? AppColors.accentColor
-                                      : Colors.white.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // Play / Pause Button
-                          const Spacer(),
-                          IconButton(
-                            onPressed: _toggleAutoPlay,
-                            icon: Icon(
-                              _isAutoPlaying
-                                  ? Icons.pause_circle
-                                  : Icons.play_circle,
-                              color: Colors.white,
-                              size: 32,
-                            ),
-                          ),
+                      // ======== TOP ROW: Badge + Dots (pause removed) ========
+                      Row(children: [
+                        
                         ],
                       ),
 
@@ -728,58 +678,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
 
                       const SizedBox(height: 20),
 
-                      // ======== MANUAL NAVIGATION BUTTONS ========
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = selectedIndex > 0
-                                    ? selectedIndex - 1
-                                    : services.length - 1;
-                              });
-                              _resetAutoSlide();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.arrow_back_ios_new,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex =
-                                    (selectedIndex + 1) % services.length;
-                              });
-                              _resetAutoSlide();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: AppColors.accentColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // 
                     ],
                   ),
                 ),
