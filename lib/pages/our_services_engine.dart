@@ -122,64 +122,76 @@ class _Our_services_engineState extends State<Our_services_engine> {
           ),
         ),
         const SizedBox(height: 24),
-
-        // Clients Grid
-        GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: isMobile ? 1 : 3,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          childAspectRatio: isMobile ? 1.2 : 1.5,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            _buildClientCard(
-              title: "Government Department & Agencies",
-              clients: [
-                "Ministry of Power, Rivers State",
-                "House Hospital Complex Bayelsa",
-                "Otuoke Hospital Facility Bayelsa",
-                "General Hospital Complex Yenagoa",
-              ],
-              scope: [
-                "Construction & Installation of 33/11kV Lines",
-                "Procurement, Installation, and Maintenance of MV/LV Transformer Substations, Switchgears, AMF/ATS Panels, MCCs",
-                "Industrial & Utility Services",
-                "Rural and Industrial Electrification Projects",
-              ],
-              image: "assets/images/gov_clients.jpg",
-            ),
-            _buildClientCard(
-              title: "Oil, Gas & Marine Services",
-              clients: [
-                "V.Ships",
-                "Thome Group",
-                "Remm Oil Services",
-                "Baker Hughes",
-              ],
-              scope: [
-                "Marine Electrical Engineering Maintenance Services",
-                "Installation & Maintenance of Marine Communication Systems",
-                "Design & Construction of Power Distribution Panels",
-                "Supply & Installation of ABB & Schneider Electric LV Products",
-              ],
-              image: "assets/images/oil_clients.jpg",
-            ),
-            _buildClientCard(
-              title: "Companies & Banks",
-              clients: [
-                "STARZS",
-                "Avondale",
-                "PHD",
-                "Other financial institutions",
-              ],
-              scope: [
-                "Design & Installation of Medium & Low Voltage Systems",
-                "Maintenance of Communication Systems",
-                "Installation & Maintenance of Transformers, Motors, Compressors & UPS",
-              ],
-              image: "assets/images/banks_clients.jpg",
-            ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isMobile ? 1 : 3,
+                  crossAxisSpacing: 24,
+                  mainAxisSpacing: 24,
+                  mainAxisExtent: 550, // Fixed height matching card height
+                ),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return _buildClientCard(
+                      title: "Government Department & Agencies",
+                      clients: [
+                        "Ministry of Power, Rivers State",
+                        "House Hospital Complex Bayelsa",
+                        "Otuoke Hospital Facility Bayelsa",
+                        "General Hospital Complex Yenagoa",
+                      ],
+                      scope: [
+                        "Construction & Installation of 33/11kV Lines",
+                        "Procurement, Installation, and Maintenance of MV/LV Transformer Substations, Switchgears, AMF/ATS Panels, MCCs",
+                        "Industrial & Utility Services",
+                        "Rural and Industrial Electrification Projects",
+                      ],
+                      image: "assets/images/gov_clients.jpg",
+                    );
+                  } else if (index == 1) {
+                    return _buildClientCard(
+                      title: "Oil, Gas & Marine Services",
+                      clients: [
+                        "V.Ships",
+                        "Thome Group",
+                        "Remm Oil Services",
+                        "Baker Hughes",
+                      ],
+                      scope: [
+                        "Marine Electrical Engineering Maintenance Services",
+                        "Installation & Maintenance of Marine Communication Systems",
+                        "Design & Construction of Power Distribution Panels",
+                        "Supply & Installation of ABB & Schneider Electric LV Products",
+                      ],
+                      image: "assets/images/oil_clients.jpg",
+                    );
+                  } else {
+                    return _buildClientCard(
+                      title: "Companies & Banks",
+                      clients: [
+                        "STARZS",
+                        "Avondale",
+                        "PHD",
+                        "Other financial institutions",
+                      ],
+                      scope: [
+                        "Design & Installation of Medium & Low Voltage Systems",
+                        "Maintenance of Communication Systems",
+                        "Installation & Maintenance of Transformers, Motors, Compressors & UPS",
+                      ],
+                      image: "assets/images/banks_clients.jpg",
+                    );
+                  }
+                },
+              ),
+            );
+          },
         ),
       ],
     );
@@ -192,71 +204,202 @@ class _Our_services_engineState extends State<Our_services_engine> {
     required String image,
   }) {
     return Container(
+      height: 550, // Fixed height for consistent card sizing
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.textColor.withOpacity(0.1)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.15),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.accentColor,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "Key Clients:",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textColor,
-              ),
-            ),
-            for (var c in clients)
-              Text(
-                "• $c",
-                style: GoogleFonts.poppins(
-                  color: AppColors.textColor.withOpacity(0.8),
-                  fontSize: 13,
-                ),
-              ),
-            const SizedBox(height: 12),
-            Text(
-              "Scope of Work:",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textColor,
-              ),
-            ),
-            for (var s in scope)
-              Text(
-                "• $s",
-                style: GoogleFonts.poppins(
-                  color: AppColors.textColor.withOpacity(0.8),
-                  fontSize: 13,
-                ),
-              ),
-            const Spacer(),
+            // Image Section
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
               child: Image.asset(
                 image,
                 fit: BoxFit.cover,
-                height: 120,
+                height: 180,
                 width: double.infinity,
+              ),
+            ),
+
+            // Content Section - Scrollable
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.accentColor,
+                        letterSpacing: 0.3,
+                        height: 1.3,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Key Clients Section
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentColor.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.accentColor.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.business_rounded,
+                                size: 18,
+                                color: AppColors.accentColor,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                "Key Clients",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textColor,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          ...clients.map(
+                            (c) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 6),
+                                    width: 6,
+                                    height: 6,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.accentColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      c,
+                                      style: GoogleFonts.poppins(
+                                        color: AppColors.textColor.withOpacity(
+                                          0.85,
+                                        ),
+                                        fontSize: 14,
+                                        height: 1.5,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Scope of Work Section
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.textColor.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.textColor.withOpacity(0.08),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.engineering_rounded,
+                                size: 18,
+                                color: AppColors.accentColor,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                "Scope of Work",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textColor,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          ...scope.map(
+                            (s) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 6),
+                                    width: 6,
+                                    height: 6,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.accentColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      s,
+                                      style: GoogleFonts.poppins(
+                                        color: AppColors.textColor.withOpacity(
+                                          0.85,
+                                        ),
+                                        fontSize: 14,
+                                        height: 1.5,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
