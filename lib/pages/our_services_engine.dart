@@ -100,7 +100,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                   ),
                 ),
 
-                SizedBox(height: isMobile ? 40 : 60),
+                SizedBox(height: isMobile ? 16 : 24),
 
                 // Clients section now outside padding for full-width background
                 _buildClientsSection(isMobile),
@@ -134,7 +134,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 16 : 40,
-        vertical: isMobile ? 40 : 80,
+        vertical: isMobile ? 10 : 5,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -202,13 +202,16 @@ class _Our_services_engineState extends State<Our_services_engine> {
             constraints: const BoxConstraints(maxWidth: 1200),
             child: GridView.builder(
               shrinkWrap: true,
+              physics:
+                  const NeverScrollableScrollPhysics(), // ✅ disable inner scrolling
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: isMobile ? 1 : 3,
                 crossAxisSpacing: 24,
+                mainAxisExtent: 800,
                 mainAxisSpacing: 24,
-                mainAxisExtent: 550,
+                childAspectRatio: isMobile ? 0.8 : 0.75, // adjust here
               ),
-              physics: const NeverScrollableScrollPhysics(),
               itemCount: 3,
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -277,7 +280,6 @@ class _Our_services_engineState extends State<Our_services_engine> {
     required String image,
   }) {
     return Container(
-      height: 550, // Fixed height for consistent card sizing
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
         borderRadius: BorderRadius.circular(20),
@@ -295,7 +297,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Section
+            // 1. Image Section (Fixed height 180)
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
@@ -309,169 +311,174 @@ class _Our_services_engineState extends State<Our_services_engine> {
               ),
             ),
 
-            // Content Section - Scrollable
+            // 2. Content Section (The main fix is here)
+            // We wrap the rest of the Column content in Expanded + SingleChildScrollView
             Expanded(
+              // <--- WRAP in Expanded
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Title
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.accentColor,
-                        letterSpacing: 0.3,
-                        height: 1.3,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Key Clients Section
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentColor.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.accentColor.withOpacity(0.1),
+                // <--- WRAP in SingleChildScrollView
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.accentColor,
+                          letterSpacing: 0.3,
+                          height: 1.3,
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.business_rounded,
-                                size: 18,
-                                color: AppColors.accentColor,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "Key Clients",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textColor,
-                                  letterSpacing: 0.3,
-                                ),
-                              ),
-                            ],
+
+                      const SizedBox(height: 20),
+
+                      // Key Clients Section
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.accentColor.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.accentColor.withOpacity(0.1),
                           ),
-                          const SizedBox(height: 12),
-                          ...clients.map(
-                            (c) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 6),
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.accentColor,
-                                      shape: BoxShape.circle,
-                                    ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.business_rounded,
+                                  size: 18,
+                                  color: AppColors.accentColor,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "Key Clients",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textColor,
+                                    letterSpacing: 0.3,
                                   ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      c,
-                                      style: GoogleFonts.poppins(
-                                        color: AppColors.textColor.withOpacity(
-                                          0.85,
-                                        ),
-                                        fontSize: 14,
-                                        height: 1.5,
-                                        letterSpacing: 0.2,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            // The `clients` list
+                            ...clients.map(
+                              (c) => Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 6),
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.accentColor,
+                                        shape: BoxShape.circle,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        c,
+                                        style: GoogleFonts.poppins(
+                                          color: AppColors.textColor
+                                              .withOpacity(0.85),
+                                          fontSize: 14,
+                                          height: 1.5,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Scope of Work Section
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.textColor.withOpacity(0.03),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.textColor.withOpacity(0.08),
+                          ],
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.engineering_rounded,
-                                size: 18,
-                                color: AppColors.accentColor,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "Scope of Work",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textColor,
-                                  letterSpacing: 0.3,
-                                ),
-                              ),
-                            ],
+
+                      const SizedBox(height: 20),
+
+                      // Scope of Work Section
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.textColor.withOpacity(0.03),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.textColor.withOpacity(0.08),
                           ),
-                          const SizedBox(height: 12),
-                          ...scope.map(
-                            (s) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 6),
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.accentColor,
-                                      shape: BoxShape.circle,
-                                    ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.engineering_rounded,
+                                  size: 18,
+                                  color: AppColors.accentColor,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "Scope of Work",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textColor,
+                                    letterSpacing: 0.3,
                                   ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      s,
-                                      style: GoogleFonts.poppins(
-                                        color: AppColors.textColor.withOpacity(
-                                          0.85,
-                                        ),
-                                        fontSize: 14,
-                                        height: 1.5,
-                                        letterSpacing: 0.2,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            // The `scope` list
+                            ...scope.map(
+                              (s) => Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 6),
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.accentColor,
+                                        shape: BoxShape.circle,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        s,
+                                        style: GoogleFonts.poppins(
+                                          color: AppColors.textColor
+                                              .withOpacity(0.85),
+                                          fontSize: 14,
+                                          height: 1.5,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
