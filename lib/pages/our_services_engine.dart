@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'dart:async';
 import '../utils/custom_nav_bar.dart' as nav;
 import '../utils/footer.dart' show CustomFooter;
 import '../utils/theme.dart';
@@ -14,6 +14,35 @@ class Our_services_engine extends StatefulWidget {
 
 class _Our_services_engineState extends State<Our_services_engine> {
   int selectedIndex = 0;
+  Timer? _autoSlideTimer;
+  static const Duration _slideDuration = Duration(seconds: 5);
+  bool _isAutoPlaying = true;
+
+  void _startAutoSlide() {
+    _autoSlideTimer = Timer.periodic(_slideDuration, (timer) {
+      setState(() {
+        selectedIndex = (selectedIndex + 1) % services.length;
+      });
+    });
+  }
+
+  void _resetAutoSlide() {
+    _autoSlideTimer?.cancel();
+    if (_isAutoPlaying) {
+      _startAutoSlide();
+    }
+  }
+
+  void _toggleAutoPlay() {
+    setState(() {
+      _isAutoPlaying = !_isAutoPlaying;
+      if (_isAutoPlaying) {
+        _startAutoSlide();
+      } else {
+        _autoSlideTimer?.cancel();
+      }
+    });
+  }
 
   final List<Map<String, String>> services = [
     {
@@ -47,6 +76,17 @@ class _Our_services_engineState extends State<Our_services_engine> {
       "image": "assets/images/field.jpg",
     },
   ];
+  @override
+  void initState() {
+    super.initState();
+    _startAutoSlide();
+  }
+
+  @override
+  void dispose() {
+    _autoSlideTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -551,87 +591,201 @@ class _Our_services_engineState extends State<Our_services_engine> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Background Image
-            Image.asset(services[selectedIndex]["image"]!, fit: BoxFit.cover),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 600),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0.1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                child: child,
+              ),
+            );
+          },
+          child: Stack(
+            key: ValueKey<int>(selectedIndex),
+            fit: StackFit.expand,
+            children: [
+              // Background Image
+              Image.asset(services[selectedIndex]["image"]!, fit: BoxFit.cover),
 
-            // Gradient Overlay
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.85),
-                  ],
-                  stops: const [0.0, 0.5, 1.0],
+              // Gradient Overlay
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.85),
+                    ],
+                    stops: const [0.0, 0.5, 1.0],
+                  ),
                 ),
               ),
-            ),
 
-            // Content
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Service Number Badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
+              // Content
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ======== TOP ROW: Badge + Dots + Play/Pause ========
+                      Row(
+                        children: [
+                          // Badge
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.accentColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              "0${selectedIndex + 1}",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+
+                          // Dots
+                          Row(
+                            children: List.generate(
+                              services.length,
+                              (index) => Container(
+                                margin: const EdgeInsets.only(right: 6),
+                                width: index == selectedIndex ? 24 : 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color: index == selectedIndex
+                                      ? AppColors.accentColor
+                                      : Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Play / Pause Button
+                          const Spacer(),
+                          IconButton(
+                            onPressed: _toggleAutoPlay,
+                            icon: Icon(
+                              _isAutoPlaying
+                                  ? Icons.pause_circle
+                                  : Icons.play_circle,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
+                        ],
                       ),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentColor,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "0${selectedIndex + 1}",
+
+                      const SizedBox(height: 20),
+
+                      // ======== TITLE ========
+                      Text(
+                        services[selectedIndex]["title"]!,
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          height: 1.3,
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 20),
+                      const SizedBox(height: 12),
 
-                    // Title
-                    Text(
-                      services[selectedIndex]["title"]!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        height: 1.3,
+                      // ======== DESCRIPTION ========
+                      Text(
+                        services[selectedIndex]["desc"]!,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.white.withOpacity(0.9),
+                          height: 1.5,
+                        ),
                       ),
-                    ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 20),
 
-                    // Description
-                    Text(
-                      services[selectedIndex]["desc"]!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.white.withOpacity(0.9),
-                        height: 1.5,
+                      // ======== MANUAL NAVIGATION BUTTONS ========
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = selectedIndex > 0
+                                    ? selectedIndex - 1
+                                    : services.length - 1;
+                              });
+                              _resetAutoSlide();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex =
+                                    (selectedIndex + 1) % services.length;
+                              });
+                              _resetAutoSlide();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.accentColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
