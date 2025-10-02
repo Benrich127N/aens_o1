@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/custom_nav_bar.dart';
 import '../utils/footer.dart' show CustomFooter;
 import '../utils/theme.dart';
-import 'shuffle_text.dart'; // Adjust the import path as needed
 
 class Test extends StatelessWidget {
   const Test({super.key});

@@ -27,11 +27,9 @@ class WorksPage extends StatelessWidget {
           final isMedium =
               constraints.maxWidth > 600 && constraints.maxWidth <= 900;
           final horizontalPadding = isWide ? 64.0 : (isMedium ? 32.0 : 16.0);
-          final verticalPadding = isWide ? 48.0 : 24.0;
-          final navFontSize = isWide ? 14.0 : 12.0;
+
           final titleFontSize = isWide ? 64.0 : (isMedium ? 48.0 : 32.0);
           final bodyFontSize = isWide ? 17.0 : (isMedium ? 15.0 : 14.0);
-          final buttonFontSize = isWide ? 16.0 : 14.0;
 
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -327,114 +325,6 @@ class _AppLogo extends StatelessWidget {
             style: AppTextStyles.appLogo(navFontSize + 2),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DiscussButton extends StatefulWidget {
-  final BuildContext context;
-  final double buttonFontSize;
-  const _DiscussButton({required this.context, required this.buttonFontSize});
-  @override
-  State<_DiscussButton> createState() => _DiscussButtonState();
-}
-
-class _DiscussButtonState extends State<_DiscussButton>
-    with SingleTickerProviderStateMixin {
-  bool _isHovering = false;
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<Color?> _backgroundColorAnimation;
-  late Animation<double> _arrowSlideAnimation;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 250),
-    );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.03,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _backgroundColorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: AppColors.accentColor.withOpacity(0.1),
-    ).animate(_controller);
-    _arrowSlideAnimation = Tween<double>(
-      begin: 0,
-      end: 4,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onEnter(PointerEvent details) {
-    setState(() => _isHovering = true);
-    _controller.forward();
-  }
-
-  void _onExit(PointerEvent details) {
-    setState(() => _isHovering = false);
-    _controller.reverse();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: _onEnter,
-      onExit: _onExit,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: AnimatedBuilder(
-          animation: _backgroundColorAnimation,
-          builder: (context, child) {
-            return TextButton(
-              onPressed: () {
-                Navigator.pushNamed(widget.context, '/discuss');
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.textColor,
-                backgroundColor: _backgroundColorAnimation.value,
-                side: const BorderSide(color: AppColors.textColor, width: 1.5),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 18,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'DISCUSS A PROJECT',
-                    style: AppTextStyles.buttonText(widget.buttonFontSize),
-                  ),
-                  AnimatedBuilder(
-                    animation: _arrowSlideAnimation,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(_arrowSlideAnimation.value, 0),
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          size: widget.buttonFontSize + 4,
-                          color: AppColors.accentColor,
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
       ),
     );
   }

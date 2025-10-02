@@ -16,31 +16,12 @@ class _Our_services_engineState extends State<Our_services_engine> {
   int selectedIndex = 0;
   Timer? _autoSlideTimer;
   static const Duration _slideDuration = Duration(seconds: 5);
-  bool _isAutoPlaying = true;
 
   void _startAutoSlide() {
     _autoSlideTimer = Timer.periodic(_slideDuration, (timer) {
       setState(() {
         selectedIndex = (selectedIndex + 1) % services.length;
       });
-    });
-  }
-
-  void _resetAutoSlide() {
-    _autoSlideTimer?.cancel();
-    if (_isAutoPlaying) {
-      _startAutoSlide();
-    }
-  }
-
-  void _toggleAutoPlay() {
-    setState(() {
-      _isAutoPlaying = !_isAutoPlaying;
-      if (_isAutoPlaying) {
-        _startAutoSlide();
-      } else {
-        _autoSlideTimer?.cancel();
-      }
     });
   }
 
@@ -678,7 +659,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
 
                       const SizedBox(height: 20),
 
-                      // 
+                      //
                     ],
                   ),
                 ),
@@ -788,27 +769,6 @@ class _Our_services_engineState extends State<Our_services_engine> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _DrawerNavItem extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _DrawerNavItem({required this.label, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        label,
-        style: GoogleFonts.lato().copyWith(
-          color: AppColors.textColor,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      onTap: onTap,
-      hoverColor: AppColors.secondaryBackground,
     );
   }
 }
