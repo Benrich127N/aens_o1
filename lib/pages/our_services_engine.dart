@@ -80,10 +80,10 @@ class _Our_services_engineState extends State<Our_services_engine> {
 
                   const SizedBox(height: 60),
                   _buildClientsSection(isMobile),
-                  const CustomFooter(),
                 ],
               ),
             ),
+            const CustomFooter(),
           ],
         ),
       ),

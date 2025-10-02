@@ -66,12 +66,6 @@ class AboutPage extends StatelessWidget {
                     .slideY(begin: 0.1, end: 0, duration: 800.ms),
                 SizedBox(height: isWide ? 56 : 36),
 
-                // _DiscussButton(
-                //   context: context,
-                //   buttonFontSize: buttonFontSize,
-                // ).animate().fadeIn(duration: 800.ms, delay: 400.ms),
-                SizedBox(height: isWide ? 80 : 40),
-
                 _ProcessSection(
                   isWide: isWide,
                   isMedium: isMedium,
@@ -591,7 +585,7 @@ class _WhyChooseUsSection extends StatelessWidget {
   }
 }
 
-class _ProcessSection extends StatelessWidget {
+class _ProcessSection extends StatefulWidget {
   final bool isWide;
   final bool isMedium;
   final double horizontalPadding;
@@ -603,38 +597,45 @@ class _ProcessSection extends StatelessWidget {
   });
 
   @override
+  State<_ProcessSection> createState() => _ProcessSectionState();
+}
+
+class _ProcessSectionState extends State<_ProcessSection> {
+  int _hoveredIndex = -1; // <- NEW STATE
+
+  @override
   Widget build(BuildContext context) {
     final steps = [
       {
         "title": "Vision",
         "desc":
-            "To provide exellent quality of services and products that deliver maximum value to our clients in Nigeria and around the world.",
+            "To provide excellent quality of services and products that deliver maximum value to our clients in Nigeria and around the world.",
       },
       {
         "title": "Mission",
         "desc":
             "To be one of the leading Engineering Services and Solutions providers in Africa, by providing our valued clients with dedication, cooperation, innovation, competitive pricing, highest service qualities and operational efficiencies in the Energy, Oil and Gas, manufacturing, and Construction Industries.",
       },
-
       {
         "title": "Values",
         "desc":
-            "In AENS, we must concurrently build shareholders value while respecting the environment, addressing the concerns of our neighbours/ host communities, and providing for future needs.",
+            "In AENS, we must concurrently build shareholders value while respecting the environment, addressing the concerns of our neighbours/host communities, and providing for future needs.",
       },
     ];
 
-    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
-    final bodyFontSize = isWide ? 16.0 : 14.0;
+    final titleFontSize = widget.isWide
+        ? 40.0
+        : (widget.isMedium ? 32.0 : 24.0);
+    final bodyFontSize = widget.isWide ? 16.0 : 14.0;
 
     return Container(
       width: double.infinity,
-
       color: AppColors.primaryBackground, // deep blue background
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: isWide ? 80 : 48,
+        horizontal: widget.horizontalPadding,
+        vertical: widget.isWide ? 80 : 48,
       ),
-      child: isWide
+      child: widget.isWide
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -711,55 +712,83 @@ class _ProcessSection extends StatelessWidget {
                     children: steps.asMap().entries.map((entry) {
                       final index = entry.key + 1;
                       final step = entry.value;
-                      return Container(
-                            margin: const EdgeInsets.only(bottom: 20),
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: AppColors.secondaryBackground,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.transparent,
-                                width: 1.5,
+
+                      return MouseRegion(
+                            onEnter: (_) =>
+                                setState(() => _hoveredIndex = index),
+                            onExit: (_) => setState(() => _hoveredIndex = -1),
+                            child: AnimatedContainer(
+                              duration: const Duration(
+                                milliseconds: 200,
+                              ), // smooth animation
+                              curve: Curves.easeOut,
+                              margin: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppColors.secondaryBackground,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: _hoveredIndex == index
+                                      ? AppColors.accentColor
+                                      : Colors.transparent,
+                                  width: 1.5,
+                                ),
+                                boxShadow: _hoveredIndex == index
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.accentColor
+                                              .withOpacity(0.3),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 6),
+                                        ),
+                                      ]
+                                    : [],
                               ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 14,
-                                  backgroundColor: AppColors.accentColor,
-                                  child: Text(
-                                    "$index",
-                                    style: GoogleFonts.lato(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                              child: AnimatedScale(
+                                scale: _hoveredIndex == index ? 1.03 : 1.0,
+                                duration: const Duration(milliseconds: 220),
+                                curve: Curves
+                                    .easeOutBack, // smoother easing with a gentle overshoot
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 14,
+                                      backgroundColor: AppColors.accentColor,
+                                      child: Text(
+                                        "$index",
+                                        style: GoogleFonts.lato(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        step["title"]!,
-                                        style: AppTextStyles.sectionTitle(
-                                          bodyFontSize,
-                                        ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            step["title"]!,
+                                            style: AppTextStyles.sectionTitle(
+                                              bodyFontSize,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            step["desc"]!,
+                                            style: AppTextStyles.bodyText(
+                                              bodyFontSize,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        step["desc"]!,
-                                        style: AppTextStyles.bodyText(
-                                          bodyFontSize,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           )
                           .animate()
@@ -811,60 +840,67 @@ class _ProcessSection extends StatelessWidget {
                 ).animate().fadeIn(delay: 600.ms),
                 const SizedBox(height: 32),
 
+                // Mobile Steps
                 Column(
                   children: steps.asMap().entries.map((entry) {
                     final index = entry.key + 1;
                     final step = entry.value;
-                    return Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondaryBackground,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: index == 1
-                                  ? AppColors.accentColor
-                                  : Colors.transparent,
-                              width: 1.5,
+
+                    return MouseRegion(
+                          onEnter: (_) => setState(() => _hoveredIndex = index),
+                          onExit: (_) => setState(() => _hoveredIndex = -1),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 20),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryBackground,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: _hoveredIndex == index
+                                    ? AppColors.accentColor
+                                    : Colors.transparent,
+                                width: 1.5,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 14,
-                                backgroundColor: AppColors.accentColor,
-                                child: Text(
-                                  "$index",
-                                  style: GoogleFonts.lato(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 14,
+                                  backgroundColor: AppColors.accentColor,
+                                  child: Text(
+                                    "$index",
+                                    style: GoogleFonts.lato(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      step["title"]!,
-                                      style: AppTextStyles.sectionTitle(
-                                        bodyFontSize,
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        step["title"]!,
+                                        style: AppTextStyles.sectionTitle(
+                                          bodyFontSize,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      step["desc"]!,
-                                      style: AppTextStyles.bodyText(
-                                        bodyFontSize,
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        step["desc"]!,
+                                        style: AppTextStyles.bodyText(
+                                          bodyFontSize,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                         .animate()
