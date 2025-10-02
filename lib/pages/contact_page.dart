@@ -233,7 +233,18 @@ class ContactPage extends StatelessWidget {
                 SizedBox(height: isWide ? 80 : 40),
 
                 // Fixed Map Section
-                const ContactMap(),
+                // Fixed Map Section
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16), // rounded corners
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 900, // reduces how wide it stretches
+                      ),
+                      child: const ContactMap(),
+                    ),
+                  ),
+                ),
 
                 SizedBox(height: isWide ? 80 : 40),
                 const CustomFooter(),

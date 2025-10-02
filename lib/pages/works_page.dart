@@ -271,15 +271,6 @@ class _ProjectSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 12,
-                    right: 12,
-                    bottom: 12,
-                    child: Text(
-                      project["title"]!,
-                      style: AppTextStyles.sectionTitle(14),
-                    ),
-                  ),
                 ],
               );
             },
