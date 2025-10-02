@@ -59,30 +59,47 @@ class _Our_services_engineState extends State<Our_services_engine> {
         child: Column(
           children: [
             const nav.CustomNavBar(currentRoute: '/services'),
+            // WITH THIS:
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 16 : 40,
+                    vertical: isMobile ? 24 : 60,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeaderSection(isMobile),
+                      SizedBox(height: isMobile ? 32 : 48),
+                      isMobile
+                          ? _buildMobileLayout()
+                          : _buildDesktopLayout(context),
+                    ],
+                  ),
+                ),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 16 : 40,
-                vertical: isMobile ? 24 : 60,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header Section
-                  _buildHeaderSection(isMobile),
+                SizedBox(height: isMobile ? 40 : 60),
 
-                  SizedBox(height: isMobile ? 32 : 48),
+                // Clients section now outside padding for full-width background
+                _buildClientsSection(isMobile),
+              ],
+            ),
 
-                  // Services Content
-                  isMobile
-                      ? _buildMobileLayout()
-                      : _buildDesktopLayout(context),
-
-                  const SizedBox(height: 60),
-                  _buildClientsSection(isMobile),
-                ],
+            Container(
+              height: 1,
+              margin: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 80),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    AppColors.accentColor.withOpacity(0.3),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
+            const SizedBox(height: 60),
             const CustomFooter(),
           ],
         ),
@@ -91,109 +108,143 @@ class _Our_services_engineState extends State<Our_services_engine> {
   }
 
   Widget _buildClientsSection(bool isMobile) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Header
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppColors.accentColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            "OUR CLIENTS",
-            style: GoogleFonts.poppins(
-              color: AppColors.accentColor,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.5,
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 16 : 40,
+        vertical: isMobile ? 40 : 80,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppColors.primaryBackground,
+            AppColors.secondaryBackground.withOpacity(0.3),
+            AppColors.primaryBackground,
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.accentColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              "OUR CLIENTS",
+              style: GoogleFonts.poppins(
+                color: AppColors.accentColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.5,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-        Text(
-          "Trusted by Leading Institutions",
-          style: GoogleFonts.poppins(
-            fontSize: isMobile ? 28 : 40,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+          Text(
+            "Trusted by Leading Institutions",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? 28 : 40,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textColor,
+            ),
           ),
-        ),
-        const SizedBox(height: 24),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            return ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isMobile ? 1 : 3,
-                  crossAxisSpacing: 24,
-                  mainAxisSpacing: 24,
-                  mainAxisExtent: 550, // Fixed height matching card height
-                ),
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return _buildClientCard(
-                      title: "Government Department & Agencies",
-                      clients: [
-                        "Ministry of Power, Rivers State",
-                        "House Hospital Complex Bayelsa",
-                        "Otuoke Hospital Facility Bayelsa",
-                        "General Hospital Complex Yenagoa",
-                      ],
-                      scope: [
-                        "Construction & Installation of 33/11kV Lines",
-                        "Procurement, Installation, and Maintenance of MV/LV Transformer Substations, Switchgears, AMF/ATS Panels, MCCs",
-                        "Industrial & Utility Services",
-                        "Rural and Industrial Electrification Projects",
-                      ],
-                      image: "assets/images/gov_clients.jpg",
-                    );
-                  } else if (index == 1) {
-                    return _buildClientCard(
-                      title: "Oil, Gas & Marine Services",
-                      clients: [
-                        "V.Ships",
-                        "Thome Group",
-                        "Remm Oil Services",
-                        "Baker Hughes",
-                      ],
-                      scope: [
-                        "Marine Electrical Engineering Maintenance Services",
-                        "Installation & Maintenance of Marine Communication Systems",
-                        "Design & Construction of Power Distribution Panels",
-                        "Supply & Installation of ABB & Schneider Electric LV Products",
-                      ],
-                      image: "assets/images/oil_clients.jpg",
-                    );
-                  } else {
-                    return _buildClientCard(
-                      title: "Companies & Banks",
-                      clients: [
-                        "STARZS",
-                        "Avondale",
-                        "PHD",
-                        "Other financial institutions",
-                      ],
-                      scope: [
-                        "Design & Installation of Medium & Low Voltage Systems",
-                        "Maintenance of Communication Systems",
-                        "Installation & Maintenance of Transformers, Motors, Compressors & UPS",
-                      ],
-                      image: "assets/images/banks_clients.jpg",
-                    );
-                  }
-                },
+
+          const SizedBox(height: 12),
+
+          // Add description
+          Container(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: Text(
+              "We pride ourselves on delivering exceptional service to a diverse portfolio of clients across government, oil & gas, and corporate sectors.",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: isMobile ? 14 : 16,
+                color: AppColors.textColor.withOpacity(0.7),
+                height: 1.6,
               ),
-            );
-          },
-        ),
-      ],
+            ),
+          ),
+
+          SizedBox(height: isMobile ? 32 : 48),
+
+          // Clients Grid
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: isMobile ? 1 : 3,
+                crossAxisSpacing: 24,
+                mainAxisSpacing: 24,
+                mainAxisExtent: 550,
+              ),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return _buildClientCard(
+                    title: "Government Department & Agencies",
+                    clients: [
+                      "Ministry of Power, Rivers State",
+                      "House Hospital Complex Bayelsa",
+                      "Otuoke Hospital Facility Bayelsa",
+                      "General Hospital Complex Yenagoa",
+                    ],
+                    scope: [
+                      "Construction & Installation of 33/11kV Lines",
+                      "Procurement, Installation, and Maintenance of MV/LV Transformer Substations, Switchgears, AMF/ATS Panels, MCCs",
+                      "Industrial & Utility Services",
+                      "Rural and Industrial Electrification Projects",
+                    ],
+                    image: "assets/images/gov_clients.jpg",
+                  );
+                } else if (index == 1) {
+                  return _buildClientCard(
+                    title: "Oil, Gas & Marine Services",
+                    clients: [
+                      "V.Ships",
+                      "Thome Group",
+                      "Remm Oil Services",
+                      "Baker Hughes",
+                    ],
+                    scope: [
+                      "Marine Electrical Engineering Maintenance Services",
+                      "Installation & Maintenance of Marine Communication Systems",
+                      "Design & Construction of Power Distribution Panels",
+                      "Supply & Installation of ABB & Schneider Electric LV Products",
+                    ],
+                    image: "assets/images/oil_clients.jpg",
+                  );
+                } else {
+                  return _buildClientCard(
+                    title: "Companies & Banks",
+                    clients: [
+                      "STARZS",
+                      "Avondale",
+                      "PHD",
+                      "Other financial institutions",
+                    ],
+                    scope: [
+                      "Design & Installation of Medium & Low Voltage Systems",
+                      "Maintenance of Communication Systems",
+                      "Installation & Maintenance of Transformers, Motors, Compressors & UPS",
+                    ],
+                    image: "assets/images/banks_clients.jpg",
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
