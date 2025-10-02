@@ -138,9 +138,11 @@ class Test extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/contact');
+                              },
                               child: Text(
-                                "VIEW PORTFOLIO",
+                                "WORK WITH US",
                                 style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   color: Colors.white,

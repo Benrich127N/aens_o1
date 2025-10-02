@@ -52,14 +52,14 @@ class _Our_services_engineState extends State<Our_services_engine> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 768;
-    
+
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
       body: SingleChildScrollView(
         child: Column(
           children: [
             const nav.CustomNavBar(currentRoute: '/services'),
-            
+
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isMobile ? 16 : 40,
@@ -70,17 +70,193 @@ class _Our_services_engineState extends State<Our_services_engine> {
                 children: [
                   // Header Section
                   _buildHeaderSection(isMobile),
-                  
+
                   SizedBox(height: isMobile ? 32 : 48),
-                  
+
                   // Services Content
-                  isMobile 
-                    ? _buildMobileLayout()
-                    : _buildDesktopLayout(context),
-                  
+                  isMobile
+                      ? _buildMobileLayout()
+                      : _buildDesktopLayout(context),
+
                   const SizedBox(height: 60),
+                  _buildClientsSection(isMobile),
                   const CustomFooter(),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClientsSection(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.accentColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            "OUR CLIENTS",
+            style: GoogleFonts.poppins(
+              color: AppColors.accentColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        Text(
+          "Trusted by Leading Institutions",
+          style: GoogleFonts.poppins(
+            fontSize: isMobile ? 28 : 40,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Clients Grid
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: isMobile ? 1 : 3,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          childAspectRatio: isMobile ? 1.2 : 1.5,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            _buildClientCard(
+              title: "Government Department & Agencies",
+              clients: [
+                "Ministry of Power, Rivers State",
+                "House Hospital Complex Bayelsa",
+                "Otuoke Hospital Facility Bayelsa",
+                "General Hospital Complex Yenagoa",
+              ],
+              scope: [
+                "Construction & Installation of 33/11kV Lines",
+                "Procurement, Installation, and Maintenance of MV/LV Transformer Substations, Switchgears, AMF/ATS Panels, MCCs",
+                "Industrial & Utility Services",
+                "Rural and Industrial Electrification Projects",
+              ],
+              image: "assets/images/gov_clients.jpg",
+            ),
+            _buildClientCard(
+              title: "Oil, Gas & Marine Services",
+              clients: [
+                "V.Ships",
+                "Thome Group",
+                "Remm Oil Services",
+                "Baker Hughes",
+              ],
+              scope: [
+                "Marine Electrical Engineering Maintenance Services",
+                "Installation & Maintenance of Marine Communication Systems",
+                "Design & Construction of Power Distribution Panels",
+                "Supply & Installation of ABB & Schneider Electric LV Products",
+              ],
+              image: "assets/images/oil_clients.jpg",
+            ),
+            _buildClientCard(
+              title: "Companies & Banks",
+              clients: [
+                "STARZS",
+                "Avondale",
+                "PHD",
+                "Other financial institutions",
+              ],
+              scope: [
+                "Design & Installation of Medium & Low Voltage Systems",
+                "Maintenance of Communication Systems",
+                "Installation & Maintenance of Transformers, Motors, Compressors & UPS",
+              ],
+              image: "assets/images/banks_clients.jpg",
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildClientCard({
+    required String title,
+    required List<String> clients,
+    required List<String> scope,
+    required String image,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.secondaryBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.textColor.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.accentColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "Key Clients:",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textColor,
+              ),
+            ),
+            for (var c in clients)
+              Text(
+                "• $c",
+                style: GoogleFonts.poppins(
+                  color: AppColors.textColor.withOpacity(0.8),
+                  fontSize: 13,
+                ),
+              ),
+            const SizedBox(height: 12),
+            Text(
+              "Scope of Work:",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textColor,
+              ),
+            ),
+            for (var s in scope)
+              Text(
+                "• $s",
+                style: GoogleFonts.poppins(
+                  color: AppColors.textColor.withOpacity(0.8),
+                  fontSize: 13,
+                ),
+              ),
+            const Spacer(),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                image,
+                fit: BoxFit.cover,
+                height: 120,
+                width: double.infinity,
               ),
             ),
           ],
@@ -111,7 +287,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         // Main Title
         Text(
           "Our Services",
@@ -123,7 +299,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           ),
         ),
         const SizedBox(height: 12),
-        
+
         // Description
         Container(
           constraints: const BoxConstraints(maxWidth: 600),
@@ -146,18 +322,12 @@ class _Our_services_engineState extends State<Our_services_engine> {
       child: Row(
         children: [
           // Left side: Selected Service Display
-          Expanded(
-            flex: 3,
-            child: _buildSelectedServiceCard(),
-          ),
-          
+          Expanded(flex: 3, child: _buildSelectedServiceCard()),
+
           const SizedBox(width: 24),
-          
+
           // Right side: Services List
-          Expanded(
-            flex: 2,
-            child: _buildServicesList(),
-          ),
+          Expanded(flex: 2, child: _buildServicesList()),
         ],
       ),
     );
@@ -168,10 +338,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
       children: [
         _buildSelectedServiceCard(),
         const SizedBox(height: 24),
-        SizedBox(
-          height: 500,
-          child: _buildServicesList(),
-        ),
+        SizedBox(height: 500, child: _buildServicesList()),
       ],
     );
   }
@@ -194,11 +361,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
           fit: StackFit.expand,
           children: [
             // Background Image
-            Image.asset(
-              services[selectedIndex]["image"]!,
-              fit: BoxFit.cover,
-            ),
-            
+            Image.asset(services[selectedIndex]["image"]!, fit: BoxFit.cover),
+
             // Gradient Overlay
             Container(
               decoration: BoxDecoration(
@@ -214,7 +378,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                 ),
               ),
             ),
-            
+
             // Content
             Positioned(
               bottom: 0,
@@ -244,9 +408,9 @@ class _Our_services_engineState extends State<Our_services_engine> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Title
                     Text(
                       services[selectedIndex]["title"]!,
@@ -257,9 +421,9 @@ class _Our_services_engineState extends State<Our_services_engine> {
                         height: 1.3,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 12),
-                    
+
                     // Description
                     Text(
                       services[selectedIndex]["desc"]!,
@@ -292,10 +456,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
       child: ListView.separated(
         padding: const EdgeInsets.all(8),
         itemCount: services.length,
-        separatorBuilder: (context, index) => Divider(
-          color: AppColors.textColor.withOpacity(0.1),
-          height: 1,
-        ),
+        separatorBuilder: (context, index) =>
+            Divider(color: AppColors.textColor.withOpacity(0.1), height: 1),
         itemBuilder: (context, index) {
           final isSelected = selectedIndex == index;
           return _buildServiceListItem(index, isSelected);
@@ -322,9 +484,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? AppColors.accentColor
-                : Colors.transparent,
+            color: isSelected ? AppColors.accentColor : Colors.transparent,
             width: 2,
           ),
         ),
@@ -353,9 +513,9 @@ class _Our_services_engineState extends State<Our_services_engine> {
                 ),
               ),
             ),
-            
+
             const SizedBox(width: 16),
-            
+
             // Service Title
             Expanded(
               child: Text(
@@ -370,7 +530,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                 ),
               ),
             ),
-            
+
             // Arrow Icon
             if (isSelected)
               Icon(

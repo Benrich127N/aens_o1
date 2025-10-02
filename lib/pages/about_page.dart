@@ -718,9 +718,7 @@ class _ProcessSection extends StatelessWidget {
                               color: AppColors.secondaryBackground,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: index == 1
-                                    ? AppColors.accentColor
-                                    : Colors.transparent,
+                                color: Colors.transparent,
                                 width: 1.5,
                               ),
                             ),

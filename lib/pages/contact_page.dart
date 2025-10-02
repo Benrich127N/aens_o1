@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../utils/contact_map.dart';
 import '../utils/custom_nav_bar.dart';
 import '../utils/theme.dart';
 import '../utils/footer.dart' show CustomFooter;
@@ -232,49 +233,7 @@ class ContactPage extends StatelessWidget {
                 SizedBox(height: isWide ? 80 : 40),
 
                 // Fixed Map Section
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: SizedBox(
-                      height: 300,
-                      child: FlutterMap(
-                        options: MapOptions(
-                          initialCenter: LatLng(
-                            4.8242,
-                            7.0336,
-                          ), // Port Harcourt coords
-                          initialZoom: 16,
-                          interactionOptions: const InteractionOptions(
-                            flags: InteractiveFlag
-                                .all, // Allow pan & zoom (or set to none for static)
-                          ),
-                        ),
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            subdomains: const ['a', 'b', 'c'],
-                          ),
-                          MarkerLayer(
-                            markers: [
-                              Marker(
-                                point: LatLng(4.8242, 7.0336),
-                                width: 40,
-                                height: 40,
-                                child: const Icon(
-                                  Icons.location_pin,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                const ContactMap(),
 
                 SizedBox(height: isWide ? 80 : 40),
                 const CustomFooter(),
