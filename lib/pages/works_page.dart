@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -135,16 +137,83 @@ class WorksPage extends StatelessWidget {
 }
 
 // Reusable Widgets
-class _ProjectSection extends StatelessWidget {
+class _ProjectSection extends StatefulWidget {
   final bool isWide;
   final bool isMedium;
   final double horizontalPadding;
 
   const _ProjectSection({
+    super.key, // ADD super.key
+
     required this.isWide,
     required this.isMedium,
     required this.horizontalPadding,
   });
+
+  @override
+  State<_ProjectSection> createState() => _ProjectSectionState();
+}
+
+class _ProjectSectionState extends State<_ProjectSection> {
+  late ScrollController _schneiderController;
+  late ScrollController _abbController;
+  late ScrollController _siemensController;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _schneiderController = ScrollController();
+    _abbController = ScrollController();
+    _siemensController = ScrollController();
+    _startAutoSlide();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _schneiderController.dispose();
+    _abbController.dispose();
+    _siemensController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoSlide() {
+    _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      _animateScroll(_schneiderController);
+      _animateScroll(_abbController);
+      _animateScroll(_siemensController);
+    });
+  }
+
+  void _animateScroll(ScrollController controller) {
+    if (!controller.hasClients) return;
+
+    const double scrollAmount = 250.0; // Distance to scroll
+    const Duration scrollDuration = Duration(milliseconds: 1200);
+
+    double nextOffset;
+    if (controller.offset + scrollAmount >=
+        controller.position.maxScrollExtent) {
+      // Reached the end, jump back to start smoothly
+      nextOffset = controller.position.minScrollExtent;
+      controller.animateTo(
+        nextOffset,
+        duration: const Duration(
+          milliseconds: 800,
+        ), // Slightly faster jump back
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // Scroll forward
+      nextOffset = controller.offset + scrollAmount;
+      controller.animateTo(
+        nextOffset,
+        duration: scrollDuration,
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +239,16 @@ class _ProjectSection extends StatelessWidget {
         "subtitle": "",
         "image": "assets/images/Schneider10.jpeg",
       },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider8.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider11.jpeg",
+      },
       // ... continue until all 18 Schneider products
     ];
 
@@ -189,6 +268,26 @@ class _ProjectSection extends StatelessWidget {
         "title": "ABB Product 3",
         "subtitle": "",
         "image": "assets/images/Schneider6.jpg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider11.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider3.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider10.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider8.jpeg",
       },
       {
         "title": "Schneider Product 3",
@@ -220,67 +319,112 @@ class _ProjectSection extends StatelessWidget {
         "subtitle": "",
         "image": "assets/images/Schneider12.jpeg",
       },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider3.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider10.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider8.jpeg",
+      },
+      {
+        "title": "Schneider Product 3",
+        "subtitle": "",
+        "image": "assets/images/Schneider11.jpeg",
+      },
       // ... continue until all 18 Siemens products
     ];
-
     Widget buildProductSection(
       String title,
       List<Map<String, String>> projects,
+      ScrollController controller, // ADD this new parameter
     ) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          Text(title, style: AppTextStyles.sectionTitle(isWide ? 28 : 22)),
+          Text(
+            title,
+            style: AppTextStyles.sectionTitle(widget.isWide ? 28 : 22),
+          ), // Use widget.isWide
           const SizedBox(height: 16),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isWide ? 4 : (isMedium ? 2 : 1),
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1,
+          SizedBox(
+            // Set a fixed height for the horizontal slider row
+            height: widget.isWide ? 300 : 200, // Use widget.isWide
+            child: ListView.builder(
+              controller: controller, // ADD controller here
+              scrollDirection: Axis.horizontal,
+              itemCount: projects.length,
+              itemBuilder: (context, index) {
+                final project = projects[index];
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16.0,
+                  ), // Spacing between images
+                  child: SizedBox(
+                    width: widget.isWide ? 280 : 180, // Use widget.isWide
+                    child: Stack(
+                      children: [
+                        // ... rest of the Stack content is unchanged
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            project["image"]!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
+                        ),
+                        // Optional: Overlay for gradient/title (if needed in a horizontal view)
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black.withOpacity(0.4),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
+                        ),
+                        // Optional: Add product title overlay here
+                        // Example:
+                        /*
+            Positioned(
+             bottom: 8,
+             left: 8,
+             child: Text(
+              project["title"]!,
+              style: AppTextStyles.bodyText(14).copyWith(color: Colors.white),
+             ),
+            )
+            */
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-            itemCount: projects.length,
-            itemBuilder: (context, index) {
-              final project = projects[index];
-              return Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      project["image"]!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
           ),
         ],
       );
     }
 
-    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+    final titleFontSize = widget.isWide
+        ? 40.0
+        : (widget.isMedium ? 32.0 : 24.0);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -289,13 +433,17 @@ class _ProjectSection extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Schneider Section
-          buildProductSection("Schneider Electric", schneiderProjects),
+          buildProductSection(
+            "Schneider Electric",
+            schneiderProjects,
+            _schneiderController,
+          ),
 
           // ABB Section
-          buildProductSection("ABB", abbProjects),
+          buildProductSection("ABB", abbProjects, _abbController),
 
           // SIEMENS Section
-          buildProductSection("SIEMENS", siemensProjects),
+          buildProductSection("SIEMENS", siemensProjects, _siemensController),
         ],
       ),
     );

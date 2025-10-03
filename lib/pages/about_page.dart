@@ -25,7 +25,7 @@ class AboutPage extends StatelessWidget {
           final isMedium =
               constraints.maxWidth > 600 && constraints.maxWidth <= 900;
           final horizontalPadding = isWide ? 64.0 : (isMedium ? 32.0 : 16.0);
-         
+
           final titleFontSize = isWide ? 64.0 : (isMedium ? 48.0 : 32.0);
           final bodyFontSize = isWide ? 17.0 : (isMedium ? 15.0 : 14.0);
 
@@ -205,7 +205,7 @@ class _WhyChooseUsSection extends StatelessWidget {
       {
         "title": "Proven Track Record",
         "desc":
-            "Over 15 years of successfully executed projects across key industries.",
+            "Over 15 years of executed projects across key industries, Partnerships with global OEMs (Schneider, ABB, Siemens)",
       },
       {
         "title": "Skilled Workforce",

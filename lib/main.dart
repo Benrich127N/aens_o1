@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
         '/services': (context) => const Our_services_engine(),
         '/works': (context) => const WorksPage(),
         '/contact': (context) => const ContactPage(),
-        // '/discuss': (context) => const DiscussPage(),
       },
     );
   }
