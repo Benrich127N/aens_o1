@@ -183,16 +183,33 @@ class _DrawerNavItem extends StatelessWidget {
   }
 }
 
-class _WhyChooseUsSection extends StatelessWidget {
+class _WhyChooseUsSection extends StatefulWidget {
   final bool isWide;
   final bool isMedium;
   final double horizontalPadding;
 
   const _WhyChooseUsSection({
+    super.key, // Add super.key
+
     required this.isWide,
     required this.isMedium,
     required this.horizontalPadding,
   });
+
+  @override
+  State<_WhyChooseUsSection> createState() => _WhyChooseUsSectionState();
+}
+
+class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
+  // 1. Reintroduced the state variable to track the hovered item's index.
+  int _hoveredIndex = -1;
+
+  // Helper function to update the hovered index.
+  void _onHover(int index, bool isHovering) {
+    setState(() {
+      _hoveredIndex = isHovering ? index : -1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,15 +236,18 @@ class _WhyChooseUsSection extends StatelessWidget {
       },
     ];
 
-    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
-    final bodyFontSize = isWide ? 16.0 : 14.0;
+    final titleFontSize = widget.isWide
+        ? 40.0
+        : (widget.isMedium ? 32.0 : 24.0);
+    final bodyFontSize = widget.isWide ? 16.0 : 14.0;
 
+    // --- Widget Building Starts Here ---
     return Container(
       width: double.infinity,
       color: AppColors.secondaryBackground,
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: isWide ? 80 : 48,
+        horizontal: widget.horizontalPadding,
+        vertical: widget.isWide ? 80 : 48,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -246,7 +266,8 @@ class _WhyChooseUsSection extends StatelessWidget {
           ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2),
           const SizedBox(height: 48),
 
-          isWide
+          // --- Wide Screen Layout (Wrap) ---
+          widget.isWide
               ? Wrap(
                   spacing: 24,
                   runSpacing: 24,
@@ -254,28 +275,133 @@ class _WhyChooseUsSection extends StatelessWidget {
                   children: features.asMap().entries.map((entry) {
                     final index = entry.key + 1;
                     final feature = entry.value;
-                    return Container(
-                          width:
-                              (MediaQuery.of(context).size.width -
-                                  horizontalPadding * 2 -
-                                  24) /
-                              2,
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryBackground,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: AppColors.accentColor.withOpacity(0.3),
-                              width: 1,
+
+                    // 2. Wrap the feature container in MouseRegion and Transform
+                    return MouseRegion(
+                          onEnter: (_) => _onHover(index, true),
+                          onExit: (_) => _onHover(index, false),
+                          child: Transform.scale(
+                            // Scale up when hovered
+                            scale: _hoveredIndex == index ? 1.03 : 1.0,
+                            child: AnimatedContainer(
+                              duration: const Duration(
+                                milliseconds: 300,
+                              ), // Smooth animation
+                              curve: Curves.easeInOut,
+                              width:
+                                  (MediaQuery.of(context).size.width -
+                                      widget.horizontalPadding * 2 -
+                                      24) /
+                                  2,
+                              padding: const EdgeInsets.all(24),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryBackground,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: AppColors.accentColor.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                                // Add shadow on hover
+                                boxShadow: _hoveredIndex == index
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.accentColor
+                                              .withOpacity(0.2),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 8),
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.accentColor
+                                              .withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "0$index",
+                                          style: GoogleFonts.lato(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.accentColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    feature["title"]!,
+                                    style: AppTextStyles.sectionTitle(
+                                      bodyFontSize + 2,
+                                    ).copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    feature["desc"]!,
+                                    style: AppTextStyles.bodyText(
+                                      bodyFontSize,
+                                    ).copyWith(color: AppColors.textSecondary),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                        )
+                        .animate()
+                        .fadeIn(delay: (200 * index).ms)
+                        .slideY(begin: 0.2, duration: 600.ms);
+                  }).toList(),
+                )
+              // --- Narrow Screen Layout (Column) ---
+              : Column(
+                  children: features.asMap().entries.map((entry) {
+                    final index = entry.key + 1;
+                    final feature = entry.value;
+
+                    // Apply the same hover logic to the column layout
+                    return MouseRegion(
+                          onEnter: (_) => _onHover(index, true),
+                          onExit: (_) => _onHover(index, false),
+                          child: Transform.scale(
+                            scale: _hoveredIndex == index ? 1.03 : 1.0,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                              margin: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryBackground,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: AppColors.accentColor.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                                boxShadow: _hoveredIndex == index
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.accentColor
+                                              .withOpacity(0.2),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 8),
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(12),
+                                    padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: AppColors.accentColor.withOpacity(
                                         0.1,
@@ -285,84 +411,29 @@ class _WhyChooseUsSection extends StatelessWidget {
                                     child: Text(
                                       "0$index",
                                       style: GoogleFonts.lato(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.accentColor,
                                       ),
                                     ),
                                   ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    feature["title"]!,
+                                    style: AppTextStyles.sectionTitle(
+                                      bodyFontSize + 2,
+                                    ).copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    feature["desc"]!,
+                                    style: AppTextStyles.bodyText(
+                                      bodyFontSize,
+                                    ).copyWith(color: AppColors.textSecondary),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
-                              Text(
-                                feature["title"]!,
-                                style: AppTextStyles.sectionTitle(
-                                  bodyFontSize + 2,
-                                ).copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                feature["desc"]!,
-                                style: AppTextStyles.bodyText(
-                                  bodyFontSize,
-                                ).copyWith(color: AppColors.textSecondary),
-                              ),
-                            ],
-                          ),
-                        )
-                        .animate()
-                        .fadeIn(delay: (200 * index).ms)
-                        .slideY(begin: 0.2, duration: 600.ms);
-                  }).toList(),
-                )
-              : Column(
-                  children: features.asMap().entries.map((entry) {
-                    final index = entry.key + 1;
-                    final feature = entry.value;
-                    return Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryBackground,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: AppColors.accentColor.withOpacity(0.3),
-                              width: 1,
                             ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: AppColors.accentColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  "0$index",
-                                  style: GoogleFonts.lato(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.accentColor,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                feature["title"]!,
-                                style: AppTextStyles.sectionTitle(
-                                  bodyFontSize + 2,
-                                ).copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                feature["desc"]!,
-                                style: AppTextStyles.bodyText(
-                                  bodyFontSize,
-                                ).copyWith(color: AppColors.textSecondary),
-                              ),
-                            ],
                           ),
                         )
                         .animate()
