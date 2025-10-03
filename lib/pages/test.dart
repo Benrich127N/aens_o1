@@ -11,6 +11,17 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+
+    final bool isMobile = width < 600;
+    final bool isTablet = width >= 600 && width < 1024;
+
+    final double horizontalPadding = isMobile ? 16 : (isTablet ? 24 : 40);
+    final double headlineSize = isMobile ? 28 : (isTablet ? 36 : 48);
+    final double subTextSize = isMobile ? 14 : (isTablet ? 16 : 18);
+
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
       // You can also add the endDrawer here to handle mobile view
@@ -53,110 +64,88 @@ class Test extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: [
-                // Background image
-                Positioned.fill(
-                  child: Image.asset(
-                    "assets/images/stand.jpg", // replace with your image
-                    fit: BoxFit.cover,
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: height),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      "assets/images/stand.jpg",
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-
-                // Dark overlay
-                Positioned.fill(
-                  child: Container(color: Colors.black.withOpacity(0.5)),
-                ),
-
-                // Content
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20,
+                  Positioned.fill(
+                    child: Container(color: Colors.black.withOpacity(0.5)),
                   ),
-                  child: SingleChildScrollView(
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: 20,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomNavBar(currentRoute: '/test'),
-
-                        // Headline text
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            DefaultTextStyle(
-                              style: GoogleFonts.lato(
-                                color: Colors.white,
-                                fontSize: 42,
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
+                        const CustomNavBar(currentRoute: '/home'),
+                        SizedBox(height: isMobile ? 16 : 24),
+                        DefaultTextStyle(
+                          style: GoogleFonts.lato(
+                            color: Colors.white,
+                            fontSize: headlineSize,
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                "Providing innovative \nand dependable engineering solutions...",
+                                speed: const Duration(milliseconds: 80),
                               ),
-                              child: AnimatedTextKit(
-                                animatedTexts: [
-                                  TypewriterAnimatedText(
-                                    "Providing innovative \nand dependable engineering solutions...",
-                                    speed: const Duration(milliseconds: 80),
-                                  ),
-                                ],
-                                totalRepeatCount: 1,
-                              ),
-                            ),
-
-                            // Text(
-                            //   "WE DESIGN\nFOR YOUR SPACE",
-                            //   style: GoogleFonts.lato(
-                            //     color: Colors.white,
-                            //     fontSize: 42,
-                            //     fontWeight: FontWeight.bold,
-                            //     height: 1.2,
-                            //   ),
-                            // ),
-                            const SizedBox(height: 16),
-                            Text(
-                              "Engineering, Procurement, Construction, Maintenance, & Project Management Services RC 793235",
-                              style: GoogleFonts.poppins(
-                                color: Colors.white70,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-
-                            // Button
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                side: const BorderSide(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 14,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/contact');
-                              },
-                              child: Text(
-                                "WORK WITH US",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                          ],
+                            ],
+                            totalRepeatCount: 1,
+                          ),
                         ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Engineering, Procurement, Construction, Maintenance, & Project Management Services RC 793235",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white70,
+                            fontSize: subTextSize,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isMobile ? 20 : 24,
+                              vertical: isMobile ? 12 : 14,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/contact');
+                          },
+                          child: Text(
+                            "WORK WITH US",
+                            style: GoogleFonts.poppins(
+                              fontSize: isMobile ? 14 : 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: isMobile ? 16 : 20),
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const CustomFooter(),
           ],
