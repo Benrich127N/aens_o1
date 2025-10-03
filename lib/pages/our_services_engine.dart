@@ -72,34 +72,105 @@ class _Our_services_engineState extends State<Our_services_engine> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final isMobile = screenWidth < 768;
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
+      endDrawer: Builder(
+        builder: (drawerContext) => isMobile
+            ? Drawer(
+                backgroundColor: AppColors.primaryBackground,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryBackground,
+                      ),
+                      child: Text(
+                        'AENS ENGINEERING',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'ABOUT US',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.pop(drawerContext);
+                        Navigator.pushNamed(drawerContext, '/about');
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'SERVICES',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.pop(drawerContext);
+                        Navigator.pushNamed(drawerContext, '/services');
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'OUR PRODUCTS',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.pop(drawerContext);
+                        Navigator.pushNamed(drawerContext, '/works');
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'CONTACT US',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.pop(drawerContext);
+                        Navigator.pushNamed(drawerContext, '/contact');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox.shrink(),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const nav.CustomNavBar(currentRoute: '/services'),
-            // WITH THIS:
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: screenHeight),
+              child: Column(
+                children: [
+                  const nav.CustomNavBar(currentRoute: '/services'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isMobile ? 16 : 40,
+                      vertical: isMobile ? 24 : 60,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeaderSection(isMobile),
+                        SizedBox(height: isMobile ? 32 : 48),
+                        isMobile
+                            ? _buildMobileLayout()
+                            : _buildDesktopLayout(context),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 16 : 40,
-                    vertical: isMobile ? 24 : 60,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeaderSection(isMobile),
-                      SizedBox(height: isMobile ? 32 : 48),
-                      isMobile
-                          ? _buildMobileLayout()
-                          : _buildDesktopLayout(context),
-                    ],
-                  ),
-                ),
-
                 SizedBox(height: isMobile ? 16 : 24),
 
                 // Clients section now outside padding for full-width background

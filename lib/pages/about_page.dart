@@ -29,40 +29,55 @@ class AboutPage extends StatelessWidget {
           final titleFontSize = isWide ? 64.0 : (isMedium ? 48.0 : 32.0);
           final bodyFontSize = isWide ? 17.0 : (isMedium ? 15.0 : 14.0);
 
+          final viewportHeight = MediaQuery.of(context).size.height;
+
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CustomNavBar(currentRoute: '/about'),
-
-                SizedBox(height: isWide ? 96 : 48),
-                Text(
-                      'About Us',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.pageTitle(titleFontSize),
-                    )
-                    .animate()
-                    .fadeIn(duration: 800.ms, delay: 200.ms)
-                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
-                SizedBox(height: isWide ? 40 : 28),
                 ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: isWide ? 800 : 600),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isWide ? 0 : horizontalPadding,
-                        ),
-                        child: Text(
-                          'AENS Projects & Engineering Services Ltd was incorporated in 2008 to provide Engineering, Procurement, construction/Installation, Maintenance and Project Management services in the Electrical, Instrumental/Control, Mechanical and Civil Engineering disciplines. Also, Aens recruits, trains and manages personnel for our clients. We undertake projects for corporate organizations and government agencies in the energy, oil/gas, manufacturing and construction sectors.',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyText(bodyFontSize),
-                        ),
-                      ),
-                    )
-                    .animate()
-                    .fadeIn(duration: 800.ms, delay: 300.ms)
-                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
-                SizedBox(height: isWide ? 56 : 36),
+                  constraints: BoxConstraints(minHeight: viewportHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                    ),
+                    child: Column(
+                      children: [
+                        const CustomNavBar(currentRoute: '/about'),
+                        SizedBox(height: isWide ? 96 : 48),
+                        Text(
+                              'About Us',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.pageTitle(titleFontSize),
+                            )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 200.ms)
+                            .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                        SizedBox(height: isWide ? 40 : 28),
+                        ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: isWide ? 800 : 600,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isWide ? 0 : 0,
+                                ),
+                                child: Text(
+                                  'AENS Projects & Engineering Services Ltd was incorporated in 2008 to provide Engineering, Procurement, construction/Installation, Maintenance and Project Management services in the Electrical, Instrumental/Control, Mechanical and Civil Engineering disciplines. Also, Aens recruits, trains and manages personnel for our clients. We undertake projects for corporate organizations and government agencies in the energy, oil/gas, manufacturing and construction sectors.',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.bodyText(bodyFontSize),
+                                ),
+                              ),
+                            )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 300.ms)
+                            .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                        SizedBox(height: isWide ? 56 : 36),
+                      ],
+                    ),
+                  ),
+                ),
 
                 _ProcessSection(
                   isWide: isWide,

@@ -33,41 +33,49 @@ class WorksPage extends StatelessWidget {
           final titleFontSize = isWide ? 64.0 : (isMedium ? 48.0 : 32.0);
           final bodyFontSize = isWide ? 17.0 : (isMedium ? 15.0 : 14.0);
 
+          final viewportHeight = MediaQuery.of(context).size.height;
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CustomNavBar(currentRoute: '/works'),
-
-                SizedBox(height: isWide ? 96 : 48),
-                Text(
-                      'Our Products',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.pageTitle(titleFontSize),
-                    )
-                    .animate()
-                    .fadeIn(duration: 800.ms, delay: 200.ms)
-                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
-
-                SizedBox(height: isWide ? 40 : 28),
                 ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: isWide ? 800 : 600),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isWide ? 0 : horizontalPadding,
-                        ),
-                        child: Text(
-                          'Delivering World-Class Electrical & Instrumentation Solutions At AENS, we offer a premium selection of Electrical and Instrumentation / Control devices from industry-leading brands including Schneider Electric, ABB, and Siemens.We are a trusted stockist and solutions provider, delivering products that ensure safety, performance, and reliability across industrial and commercial sectors.',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyText(bodyFontSize),
-                        ),
-                      ),
-                    )
-                    .animate()
-                    .fadeIn(duration: 800.ms, delay: 300.ms)
-                    .slideY(begin: 0.1, end: 0, duration: 800.ms),
-                SizedBox(height: isWide ? 56 : 36),
+                  constraints: BoxConstraints(minHeight: viewportHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                    ),
+                    child: Column(
+                      children: [
+                        const CustomNavBar(currentRoute: '/works'),
+                        SizedBox(height: isWide ? 96 : 48),
+                        Text(
+                              'Our Products',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.pageTitle(titleFontSize),
+                            )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 200.ms)
+                            .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                        SizedBox(height: isWide ? 40 : 28),
+                        ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: isWide ? 800 : 600,
+                              ),
+                              child: Text(
+                                'Delivering World-Class Electrical & Instrumentation Solutions At AENS, we offer a premium selection of Electrical and Instrumentation / Control devices from industry-leading brands including Schneider Electric, ABB, and Siemens.We are a trusted stockist and solutions provider, delivering products that ensure safety, performance, and reliability across industrial and commercial sectors.',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.bodyText(bodyFontSize),
+                              ),
+                            )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 300.ms)
+                            .slideY(begin: 0.1, end: 0, duration: 800.ms),
+                        SizedBox(height: isWide ? 56 : 36),
+                      ],
+                    ),
+                  ),
+                ),
 
                 // After _DiscussButton and SizedBox
                 _ProjectSection(
