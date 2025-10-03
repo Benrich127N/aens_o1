@@ -167,6 +167,7 @@ class _ProjectSectionState extends State<_ProjectSection> {
   late ScrollController _abbController;
   late ScrollController _siemensController;
   Timer? _timer;
+  int _hoveredTileId = -1;
 
   @override
   void initState() {
@@ -352,7 +353,8 @@ class _ProjectSectionState extends State<_ProjectSection> {
     Widget buildProductSection(
       String title,
       List<Map<String, String>> projects,
-      ScrollController controller, // ADD this new parameter
+      ScrollController controller,
+      int sectionKey,
     ) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,51 +374,65 @@ class _ProjectSectionState extends State<_ProjectSection> {
               itemCount: projects.length,
               itemBuilder: (context, index) {
                 final project = projects[index];
+                final int tileId = sectionKey + index;
                 return Padding(
                   padding: const EdgeInsets.only(
                     right: 16.0,
                   ), // Spacing between images
-                  child: SizedBox(
-                    width: widget.isWide ? 280 : 180, // Use widget.isWide
-                    child: Stack(
-                      children: [
-                        // ... rest of the Stack content is unchanged
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            project["image"]!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
+                  child: MouseRegion(
+                    onEnter: (_) => setState(() => _hoveredTileId = tileId),
+                    onExit: (_) => setState(() => _hoveredTileId = -1),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOut,
+                      width: widget.isWide ? 280 : 180,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _hoveredTileId == tileId
+                              ? AppColors.accentColor.withOpacity(0.6)
+                              : Colors.transparent,
+                          width: 1.5,
                         ),
-                        // Optional: Overlay for gradient/title (if needed in a horizontal view)
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.black.withOpacity(0.4),
-                                Colors.transparent,
+                        boxShadow: _hoveredTileId == tileId
+                            ? [
+                                BoxShadow(
+                                  color: AppColors.accentColor.withOpacity(
+                                    0.25,
+                                  ),
+                                  blurRadius: 18,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ]
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 6),
+                                ),
                               ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: AnimatedScale(
+                          duration: const Duration(milliseconds: 180),
+                          scale: _hoveredTileId == tileId ? 1.02 : 1.0,
+                          curve: Curves.easeOut,
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                            ),
+                            child: SizedBox.expand(
+                              child: Image.asset(
+                                project["image"]!,
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.high,
+                              ),
                             ),
                           ),
                         ),
-                        // Optional: Add product title overlay here
-                        // Example:
-                        /*
-            Positioned(
-             bottom: 8,
-             left: 8,
-             child: Text(
-              project["title"]!,
-              style: AppTextStyles.bodyText(14).copyWith(color: Colors.white),
-             ),
-            )
-            */
-                      ],
+                      ),
                     ),
                   ),
                 );
@@ -445,13 +461,19 @@ class _ProjectSectionState extends State<_ProjectSection> {
             "Schneider Electric",
             schneiderProjects,
             _schneiderController,
+            0,
           ),
 
           // ABB Section
-          buildProductSection("ABB", abbProjects, _abbController),
+          buildProductSection("ABB", abbProjects, _abbController, 100),
 
           // SIEMENS Section
-          buildProductSection("SIEMENS", siemensProjects, _siemensController),
+          buildProductSection(
+            "SIEMENS",
+            siemensProjects,
+            _siemensController,
+            200,
+          ),
         ],
       ),
     );
