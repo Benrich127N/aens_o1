@@ -630,7 +630,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        _buildSelectedServiceCard(),
+        AspectRatio(aspectRatio: 16 / 9, child: _buildSelectedServiceCard()),
         const SizedBox(height: 24),
         SizedBox(height: 500, child: _buildServicesList()),
       ],
@@ -760,6 +760,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
         ),
       ),
       child: ListView.separated(
+        primary: false,
+        shrinkWrap: true,
         padding: const EdgeInsets.all(8),
         itemCount: services.length,
         separatorBuilder: (context, index) =>

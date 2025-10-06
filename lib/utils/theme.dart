@@ -12,44 +12,50 @@ class AppColors {
 class AppTextStyles {
   static TextStyle navBar(double fontSize) => GoogleFonts.lato(
     color: AppColors.textColor,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     fontSize: fontSize,
+    letterSpacing: 0.6,
   );
 
   static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
     color: AppColors.textColor,
     fontWeight: FontWeight.bold,
     fontSize: fontSize,
-    letterSpacing: 1.2,
+    letterSpacing: 1.4,
   );
 
   static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
     color: AppColors.textColor,
     fontSize: fontSize,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.2,
   );
 
   static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
     color: AppColors.textColor,
     fontSize: fontSize,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.1,
   );
 
   static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
     color: AppColors.textSecondary,
     fontSize: fontSize,
-    height: 1.7,
+    height: 1.8,
+    letterSpacing: 0.2,
   );
 
   static TextStyle bulletPoint(double fontSize) => GoogleFonts.lato(
     color: AppColors.textSecondary,
     fontSize: fontSize,
-    height: 1.8,
+    height: 1.85,
+    letterSpacing: 0.15,
   );
 
   static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
     color: AppColors.textColor,
     fontSize: fontSize,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.4,
   );
 }

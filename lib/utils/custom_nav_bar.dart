@@ -28,7 +28,24 @@ class CustomNavBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppLogo(fontSize: navFontSize + 2),
+              // Subtle hover micro-interaction on logo
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: TweenAnimationBuilder<double>(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOut,
+                  tween: Tween(begin: 1.0, end: 1.0),
+                  builder: (context, value, child) {
+                    return AnimatedScale(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOut,
+                      scale: value,
+                      child: child,
+                    );
+                  },
+                  child: AppLogo(fontSize: navFontSize + 2),
+                ),
+              ),
               SizedBox(width: isWide ? 64 : 16),
               Flexible(
                 child: _NavigationMenu(
