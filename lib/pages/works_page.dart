@@ -7,6 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../utils/custom_nav_bar.dart';
 import '../utils/footer.dart' show CustomFooter;
 import '../utils/theme.dart';
+import '../utils/app_logo.dart';
 
 // Use centralized AppColors/AppTextStyles from theme.dart
 
@@ -107,7 +108,7 @@ class WorksPage extends StatelessWidget {
             ),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: _AppLogo(navFontSize: 18.0),
+              child: const AppLogo(fontSize: 18.0),
             ),
           ),
           _DrawerNavItem(
@@ -380,8 +381,18 @@ class _ProjectSectionState extends State<_ProjectSection> {
                     right: 16.0,
                   ), // Spacing between images
                   child: MouseRegion(
-                    onEnter: (_) => setState(() => _hoveredTileId = tileId),
-                    onExit: (_) => setState(() => _hoveredTileId = -1),
+                    onEnter: (_) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!mounted) return;
+                        setState(() => _hoveredTileId = tileId);
+                      });
+                    },
+                    onExit: (_) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!mounted) return;
+                        setState(() => _hoveredTileId = -1);
+                      });
+                    },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 180),
                       curve: Curves.easeOut,
@@ -480,33 +491,7 @@ class _ProjectSectionState extends State<_ProjectSection> {
   }
 }
 
-class _AppLogo extends StatelessWidget {
-  final double navFontSize;
-  const _AppLogo({required this.navFontSize});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/home');
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.architecture_outlined,
-            color: AppColors.accentColor,
-            size: navFontSize + 8,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'AENS ENGINEERING',
-            style: AppTextStyles.appLogo(navFontSize + 2),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Removed duplicated _AppLogo; using shared AppLogo instead
 
 class _DrawerNavItem extends StatelessWidget {
   final String label;

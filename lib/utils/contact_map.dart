@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:ui_web' as ui_web;
+import 'package:web/web.dart' as web;
 
 class ContactMap extends StatefulWidget {
   const ContactMap({super.key});
@@ -10,88 +11,83 @@ class ContactMap extends StatefulWidget {
 }
 
 class _ContactMapState extends State<ContactMap> {
-  final MapController _mapController = MapController();
+  static const String _viewType = 'google-map-iframe';
 
-  double _currentZoom = 16.0; // default zoom level
-  final LatLng _location = LatLng(4.8242, 7.0336); // AENS Engineering location
+  static const String _iframeUrl =
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.832017559444!2d7.0046623!3d4.798875499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1069cdaaaaaaaaab%3A0x262fbc6f4dd9ee20!2sAens%20Project%20%26%20Engineering%20Services%20Ltd!5e0!3m2!1sen!2sng!4v1759755056687!5m2!1sen!2sng";
 
-  void _zoomIn() {
-    setState(() {
-      _currentZoom += 1;
-      _mapController.move(_location, _currentZoom);
-    });
-  }
+  @override
+  void initState() {
+    super.initState();
 
-  void _zoomOut() {
-    setState(() {
-      _currentZoom -= 1;
-      _mapController.move(_location, _currentZoom);
-    });
+    if (kIsWeb) {
+      ui_web.platformViewRegistry.registerViewFactory(_viewType, (int viewId) {
+        // Default light styling
+        final iframe = web.HTMLIFrameElement()
+          ..src = _iframeUrl
+          ..style.border = '0'
+          ..style.width = '100%'
+          ..style.height = '100%'
+          ..style.borderRadius = '16px'
+          ..style.transition = 'filter 0.3s ease, box-shadow 0.3s ease'
+          ..style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)'
+          ..style.filter = 'grayscale(5%) brightness(98%) contrast(102%)';
+        return iframe;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300, // adjust height as needed
-      child: Stack(
-        children: [
-          FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
-              initialCenter: _location,
-              initialZoom: _currentZoom,
-              interactionOptions: const InteractionOptions(
-                flags:
-                    InteractiveFlag.all &
-                    ~InteractiveFlag.scrollWheelZoom, // disable scroll zoom
-              ),
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: _location,
-                    width: 40,
-                    height: 40,
-                    child: const Icon(
-                      Icons.location_pin,
-                      color: Colors.red,
-                      size: 40,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-          // Zoom Buttons
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: Column(
-              children: [
-                FloatingActionButton(
-                  mini: true,
-                  backgroundColor: Colors.black87,
-                  onPressed: _zoomIn,
-                  child: const Icon(Icons.add, color: Colors.white),
-                ),
-                const SizedBox(height: 8),
-                FloatingActionButton(
-                  mini: true,
-                  backgroundColor: Colors.black87,
-                  onPressed: _zoomOut,
-                  child: const Icon(Icons.remove, color: Colors.white),
-                ),
-              ],
-            ),
+    if (!kIsWeb) {
+      return Container(
+        height: 400,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey[850],
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          "Map available on web version",
+          style: TextStyle(
+            fontSize: 16,
+            color: isDark ? Colors.white70 : Colors.black54,
           ),
-        ],
+        ),
+      );
+    }
+
+    // Dynamic brightness for dark or light mode
+    final iframeStyle = isDark
+        ? 'grayscale(15%) brightness(65%) contrast(110%) saturate(90%)'
+        : 'grayscale(5%) brightness(98%) contrast(102%)';
+
+    // Re-register the iframe each build with updated dark/light filter
+    if (kIsWeb) {
+      ui_web.platformViewRegistry.registerViewFactory(_viewType, (int viewId) {
+        final iframe = web.HTMLIFrameElement()
+          ..src = _iframeUrl
+          ..style.border = '0'
+          ..style.width = '100%'
+          ..style.height = '100%'
+          ..style.borderRadius = '16px'
+          ..style.boxShadow = isDark
+              ? '0 8px 30px rgba(255, 255, 255, 0.08)'
+              : '0 8px 25px rgba(0, 0, 0, 0.25)'
+          ..style.transition = 'filter 0.4s ease'
+          ..style.filter = iframeStyle;
+        return iframe;
+      });
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      height: 400,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: const HtmlElementView(viewType: _viewType),
       ),
     );
   }

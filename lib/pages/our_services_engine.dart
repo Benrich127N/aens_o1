@@ -34,7 +34,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
     {
       "title": "Facilities Management Services",
       "desc": "Modern and functional interior design solutions.",
-      "image": "assets/images/man_fix.jpg",
+      "image": "assets/images/enn1.jpg",
     },
     {
       "title": "Medium / Low Voltage (MV/LV) Products Retailers",
@@ -49,7 +49,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
     {
       "title": "Electrical Equipment Testing and Calibration",
       "desc": "Reliable MEP services with innovative engineering.",
-      "image": "assets/images/stand2.jpg",
+      "image": "assets/images/enn3.jpg",
     },
     {
       "title": "Project Engineering, Design and Construction",

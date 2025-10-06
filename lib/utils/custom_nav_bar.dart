@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'theme.dart';
+import 'app_logo.dart';
 
 // Now accepts currentRoute
 class CustomNavBar extends StatelessWidget {
@@ -27,7 +28,7 @@ class CustomNavBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _AppLogo(navFontSize: navFontSize + 2),
+              AppLogo(fontSize: navFontSize + 2),
               SizedBox(width: isWide ? 64 : 16),
               Flexible(
                 child: _NavigationMenu(
@@ -44,33 +45,7 @@ class CustomNavBar extends StatelessWidget {
   }
 }
 
-class _AppLogo extends StatelessWidget {
-  final double navFontSize;
-  const _AppLogo({required this.navFontSize});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/home');
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.architecture_outlined,
-            color: AppColors.accentColor,
-            size: navFontSize + 8,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'AENS ENGINEERING',
-            style: AppTextStyles.appLogo(navFontSize + 2),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Removed duplicated _AppLogo; using shared AppLogo instead
 
 class _NavigationMenu extends StatelessWidget {
   final double navFontSize;

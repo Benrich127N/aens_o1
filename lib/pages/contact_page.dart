@@ -5,6 +5,7 @@ import '../utils/contact_map.dart';
 import '../utils/custom_nav_bar.dart';
 import '../utils/theme.dart';
 import '../utils/footer.dart' show CustomFooter;
+import '../utils/app_logo.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -273,7 +274,7 @@ class ContactPage extends StatelessWidget {
             ),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: _AppLogo(navFontSize: 18.0),
+              child: const AppLogo(fontSize: 18.0),
             ),
           ),
           _DrawerNavItem(
@@ -311,33 +312,7 @@ class ContactPage extends StatelessWidget {
 }
 
 // Reusable Widgets
-class _AppLogo extends StatelessWidget {
-  final double navFontSize;
-  const _AppLogo({required this.navFontSize});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/home');
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.architecture_outlined,
-            color: AppColors.accentColor,
-            size: navFontSize + 8,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'AENS ENGINEERING',
-            style: AppTextStyles.appLogo(navFontSize + 2),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Removed duplicated _AppLogo; using shared AppLogo instead
 
 class _DrawerNavItem extends StatelessWidget {
   final String label;
