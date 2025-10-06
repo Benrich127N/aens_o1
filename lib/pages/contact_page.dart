@@ -85,7 +85,8 @@ class ContactPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Left - Contact Details
-                      Expanded(
+                      Flexible(
+                        fit: isWide ? FlexFit.tight : FlexFit.loose,
                         flex: 1,
                         child: Container(
                           padding: const EdgeInsets.all(20),
@@ -157,7 +158,8 @@ class ContactPage extends StatelessWidget {
                       SizedBox(width: isWide ? 24 : 0, height: isWide ? 0 : 24),
 
                       // Right - Send Message Form
-                      Expanded(
+                      Flexible(
+                        fit: isWide ? FlexFit.tight : FlexFit.loose,
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
