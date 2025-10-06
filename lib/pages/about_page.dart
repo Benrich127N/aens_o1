@@ -284,6 +284,8 @@ class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
                                 milliseconds: 300,
                               ), // Smooth animation
                               curve: Curves.easeInOut,
+                              height:
+                                  260, // Ensure equal card heights on wide layout and avoid overflow
                               width:
                                   (MediaQuery.of(context).size.width -
                                       widget.horizontalPadding * 2 -
