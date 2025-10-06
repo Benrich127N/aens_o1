@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../utils/contact_map.dart';
 import '../utils/custom_nav_bar.dart';
@@ -275,39 +276,55 @@ class ContactPage extends StatelessWidget {
       backgroundColor: AppColors.primaryBackground,
       child: ListView(
         padding: EdgeInsets.zero,
-        children: <Widget>[
+        children: [
           DrawerHeader(
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
             ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: const AppLogo(fontSize: 18.0),
+            child: Text(
+              'AENS ENGINEERING',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          _DrawerNavItem(
-            label: 'ABOUT US',
+          ListTile(
+            title: const Text(
+              'ABOUT US',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/about');
             },
           ),
-          _DrawerNavItem(
-            label: 'SERVICES',
+          ListTile(
+            title: const Text(
+              'SERVICES',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/services');
             },
           ),
-          _DrawerNavItem(
-            label: 'OUR WORKS',
+          ListTile(
+            title: const Text(
+              'OUR PRODUCTS',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/works');
             },
           ),
-          _DrawerNavItem(
-            label: 'CONTACT US',
+          ListTile(
+            title: const Text(
+              'CONTACT US',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/contact');
