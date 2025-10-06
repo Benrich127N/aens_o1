@@ -30,7 +30,6 @@ class Test extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // The drawer items can be defined here or in a separate widget
             const DrawerHeader(
               decoration: BoxDecoration(color: AppColors.secondaryBackground),
               child: Text(
@@ -45,6 +44,7 @@ class Test extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushNamed(context, '/about');
               },
             ),
             ListTile(
@@ -57,7 +57,26 @@ class Test extends StatelessWidget {
                 Navigator.pushNamed(context, '/services');
               },
             ),
-            // ... add other drawer items
+            ListTile(
+              title: const Text(
+                'OUR PRODUCTS',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/works');
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'CONTACT US',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/contact');
+              },
+            ),
           ],
         ),
       ),
