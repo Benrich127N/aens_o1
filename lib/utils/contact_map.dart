@@ -84,7 +84,7 @@ class _ContactMapState extends State<ContactMap> {
 
     return SizedBox(
       width: double.infinity,
-      height: 400,
+      height: 150,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: const HtmlElementView(viewType: _viewType),

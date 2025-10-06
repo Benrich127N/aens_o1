@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -91,6 +92,11 @@ class AboutPage extends StatelessWidget {
                   isMedium: isMedium,
                   horizontalPadding: horizontalPadding,
                 ),
+                _CertificatesSection(
+                  isWide: isWide,
+                  isMedium: isMedium,
+                  horizontalPadding: horizontalPadding,
+                ),
                 const CustomFooter(),
               ],
             ),
@@ -112,7 +118,7 @@ class AboutPage extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
             ),
-              child: Align(
+            child: Align(
               alignment: Alignment.centerLeft,
               child: const AppLogo(fontSize: 18.0),
             ),
@@ -431,6 +437,177 @@ class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
                         .slideY(begin: 0.2, duration: 600.ms);
                   }).toList(),
                 ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CertificatesSection extends StatefulWidget {
+  final bool isWide;
+  final bool isMedium;
+  final double horizontalPadding;
+
+  const _CertificatesSection({
+    required this.isWide,
+    required this.isMedium,
+    required this.horizontalPadding,
+  });
+
+  @override
+  State<_CertificatesSection> createState() => _CertificatesSectionState();
+}
+
+class _CertificatesSectionState extends State<_CertificatesSection> {
+  late final ScrollController _certificatesController;
+  Timer? _autoSlideTimer;
+  int _hoveredTileIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    _certificatesController = ScrollController();
+    _startAutoSlide();
+  }
+
+  @override
+  void dispose() {
+    _autoSlideTimer?.cancel();
+    _certificatesController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoSlide() {
+    _autoSlideTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+      _animateScroll(_certificatesController);
+    });
+  }
+
+  void _animateScroll(ScrollController controller) {
+    if (!controller.hasClients) return;
+
+    const double scrollAmount = 250.0;
+    const Duration scrollDuration = Duration(milliseconds: 1200);
+
+    if (controller.offset + scrollAmount >=
+        controller.position.maxScrollExtent) {
+      controller.animateTo(
+        controller.position.minScrollExtent,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+      return;
+    }
+
+    controller.animateTo(
+      controller.offset + scrollAmount,
+      duration: scrollDuration,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final titleFontSize = widget.isWide
+        ? 40.0
+        : (widget.isMedium ? 32.0 : 24.0);
+
+    final List<Map<String, String>> certificates = List.generate(10, (index) {
+      final num = index + 1;
+      return {"image": "assets/images/cert$num.jpg"};
+    });
+
+    return Container(
+      width: double.infinity,
+      color: AppColors.primaryBackground,
+      padding: EdgeInsets.symmetric(
+        horizontal: widget.horizontalPadding,
+        vertical: widget.isWide ? 80 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Certificates", style: AppTextStyles.pageTitle(titleFontSize))
+              .animate()
+              .fadeIn(duration: 800.ms, delay: 100.ms)
+              .slideY(begin: 0.1),
+          const SizedBox(height: 24),
+          SizedBox(
+            height: widget.isWide ? 300 : 200,
+            child: ListView.builder(
+              controller: _certificatesController,
+              scrollDirection: Axis.horizontal,
+              itemCount: certificates.length,
+              itemBuilder: (context, index) {
+                final item = certificates[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: MouseRegion(
+                    onEnter: (_) {
+                      if (!mounted) return;
+                      setState(() => _hoveredTileIndex = index);
+                    },
+                    onExit: (_) {
+                      if (!mounted) return;
+                      setState(() => _hoveredTileIndex = -1);
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOut,
+                      width: widget.isWide ? 280 : 180,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _hoveredTileIndex == index
+                              ? AppColors.accentColor.withOpacity(0.6)
+                              : Colors.transparent,
+                          width: 1.5,
+                        ),
+                        boxShadow: _hoveredTileIndex == index
+                            ? [
+                                BoxShadow(
+                                  color: AppColors.accentColor.withOpacity(
+                                    0.25,
+                                  ),
+                                  blurRadius: 18,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ]
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: AnimatedScale(
+                          duration: const Duration(milliseconds: 180),
+                          scale: _hoveredTileIndex == index ? 1.02 : 1.0,
+                          curve: Curves.easeOut,
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                            ),
+                            child: SizedBox.expand(
+                              child: Image.asset(
+                                item["image"]!,
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.high,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
