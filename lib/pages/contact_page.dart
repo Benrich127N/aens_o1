@@ -34,6 +34,7 @@ class ContactPage extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(minHeight: viewportHeight),
@@ -42,6 +43,7 @@ class ContactPage extends StatelessWidget {
                       horizontal: horizontalPadding,
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         const CustomNavBar(currentRoute: '/contact'),
                         SizedBox(height: isWide ? 96 : 48),
@@ -83,6 +85,7 @@ class ContactPage extends StatelessWidget {
                   child: Flex(
                     direction: isWide ? Axis.horizontal : Axis.vertical,
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       // Left - Contact Details
                       Flexible(
@@ -247,7 +250,10 @@ class ContactPage extends StatelessWidget {
                       constraints: const BoxConstraints(
                         maxWidth: 900, // reduces how wide it stretches
                       ),
-                      child: const ContactMap(),
+                      child: SizedBox(
+                        height: isWide ? 420 : 260,
+                        child: const ContactMap(),
+                      ),
                     ),
                   ),
                 ),
