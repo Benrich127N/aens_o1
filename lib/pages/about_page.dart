@@ -988,25 +988,22 @@ class _PartnershipsSection extends StatelessWidget {
         "name": "Schneider Electric",
         "logo": "assets/images/logo22.png",
         "description":
-            "With over 1,700 employees, 245 factories and global presence in over 100 countries, Scheider is the undisputable leader in power management – medium voltage, low voltage and secure power and in automation systems setting standards while providing integrated efficiency solutions, combining energy, automation and software.",
+            "With over 1,700 employees, 245 factories and global presence in over 100 countries, Schneider is the undisputed leader in power.",
       },
       {
         "name": "Siemens",
         "logo": "assets/images/logo11.png",
         "description":
-            "Global powerhouse in electrification and digitalization.",
+            "Siemens is a multinational technology company that specializes in industry, infrastructure, mobility, and healthcare, electrification, automation, software, and digital twins to transform these sectors.",
       },
       {
         "name": "ABB Group",
         "logo": "assets/images/logo33.png",
         "description":
-            "Innovators in robotics, automation, and power technology.",
+            "ABB is a pioneering technology leader that works closely with utilities, industry, transportation and infrastructure.",
       },
     ];
 
-
-
-    
     return Container(
       width: double.infinity,
       color: AppColors.secondaryBackground,
@@ -1025,7 +1022,6 @@ class _PartnershipsSection extends StatelessWidget {
               .animate()
               .fadeIn(duration: 800.ms, delay: 100.ms)
               .slideY(begin: 0.1),
-
           const SizedBox(height: 24),
 
           LayoutBuilder(
@@ -1044,7 +1040,7 @@ class _PartnershipsSection extends StatelessWidget {
                     crossAxisCount: 3,
                     crossAxisSpacing: 24,
                     mainAxisSpacing: 24,
-                    childAspectRatio: 1.05, // makes card more rectangular
+                    childAspectRatio: 1.15, // more rectangular
                   ),
                   itemCount: partners.length,
                   itemBuilder: (context, index) {
@@ -1062,7 +1058,7 @@ class _PartnershipsSection extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 1.1,
+                    childAspectRatio: 1.15,
                   ),
                   itemCount: partners.length,
                   itemBuilder: (context, index) {
@@ -1073,7 +1069,7 @@ class _PartnershipsSection extends StatelessWidget {
               } else {
                 // 📱 Mobile — horizontal scroll
                 return SizedBox(
-                  height: 260,
+                  height: 280,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
@@ -1107,72 +1103,118 @@ class _PartnershipsSection extends StatelessWidget {
         return MouseRegion(
           onEnter: (_) => setState(() => isHovered = true),
           onExit: (_) => setState(() => isHovered = false),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            width: isWide ? 250 : 200,
-            height: isWide ? 280 : 240, // slightly taller for full text
-            decoration: BoxDecoration(
-              color: AppColors.primaryBackground,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: isHovered
-                    ? AppColors.accentColor.withOpacity(0.8)
-                    : AppColors.accentColor.withOpacity(0.3),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
+          child: AnimatedScale(
+            duration: const Duration(milliseconds: 600),
+            scale: isHovered ? 1.04 : 1.0,
+            curve: Curves.easeInOut,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeInOut,
+              width: isWide ? 270 : 220,
+              height: isWide ? 300 : 260,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBackground,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
                   color: isHovered
-                      ? AppColors.accentColor.withOpacity(0.4)
-                      : Colors.black.withOpacity(0.2),
-                  blurRadius: isHovered ? 20 : 10,
-                  offset: const Offset(0, 6),
+                      ? AppColors.accentColor.withOpacity(0.7)
+                      : AppColors.accentColor.withOpacity(0.25),
+                  width: 1.5,
                 ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                boxShadow: [
+                  BoxShadow(
+                    color: isHovered
+                        ? AppColors.accentColor.withOpacity(0.5)
+                        : Colors.black.withOpacity(0.25),
+                    blurRadius: isHovered ? 25 : 10,
+                    spreadRadius: isHovered ? 3 : 1,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      partner["logo"]!,
-                      height: isWide ? 70 : 55,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    partner["name"]!,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyText(isWide ? 18 : 16).copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        child: Text(
-                          partner["description"]!,
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                          style: AppTextStyles.bodyText(isWide ? 14 : 13)
-                              .copyWith(
-                                color: AppColors.textSecondary.withOpacity(
-                                  0.85,
-                                ),
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
+                  // ✨ Animated shimmer overlay (premium pulse)
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 600),
+                    opacity: isHovered ? 1 : 0,
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.15),
+                          AppColors.accentColor.withOpacity(0.25),
+                          Colors.white.withOpacity(0.15),
+                        ],
+                        stops: const [0.0, 0.5, 1.0],
+                      ).createShader(bounds),
+                      blendMode: BlendMode.srcOver,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withOpacity(0.05),
                         ),
                       ),
+                    ),
+                  ),
+
+                  // 🧱 Card Content
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 12,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SizedBox(
+                            height: 65,
+                            width: 100, // uniform logo sizing
+                            child: Image.asset(
+                              partner["logo"]!,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          partner["name"]!,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyText(isWide ? 18 : 16)
+                              .copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textColor,
+                              ),
+                        ),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6.0,
+                              ),
+                              child: Text(
+                                partner["description"]!,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                style: AppTextStyles.bodyText(isWide ? 14 : 13)
+                                    .copyWith(
+                                      color: AppColors.textSecondary
+                                          .withOpacity(0.85),
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.4,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
