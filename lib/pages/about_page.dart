@@ -984,11 +984,25 @@ class _PartnershipsSection extends StatelessWidget {
     final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
 
     final partners = [
-      {"name": "Schneider Electric", "logo": "assets/images/partner1.png"},
-      {"name": "Siemens", "logo": "assets/images/partner2.png"},
-      {"name": "ABB Group", "logo": "assets/images/partner3.png"},
+      {
+        "name": "Schneider Electric",
+        "logo": "assets/images/partner1.png",
+        "description":
+            "With over 1,700 employees, 245 factories and global presence in over 100 countries, Scheider is the undisputable leader in power management – medium voltage, low voltage and secure power and in automation systems setting standards while providing integrated efficiency solutions, combining energy, automation and software.",
+      },
+      {
+        "name": "Siemens",
+        "logo": "assets/images/partner2.png",
+        "description":
+            "Global powerhouse in electrification and digitalization.",
+      },
+      {
+        "name": "ABB Group",
+        "logo": "assets/images/partner3.png",
+        "description":
+            "Innovators in robotics, automation, and power technology.",
+      },
     ];
-
     return Container(
       width: double.infinity,
       color: AppColors.secondaryBackground,
@@ -1007,69 +1021,162 @@ class _PartnershipsSection extends StatelessWidget {
               .animate()
               .fadeIn(duration: 800.ms, delay: 100.ms)
               .slideY(begin: 0.1),
+
           const SizedBox(height: 24),
 
-          // Horizontal Scroll
-          SizedBox(
-            height: isWide ? 180 : 140,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: partners.length,
-              itemBuilder: (context, index) {
-                final partner = partners[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 24),
-                  child: MouseRegion(
-                    onEnter: (_) {},
-                    onExit: (_) {},
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      width: isWide ? 220 : 160,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryBackground,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.accentColor.withOpacity(0.3),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Image.asset(
-                              partner["logo"]!,
-                              height: isWide ? 80 : 60,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Text(
-                            partner["name"]!,
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.bodyText(isWide ? 16 : 14)
-                                .copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textSecondary,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final bool isWide = constraints.maxWidth > 800;
+              final bool isTablet =
+                  constraints.maxWidth > 600 && constraints.maxWidth <= 800;
+
+              if (isWide) {
+                // 🖥 Desktop — 3 cards per row
+                return GridView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 24,
+                    mainAxisSpacing: 24,
+                    childAspectRatio: 1.05, // makes card more rectangular
                   ),
-                ).animate().fadeIn(delay: (index * 200).ms).slideY(begin: 0.1);
-              },
-            ),
+                  itemCount: partners.length,
+                  itemBuilder: (context, index) {
+                    final partner = partners[index];
+                    return _buildPartnerCard(partner, isWide, index);
+                  },
+                );
+              } else if (isTablet) {
+                // 💻 Tablet — 2 per row
+                return GridView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 1.1,
+                  ),
+                  itemCount: partners.length,
+                  itemBuilder: (context, index) {
+                    final partner = partners[index];
+                    return _buildPartnerCard(partner, isWide, index);
+                  },
+                );
+              } else {
+                // 📱 Mobile — horizontal scroll
+                return SizedBox(
+                  height: 260,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: partners.length,
+                    itemBuilder: (context, index) {
+                      final partner = partners[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 24),
+                        child: _buildPartnerCard(partner, isWide, index),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPartnerCard(
+    Map<String, String> partner,
+    bool isWide,
+    int index,
+  ) {
+    bool isHovered = false;
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) => setState(() => isHovered = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: isWide ? 250 : 200,
+            height: isWide ? 280 : 240, // slightly taller for full text
+            decoration: BoxDecoration(
+              color: AppColors.primaryBackground,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: isHovered
+                    ? AppColors.accentColor.withOpacity(0.8)
+                    : AppColors.accentColor.withOpacity(0.3),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: isHovered
+                      ? AppColors.accentColor.withOpacity(0.4)
+                      : Colors.black.withOpacity(0.2),
+                  blurRadius: isHovered ? 20 : 10,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                      partner["logo"]!,
+                      height: isWide ? 70 : 55,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    partner["name"]!,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyText(isWide ? 18 : 16).copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: Text(
+                          partner["description"]!,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: AppTextStyles.bodyText(isWide ? 14 : 13)
+                              .copyWith(
+                                color: AppColors.textSecondary.withOpacity(
+                                  0.85,
+                                ),
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ).animate().fadeIn(delay: (index * 200).ms).slideY(begin: 0.1);
+      },
     );
   }
 }
