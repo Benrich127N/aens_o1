@@ -986,23 +986,27 @@ class _PartnershipsSection extends StatelessWidget {
     final partners = [
       {
         "name": "Schneider Electric",
-        "logo": "assets/images/partner1.png",
+        "logo": "assets/images/logo22.png",
         "description":
             "With over 1,700 employees, 245 factories and global presence in over 100 countries, Scheider is the undisputable leader in power management – medium voltage, low voltage and secure power and in automation systems setting standards while providing integrated efficiency solutions, combining energy, automation and software.",
       },
       {
         "name": "Siemens",
-        "logo": "assets/images/partner2.png",
+        "logo": "assets/images/logo11.png",
         "description":
             "Global powerhouse in electrification and digitalization.",
       },
       {
         "name": "ABB Group",
-        "logo": "assets/images/partner3.png",
+        "logo": "assets/images/logo33.png",
         "description":
             "Innovators in robotics, automation, and power technology.",
       },
     ];
+
+
+
+    
     return Container(
       width: double.infinity,
       color: AppColors.secondaryBackground,
