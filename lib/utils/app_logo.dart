@@ -11,7 +11,7 @@ class AppLogo extends StatelessWidget {
   const AppLogo({
     super.key,
     required this.fontSize,
-    this.assetPath = 'assets/images/logo.jpg',
+    this.assetPath = 'assets/images/logomain.png',
     this.brandText = 'AENS ENGINEERING',
     this.spacing = 8.0,
   });
@@ -41,14 +41,9 @@ class AppLogo extends StatelessWidget {
             },
           ),
           SizedBox(width: spacing),
-          Text(
-            brandText,
-            style: AppTextStyles.appLogo(fontSize + 2),
-          ),
+          Text(brandText, style: AppTextStyles.appLogo(fontSize + 2)),
         ],
       ),
     );
   }
 }
-
-

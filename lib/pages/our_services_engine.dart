@@ -15,7 +15,7 @@ class Our_services_engine extends StatefulWidget {
 class _Our_services_engineState extends State<Our_services_engine> {
   int selectedIndex = 0;
   Timer? _autoSlideTimer;
-  static const Duration _slideDuration = Duration(seconds: 5);
+  static const Duration _slideDuration = Duration(seconds: 15);
 
   void _startAutoSlide() {
     _autoSlideTimer = Timer.periodic(_slideDuration, (timer) {
@@ -39,7 +39,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
     {
       "title": "Medium / Low Voltage (MV/LV) Products Retailers",
       "desc": "Engineering precision with innovative structural solutions.",
-      "image": "assets/images/conc.jpg",
+      "image": "assets/images/ennre.jpg",
     },
     {
       "title": "Project And Construction Management Services",

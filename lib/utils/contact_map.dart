@@ -43,7 +43,7 @@ class _ContactMapState extends State<ContactMap> {
 
     if (!kIsWeb) {
       return Container(
-        height: 400,
+        height: 120,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey[850],
@@ -84,7 +84,7 @@ class _ContactMapState extends State<ContactMap> {
 
     return SizedBox(
       width: double.infinity,
-      height: 150,
+      height: 120,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: const HtmlElementView(viewType: _viewType),

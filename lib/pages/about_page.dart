@@ -97,6 +97,13 @@ class AboutPage extends StatelessWidget {
                   isMedium: isMedium,
                   horizontalPadding: horizontalPadding,
                 ),
+
+                _PartnershipsSection(
+                  isWide: isWide,
+                  isMedium: isMedium,
+                  horizontalPadding: horizontalPadding,
+                ),
+
                 const CustomFooter(),
               ],
             ),
@@ -128,28 +135,40 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('ABOUT US', style: TextStyle(color: Colors.white)),
+            title: const Text(
+              'ABOUT US',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/about');
             },
           ),
           ListTile(
-            title: const Text('SERVICES', style: TextStyle(color: Colors.white)),
+            title: const Text(
+              'SERVICES',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/services');
             },
           ),
           ListTile(
-            title: const Text('OUR PRODUCTS', style: TextStyle(color: Colors.white)),
+            title: const Text(
+              'OUR PRODUCTS',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/works');
             },
           ),
           ListTile(
-            title: const Text('CONTACT US', style: TextStyle(color: Colors.white)),
+            title: const Text(
+              'CONTACT US',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/contact');
@@ -945,6 +964,112 @@ class _ProcessSectionState extends State<_ProcessSection> {
                 ),
               ],
             ),
+    );
+  }
+}
+
+class _PartnershipsSection extends StatelessWidget {
+  final bool isWide;
+  final bool isMedium;
+  final double horizontalPadding;
+
+  const _PartnershipsSection({
+    required this.isWide,
+    required this.isMedium,
+    required this.horizontalPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final titleFontSize = isWide ? 40.0 : (isMedium ? 32.0 : 24.0);
+
+    final partners = [
+      {"name": "Schneider Electric", "logo": "assets/images/partner1.png"},
+      {"name": "Siemens", "logo": "assets/images/partner2.png"},
+      {"name": "ABB Group", "logo": "assets/images/partner3.png"},
+    ];
+
+    return Container(
+      width: double.infinity,
+      color: AppColors.secondaryBackground,
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: isWide ? 80 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+                "Our Partners",
+                style: AppTextStyles.pageTitle(titleFontSize),
+                textAlign: TextAlign.center,
+              )
+              .animate()
+              .fadeIn(duration: 800.ms, delay: 100.ms)
+              .slideY(begin: 0.1),
+          const SizedBox(height: 24),
+
+          // Horizontal Scroll
+          SizedBox(
+            height: isWide ? 180 : 140,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: partners.length,
+              itemBuilder: (context, index) {
+                final partner = partners[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: MouseRegion(
+                    onEnter: (_) {},
+                    onExit: (_) {},
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      width: isWide ? 220 : 160,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryBackground,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.accentColor.withOpacity(0.3),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Image.asset(
+                              partner["logo"]!,
+                              height: isWide ? 80 : 60,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          Text(
+                            partner["name"]!,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.bodyText(isWide ? 16 : 14)
+                                .copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textSecondary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ).animate().fadeIn(delay: (index * 200).ms).slideY(begin: 0.1);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
