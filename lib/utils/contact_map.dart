@@ -27,7 +27,7 @@ class _ContactMapState extends State<ContactMap> {
           ..src = _iframeUrl
           ..style.border = '0'
           ..style.width = '100%'
-          ..style.height = '100%'
+          ..style.height = '50%'
           ..style.borderRadius = '16px'
           ..style.transition = 'filter 0.3s ease, box-shadow 0.3s ease'
           ..style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)'
@@ -43,7 +43,7 @@ class _ContactMapState extends State<ContactMap> {
 
     if (!kIsWeb) {
       return Container(
-        height: 120,
+        height: 50,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey[850],
@@ -71,7 +71,7 @@ class _ContactMapState extends State<ContactMap> {
           ..src = _iframeUrl
           ..style.border = '0'
           ..style.width = '100%'
-          ..style.height = '100%'
+          ..style.height = '50%'
           ..style.borderRadius = '16px'
           ..style.boxShadow = isDark
               ? '0 8px 30px rgba(255, 255, 255, 0.08)'

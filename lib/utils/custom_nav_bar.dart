@@ -77,7 +77,11 @@ class _NavigationMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isWide) {
       return IconButton(
-        icon: const Icon(Icons.menu, color: AppColors.textColor, size: 28),
+        icon: const Icon(
+          Icons.menu,
+          color: Color.fromARGB(255, 197, 40, 40),
+          size: 28,
+        ),
         onPressed: () {
           Scaffold.of(context).openEndDrawer();
         },
@@ -155,7 +159,7 @@ class _NavItemState extends State<_NavItem>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _colorAnimation = ColorTween(
-      begin: AppColors.textColor,
+      begin: const Color.fromARGB(107, 11, 10, 10),
       end: AppColors.accentColor,
     ).animate(_controller);
 

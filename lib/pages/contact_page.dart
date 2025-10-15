@@ -116,7 +116,10 @@ class ContactPage extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       "NEED HELP? TALK TO AN EXPERT :\n	+234-703-253-8441",
-                                      style: AppTextStyles.bodyText(14),
+                                      style: AppTextStyles.bodyText(14)
+                                          .copyWith(
+                                            color: AppColors.whitetextColor,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -132,7 +135,10 @@ class ContactPage extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       "EMAIL :\ninfo@aensengineering.com",
-                                      style: AppTextStyles.bodyText(14),
+                                      style: AppTextStyles.bodyText(14)
+                                          .copyWith(
+                                            color: AppColors.whitetextColor,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -149,7 +155,10 @@ class ContactPage extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       "Plot 2, Ohaeto street, D-line Port Harcourt, Rivers state, Nigeria (By Obito street, off Aba road, between Eastern Garden Chinese Restaurant and CFC Bus-stop).",
-                                      style: AppTextStyles.bodyText(14),
+                                      style: AppTextStyles.bodyText(14)
+                                          .copyWith(
+                                            color: AppColors.whitetextColor,
+                                          ),
                                     ),
                                   ),
                                 ],

@@ -13,7 +13,7 @@ class AppColors {
 
 class AppTextStyles {
   static TextStyle navBar(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
+    color: const Color.fromARGB(30, 117, 115, 115),
     fontWeight: FontWeight.w600,
     fontSize: fontSize,
     letterSpacing: 0.6,
@@ -27,20 +27,20 @@ class AppTextStyles {
   );
 
   static TextStyle pageTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.2,
   );
 
   static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.1,
   );
   static TextStyle sectionTitleWhite(double fontSize) => GoogleFonts.montserrat(
-    color: const Color.fromARGB(255, 255, 255, 255),
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.1,
@@ -54,7 +54,7 @@ class AppTextStyles {
   );
 
   static TextStyle bodyText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textSecondary,
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     height: 1.8,
     letterSpacing: 0.2,
