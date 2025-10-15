@@ -352,7 +352,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
+        color: const Color.fromARGB(46, 255, 255, 255),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.textColor.withOpacity(0.1)),
         boxShadow: [
@@ -433,7 +433,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.textColor,
+                                    color: AppColors.blacktextColor,
                                     letterSpacing: 0.3,
                                   ),
                                 ),
@@ -452,7 +452,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                       width: 6,
                                       height: 6,
                                       decoration: BoxDecoration(
-                                        color: AppColors.accentColor,
+                                        color: AppColors.blackcard,
                                         shape: BoxShape.circle,
                                       ),
                                     ),
@@ -461,8 +461,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                       child: Text(
                                         c,
                                         style: GoogleFonts.poppins(
-                                          color: AppColors.textColor
-                                              .withOpacity(0.85),
+                                          color: AppColors.blacktextColor,
                                           fontSize: 14,
                                           height: 1.5,
                                           letterSpacing: 0.2,
@@ -483,11 +482,9 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppColors.textColor.withOpacity(0.03),
+                          color: AppColors.blacktextColor,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.textColor.withOpacity(0.08),
-                          ),
+                          border: Border.all(color: AppColors.blackcard),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -765,6 +762,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
         padding: const EdgeInsets.all(8),
         itemCount: services.length,
         separatorBuilder: (context, index) =>
+            //divider color
             Divider(color: AppColors.blacktextColor),
         itemBuilder: (context, index) {
           final isSelected = selectedIndex == index;
@@ -788,11 +786,13 @@ class _Our_services_engineState extends State<Our_services_engine> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.accentColor.withOpacity(0.1)
+              ? const Color.fromARGB(255, 35, 33, 30).withOpacity(0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AppColors.accentColor : Colors.transparent,
+            color: isSelected
+                ? const Color.fromARGB(255, 32, 30, 26)
+                : Colors.transparent,
             width: 2,
           ),
         ),
@@ -804,7 +804,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
               height: 40,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.accentColor
+                    ? const Color.fromARGB(255, 19, 18, 17)
                     : AppColors.blacktextColor,
                 shape: BoxShape.circle,
               ),
@@ -844,7 +844,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
             if (isSelected)
               Icon(
                 Icons.arrow_forward_rounded,
-                color: AppColors.accentColor,
+                color: const Color.fromARGB(255, 183, 183, 183),
                 size: 20,
               ),
           ],

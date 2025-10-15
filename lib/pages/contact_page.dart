@@ -268,7 +268,7 @@ class ContactPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: isWide ? 80 : 40),
+                // SizedBox(height: isWide ? 80 : 40),
                 const CustomFooter(),
               ],
             ),
