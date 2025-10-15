@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
-  static const Color primaryBackground = Color(0xFF121212);
+  static const Color primaryBackground = Color.fromARGB(255, 255, 255, 255);
   static const Color secondaryBackground = Color(0xFF1C1C1C);
   static const Color accentColor = Color(0xFFBC914C);
   static const Color textColor = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFFA0A0A0);
+  static const Color whitetextColor = Color(0xFFFFFFFF);
+  static const Color blacktextColor = Color.fromARGB(193, 0, 0, 0);
 }
 
 class AppTextStyles {
@@ -18,7 +20,7 @@ class AppTextStyles {
   );
 
   static TextStyle appLogo(double fontSize) => GoogleFonts.montserrat(
-    color: AppColors.textColor,
+    color: AppColors.blacktextColor,
     fontWeight: FontWeight.bold,
     fontSize: fontSize,
     letterSpacing: 1.4,
@@ -33,6 +35,19 @@ class AppTextStyles {
 
   static TextStyle sectionTitle(double fontSize) => GoogleFonts.montserrat(
     color: AppColors.textColor,
+    fontSize: fontSize,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.1,
+  );
+  static TextStyle sectionTitleWhite(double fontSize) => GoogleFonts.montserrat(
+    color: const Color.fromARGB(255, 255, 255, 255),
+    fontSize: fontSize,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.1,
+  );
+
+  static TextStyle sectionTitleBlack(double fontSize) => GoogleFonts.montserrat(
+    color: const Color.fromARGB(255, 23, 17, 17),
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.1,

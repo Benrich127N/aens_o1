@@ -103,7 +103,7 @@ class ContactPage extends StatelessWidget {
                             children: [
                               Text(
                                 "Contact Details",
-                                style: AppTextStyles.sectionTitle(20),
+                                style: AppTextStyles.sectionTitleWhite(20),
                               ),
                               const SizedBox(height: 20),
                               Row(
