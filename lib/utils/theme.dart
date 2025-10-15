@@ -9,6 +9,7 @@ class AppColors {
   static const Color textSecondary = Color(0xFFA0A0A0);
   static const Color whitetextColor = Color(0xFFFFFFFF);
   static const Color blacktextColor = Color.fromARGB(193, 0, 0, 0);
+  static const Color blackcard = Color.fromARGB(51, 0, 0, 0);
 }
 
 class AppTextStyles {
@@ -68,7 +69,7 @@ class AppTextStyles {
   );
 
   static TextStyle buttonText(double fontSize) => GoogleFonts.lato(
-    color: AppColors.textColor,
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.4,

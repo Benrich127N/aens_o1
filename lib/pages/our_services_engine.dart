@@ -567,13 +567,13 @@ class _Our_services_engineState extends State<Our_services_engine> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.accentColor.withOpacity(0.1),
+            color: const Color.fromARGB(51, 0, 0, 0),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             "WHAT WE OFFER",
             style: GoogleFonts.poppins(
-              color: AppColors.accentColor,
+              color: AppColors.blacktextColor,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.5,
@@ -588,7 +588,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           style: GoogleFonts.poppins(
             fontSize: isMobile ? 32 : 48,
             fontWeight: FontWeight.bold,
-            color: AppColors.textColor,
+            color: AppColors.blacktextColor,
             height: 1.2,
           ),
         ),
@@ -752,7 +752,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
   Widget _buildServicesList() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
+        color: AppColors.blackcard,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.textColor.withOpacity(0.1),
@@ -765,7 +765,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
         padding: const EdgeInsets.all(8),
         itemCount: services.length,
         separatorBuilder: (context, index) =>
-            Divider(color: AppColors.textColor.withOpacity(0.1), height: 1),
+            Divider(color: AppColors.blacktextColor),
         itemBuilder: (context, index) {
           final isSelected = selectedIndex == index;
           return _buildServiceListItem(index, isSelected);
@@ -805,7 +805,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.accentColor
-                    : AppColors.textColor.withOpacity(0.1),
+                    : AppColors.blacktextColor,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -815,6 +815,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isSelected
+                        //number color
                         ? Colors.white
                         : AppColors.textColor.withOpacity(0.6),
                   ),
@@ -832,8 +833,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
                   fontSize: 15,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                   color: isSelected
-                      ? AppColors.accentColor
-                      : AppColors.textColor.withOpacity(0.8),
+                      ? AppColors.blackcard
+                      : AppColors.blacktextColor,
                   height: 1.4,
                 ),
               ),
