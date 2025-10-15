@@ -364,9 +364,16 @@ class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
                                   const SizedBox(height: 16),
                                   Text(
                                     feature["title"]!,
-                                    style: AppTextStyles.sectionTitle(
-                                      bodyFontSize + 2,
-                                    ).copyWith(fontWeight: FontWeight.bold),
+                                    style:
+                                        AppTextStyles.sectionTitle(
+                                              bodyFontSize + 2,
+                                            )
+                                            .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            )
+                                            .copyWith(
+                                              color: AppColors.blacktextColor,
+                                            ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -452,7 +459,7 @@ class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
                                     feature["desc"]!,
                                     style: AppTextStyles.bodyText(
                                       bodyFontSize,
-                                    ).copyWith(color: AppColors.textSecondary),
+                                    ).copyWith(color: AppColors.blacktextColor),
                                   ),
                                 ],
                               ),

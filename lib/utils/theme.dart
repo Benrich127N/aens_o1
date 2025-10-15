@@ -40,7 +40,7 @@ class AppTextStyles {
     letterSpacing: -0.1,
   );
   static TextStyle sectionTitleWhite(double fontSize) => GoogleFonts.montserrat(
-    color: const Color.fromARGB(255, 255, 255, 255),
+    color: AppColors.blacktextColor,
     fontSize: fontSize,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.1,

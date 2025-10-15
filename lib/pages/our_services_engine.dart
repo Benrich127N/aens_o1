@@ -225,13 +225,13 @@ class _Our_services_engineState extends State<Our_services_engine> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: AppColors.accentColor.withOpacity(0.1),
+              color: const Color.fromARGB(61, 0, 0, 0),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               "OUR CLIENTS",
               style: GoogleFonts.poppins(
-                color: AppColors.accentColor,
+                color: AppColors.blacktextColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.5,
@@ -246,7 +246,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 28 : 40,
               fontWeight: FontWeight.bold,
-              color: AppColors.textColor,
+              color: AppColors.blacktextColor,
             ),
           ),
 
@@ -260,7 +260,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 fontSize: isMobile ? 14 : 16,
-                color: AppColors.textColor.withOpacity(0.7),
+                color: AppColors.blacktextColor,
                 height: 1.6,
               ),
             ),
