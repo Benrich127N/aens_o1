@@ -274,14 +274,16 @@ class _WhyChooseUsSectionState extends State<_WhyChooseUsSection> {
           Text(
             "WHY CHOOSE AENS",
             style: AppTextStyles.bodyText(bodyFontSize).copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.whitetextColor,
               fontWeight: FontWeight.w500,
             ),
           ).animate().fadeIn().slideY(begin: 0.2),
           const SizedBox(height: 12),
           Text(
             "Excellence in Every Project",
-            style: AppTextStyles.pageTitle(titleFontSize),
+            style: AppTextStyles.pageTitle(
+              titleFontSize,
+            ).copyWith(color: AppColors.whitetextColor),
           ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2),
           const SizedBox(height: 48),
 
@@ -779,7 +781,7 @@ class _ProcessSectionState extends State<_ProcessSection> {
                               margin: const EdgeInsets.only(bottom: 20),
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: AppColors.secondaryBackground,
+                                color: const Color.fromARGB(56, 150, 150, 150),
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                   color: _hoveredIndex == index
@@ -814,7 +816,7 @@ class _ProcessSectionState extends State<_ProcessSection> {
                                         style: GoogleFonts.lato(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: AppColors.blacktextColor,
                                         ),
                                       ),
                                     ),
@@ -833,9 +835,13 @@ class _ProcessSectionState extends State<_ProcessSection> {
                                           const SizedBox(height: 4),
                                           Text(
                                             step["desc"]!,
-                                            style: AppTextStyles.bodyText(
-                                              bodyFontSize,
-                                            ),
+                                            style:
+                                                AppTextStyles.bodyText(
+                                                  bodyFontSize,
+                                                ).copyWith(
+                                                  color:
+                                                      AppColors.blacktextColor,
+                                                ),
                                           ),
                                         ],
                                       ),
