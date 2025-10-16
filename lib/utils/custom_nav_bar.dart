@@ -37,7 +37,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     IconButton(
                       icon: const Icon(
                         Icons.menu,
-                        color: Color.fromARGB(255, 20, 18, 18),
+                        //color for icon menu when shrinked nav bar
+                        //
+                        //
+                        color: Color.fromARGB(255, 5, 5, 5),
                       ),
                       onPressed: () {
                         setState(() => _isDrawerOpen = true);
@@ -93,6 +96,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
             ),
 
           // Slide-out Drawer
+          //color
+          //
+          //
           if (isMobile && _isDrawerOpen)
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
@@ -101,7 +107,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               bottom: 0,
               child: Container(
                 width: 250,
-                color: const Color.fromARGB(255, 251, 249, 249),
+                color: const Color.fromARGB(255, 211, 208, 208),
                 padding: const EdgeInsets.symmetric(
                   vertical: 50,
                   horizontal: 20,
@@ -171,8 +177,11 @@ class _NavItem extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: isActive
+                //color for shrinked nav bar text
+                //
+                //
                 ? AppColors.accentColor
-                : const Color.fromARGB(255, 234, 228, 228).withOpacity(0.85),
+                : const Color.fromARGB(255, 0, 0, 0).withOpacity(0.85),
           ),
         ),
       ),
@@ -206,7 +215,7 @@ class _DrawerNavItem extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: isActive
               ? AppColors.accentColor
-              : const Color.fromARGB(255, 0, 0, 0).withOpacity(0.9),
+              : const Color.fromARGB(99, 9, 8, 8),
         ),
       ),
       onTap: () {
