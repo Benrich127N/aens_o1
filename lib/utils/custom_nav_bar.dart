@@ -19,7 +19,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
     final bool isMobile = MediaQuery.of(context).size.width < 800;
 
     return Container(
-      color: const Color(0xFF0A0A0A),
+      //container color
+      //
+      //
+      color: const Color.fromARGB(255, 255, 255, 255),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Stack(
         children: [
@@ -32,7 +35,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 children: [
                   if (isMobile)
                     IconButton(
-                      icon: const Icon(Icons.menu, color: Colors.white),
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Color.fromARGB(255, 20, 18, 18),
+                      ),
                       onPressed: () {
                         setState(() => _isDrawerOpen = true);
                       },
@@ -95,7 +101,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               bottom: 0,
               child: Container(
                 width: 250,
-                color: const Color(0xFF0A0A0A),
+                color: const Color.fromARGB(255, 251, 249, 249),
                 padding: const EdgeInsets.symmetric(
                   vertical: 50,
                   horizontal: 20,
@@ -166,7 +172,7 @@ class _NavItem extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: isActive
                 ? AppColors.accentColor
-                : Colors.white.withOpacity(0.85),
+                : const Color.fromARGB(255, 234, 228, 228).withOpacity(0.85),
           ),
         ),
       ),
@@ -200,7 +206,7 @@ class _DrawerNavItem extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: isActive
               ? AppColors.accentColor
-              : Colors.white.withOpacity(0.9),
+              : const Color.fromARGB(255, 0, 0, 0).withOpacity(0.9),
         ),
       ),
       onTap: () {
