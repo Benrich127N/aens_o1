@@ -3,247 +3,210 @@ import 'package:google_fonts/google_fonts.dart';
 import 'theme.dart';
 import 'app_logo.dart';
 
-// Now accepts currentRoute
-class CustomNavBar extends StatelessWidget {
+class CustomNavBar extends StatefulWidget {
   final String currentRoute;
   const CustomNavBar({super.key, required this.currentRoute});
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 900;
-        final isMedium =
-            constraints.maxWidth > 600 && constraints.maxWidth <= 900;
-        final horizontalPadding = isWide ? 64.0 : (isMedium ? 32.0 : 16.0);
-        final verticalPadding = isWide ? 48.0 : 24.0;
-        final navFontSize = isWide ? 14.0 : 12.0;
-
-        return Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: verticalPadding,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Subtle hover micro-interaction on logo
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: TweenAnimationBuilder<double>(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeOut,
-                  tween: Tween(begin: 1.0, end: 1.0),
-                  builder: (context, value, child) {
-                    return AnimatedScale(
-                      duration: const Duration(milliseconds: 180),
-                      curve: Curves.easeOut,
-                      scale: value,
-                      child: child,
-                    );
-                  },
-                  child: AppLogo(fontSize: navFontSize + 2),
-                ),
-              ),
-              SizedBox(width: isWide ? 64 : 16),
-              Flexible(
-                child: _NavigationMenu(
-                  navFontSize: navFontSize,
-                  isWide: isWide,
-                  currentRoute: currentRoute, // pass it down
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  State<CustomNavBar> createState() => _CustomNavBarState();
 }
 
-// Removed duplicated _AppLogo; using shared AppLogo instead
+class _CustomNavBarState extends State<CustomNavBar> {
+  bool _isDrawerOpen = false;
 
-class _NavigationMenu extends StatelessWidget {
-  final double navFontSize;
-  final bool isWide;
-  final String currentRoute;
-  const _NavigationMenu({
-    required this.navFontSize,
-    required this.isWide,
-    required this.currentRoute,
-  });
   @override
   Widget build(BuildContext context) {
-    if (!isWide) {
-      return IconButton(
-        icon: const Icon(
-          Icons.menu,
-          color: Color.fromARGB(255, 197, 40, 40),
-          size: 28,
-        ),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
-      );
-    }
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 32.0,
-      runSpacing: 8.0,
-      children: [
-        _NavItem(
-          label: 'ABOUT US',
-          fontSize: navFontSize,
-          isActive: currentRoute == '/about',
-          onTap: () => Navigator.pushNamed(context, '/about'),
-        ),
-        _NavItem(
-          label: 'SERVICES',
-          fontSize: navFontSize,
-          isActive: currentRoute == '/services',
-          onTap: () => Navigator.pushNamed(context, '/services'),
-        ),
-        _NavItem(
-          label: 'OUR PRODUCTS',
-          fontSize: navFontSize,
-          isActive: currentRoute == '/works',
-          onTap: () => Navigator.pushNamed(context, '/works'),
-        ),
-        _NavItem(
-          label: 'CONTACT US',
-          fontSize: navFontSize,
-          isActive: currentRoute == '/contact',
-          onTap: () => Navigator.pushNamed(context, '/contact'),
-        ),
-      ],
+    final bool isMobile = MediaQuery.of(context).size.width < 800;
+
+    return Container(
+      color: const Color(0xFF0A0A0A),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Stack(
+        children: [
+          // Main Row (Logo + menu / hamburger)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Left side - Logo or Hamburger
+              Row(
+                children: [
+                  if (isMobile)
+                    IconButton(
+                      icon: const Icon(Icons.menu, color: Colors.white),
+                      onPressed: () {
+                        setState(() => _isDrawerOpen = true);
+                      },
+                    )
+                  else
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/'),
+                      child: const AppLogo(fontSize: 18),
+                    ),
+                ],
+              ),
+
+              // Right side - Menu for Desktop
+              if (!isMobile)
+                Row(
+                  children: [
+                    _NavItem(
+                      label: 'ABOUT US',
+                      route: '/about',
+                      currentRoute: widget.currentRoute,
+                    ),
+                    const SizedBox(width: 24),
+                    _NavItem(
+                      label: 'SERVICES',
+                      route: '/services',
+                      currentRoute: widget.currentRoute,
+                    ),
+                    const SizedBox(width: 24),
+                    _NavItem(
+                      label: 'OUR PRODUCTS',
+                      route: '/works',
+                      currentRoute: widget.currentRoute,
+                    ),
+                    const SizedBox(width: 24),
+                    _NavItem(
+                      label: 'CONTACT US',
+                      route: '/contact',
+                      currentRoute: widget.currentRoute,
+                    ),
+                  ],
+                ),
+            ],
+          ),
+
+          // Drawer Overlay for Mobile
+          if (isMobile && _isDrawerOpen)
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () => setState(() => _isDrawerOpen = false),
+                child: Container(color: Colors.black54),
+              ),
+            ),
+
+          // Slide-out Drawer
+          if (isMobile && _isDrawerOpen)
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              left: _isDrawerOpen ? 0 : -250,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                width: 250,
+                color: const Color(0xFF0A0A0A),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 50,
+                  horizontal: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AppLogo(fontSize: 20),
+                    const SizedBox(height: 30),
+                    _DrawerNavItem(
+                      label: 'ABOUT US',
+                      route: '/about',
+                      currentRoute: widget.currentRoute,
+                      onClose: () => setState(() => _isDrawerOpen = false),
+                    ),
+                    _DrawerNavItem(
+                      label: 'SERVICES',
+                      route: '/services',
+                      currentRoute: widget.currentRoute,
+                      onClose: () => setState(() => _isDrawerOpen = false),
+                    ),
+                    _DrawerNavItem(
+                      label: 'OUR PRODUCTS',
+                      route: '/works',
+                      currentRoute: widget.currentRoute,
+                      onClose: () => setState(() => _isDrawerOpen = false),
+                    ),
+                    _DrawerNavItem(
+                      label: 'CONTACT US',
+                      route: '/contact',
+                      currentRoute: widget.currentRoute,
+                      onClose: () => setState(() => _isDrawerOpen = false),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
 
-class _NavItem extends StatefulWidget {
+// --- Desktop Menu Item ---
+class _NavItem extends StatelessWidget {
   final String label;
-  final double fontSize;
-  final VoidCallback onTap;
-  final bool isActive;
+  final String route;
+  final String currentRoute;
 
   const _NavItem({
     required this.label,
-    this.fontSize = 16,
-    required this.onTap,
-    this.isActive = false,
+    required this.route,
+    required this.currentRoute,
   });
 
   @override
-  State<_NavItem> createState() => _NavItemState();
+  Widget build(BuildContext context) {
+    final bool isActive = route == currentRoute;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(context, route),
+        child: Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: isActive
+                ? AppColors.accentColor
+                : Colors.white.withOpacity(0.85),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _NavItemState extends State<_NavItem>
-    with SingleTickerProviderStateMixin {
-  bool _isHovering = false;
-  late AnimationController _controller;
-  late Animation<double> _widthAnimation;
-  late Animation<Color?> _colorAnimation;
+// --- Drawer Menu Item (for Mobile) ---
+class _DrawerNavItem extends StatelessWidget {
+  final String label;
+  final String route;
+  final String currentRoute;
+  final VoidCallback onClose;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-
-    _widthAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _colorAnimation = ColorTween(
-      begin: const Color.fromARGB(107, 11, 10, 10),
-      end: AppColors.accentColor,
-    ).animate(_controller);
-
-    // if item is active make it show highlighted state initially
-    if (widget.isActive) {
-      _controller.value = 1.0;
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onEnter(PointerEvent details) {
-    setState(() => _isHovering = true);
-    _controller.forward();
-  }
-
-  void _onExit(PointerEvent details) {
-    setState(() => _isHovering = false);
-    // do not reverse if the item is active so underline stays visible when not hovered
-    if (!widget.isActive) _controller.reverse();
-  }
+  const _DrawerNavItem({
+    required this.label,
+    required this.route,
+    required this.currentRoute,
+    required this.onClose,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: _onEnter,
-      onExit: _onExit,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedBuilder(
-              animation: _colorAnimation,
-              builder: (context, child) {
-                final isGlowing = widget.isActive || _isHovering;
-                return Text(
-                  widget.label,
-                  style: AppTextStyles.navBar(widget.fontSize).copyWith(
-                    color: widget.isActive
-                        ? AppColors.accentColor
-                        : _colorAnimation.value,
-                    decoration: TextDecoration.none,
-                    shadows: isGlowing
-                        ? [
-                            Shadow(
-                              color: AppColors.accentColor.withOpacity(0.85),
-                              blurRadius: 12,
-                              offset: Offset(0, 0),
-                            ),
-                          ]
-                        : null,
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 6,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: widget.isActive
-                    ? Container(
-                        height: 3,
-                        width: widget.fontSize * widget.label.length * 0.7,
-                        color: AppColors.accentColor,
-                      )
-                    : SizeTransition(
-                        sizeFactor: _widthAnimation,
-                        axis: Axis.horizontal,
-                        child: Container(
-                          height: 2,
-                          width: widget.fontSize * widget.label.length * 0.7,
-                          color: AppColors.accentColor,
-                        ),
-                      ),
-              ),
-            ),
-          ],
+    final bool isActive = route == currentRoute;
+
+    return ListTile(
+      title: Text(
+        label,
+        style: GoogleFonts.poppins(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: isActive
+              ? AppColors.accentColor
+              : Colors.white.withOpacity(0.9),
         ),
       ),
+      onTap: () {
+        onClose();
+        Navigator.pushNamed(context, route);
+      },
     );
   }
 }

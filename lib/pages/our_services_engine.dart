@@ -90,7 +90,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       ),
                       child: Text(
                         'AENS ENGINEERING',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -230,7 +230,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
             ),
             child: Text(
               "OUR CLIENTS",
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.montserrat(
                 color: AppColors.blacktextColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -243,7 +243,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           Text(
             "Trusted by Leading Institutions",
             textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.montserrat(
               fontSize: isMobile ? 28 : 40,
               fontWeight: FontWeight.bold,
               color: AppColors.blacktextColor,
@@ -258,7 +258,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
             child: Text(
               "We pride ourselves on delivering exceptional service to a diverse portfolio of clients across government, oil & gas, and corporate sectors.",
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.montserrat(
                 fontSize: isMobile ? 14 : 16,
                 color: AppColors.blacktextColor,
                 height: 1.6,
@@ -396,10 +396,10 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       // Title
                       Text(
                         title,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.montserrat(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.accentColor,
+                          color: const Color.fromARGB(255, 6, 5, 5),
                           letterSpacing: 0.3,
                           height: 1.3,
                         ),
@@ -430,7 +430,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                 const SizedBox(width: 8),
                                 Text(
                                   "Key Clients",
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.blacktextColor,
@@ -460,7 +460,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                     Expanded(
                                       child: Text(
                                         c,
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.montserrat(
                                           color: AppColors.blacktextColor,
                                           fontSize: 14,
                                           height: 1.5,
@@ -482,7 +482,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppColors.blacktextColor,
+                          color: const Color.fromARGB(193, 198, 198, 198),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.blackcard),
                         ),
@@ -494,12 +494,12 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                 Icon(
                                   Icons.engineering_rounded,
                                   size: 18,
-                                  color: AppColors.accentColor,
+                                  color: const Color.fromARGB(255, 9, 10, 10),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   "Scope of Work",
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.montserrat(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textColor,
@@ -521,7 +521,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                       width: 6,
                                       height: 6,
                                       decoration: BoxDecoration(
-                                        color: AppColors.accentColor,
+                                        color: Color.fromARGB(255, 99, 99, 99),
                                         shape: BoxShape.circle,
                                       ),
                                     ),
@@ -529,9 +529,8 @@ class _Our_services_engineState extends State<Our_services_engine> {
                                     Expanded(
                                       child: Text(
                                         s,
-                                        style: GoogleFonts.poppins(
-                                          color: AppColors.textColor
-                                              .withOpacity(0.85),
+                                        style: GoogleFonts.montserrat(
+                                          color: AppColors.blacktextColor,
                                           fontSize: 14,
                                           height: 1.5,
                                           letterSpacing: 0.2,
@@ -569,7 +568,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           ),
           child: Text(
             "WHAT WE OFFER",
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.montserrat(
               color: AppColors.blacktextColor,
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -582,7 +581,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
         // Main Title
         Text(
           "Our Services",
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.montserrat(
             fontSize: isMobile ? 32 : 48,
             fontWeight: FontWeight.bold,
             color: AppColors.blacktextColor,
@@ -596,7 +595,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
           constraints: const BoxConstraints(maxWidth: 600),
           child: Text(
             "Comprehensive engineering solutions tailored to meet your needs with excellence and innovation.",
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.montserrat(
               fontSize: isMobile ? 14 : 16,
               color: AppColors.textColor.withOpacity(0.7),
               height: 1.6,
@@ -712,7 +711,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       // ======== TITLE ========
                       Text(
                         services[selectedIndex]["title"]!,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.montserrat(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -725,7 +724,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
                       // ======== DESCRIPTION ========
                       Text(
                         services[selectedIndex]["desc"]!,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.montserrat(
                           fontSize: 16,
                           color: Colors.white.withOpacity(0.9),
                           height: 1.5,
@@ -811,7 +810,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
               child: Center(
                 child: Text(
                   "0${index + 1}",
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.montserrat(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isSelected
@@ -829,7 +828,7 @@ class _Our_services_engineState extends State<Our_services_engine> {
             Expanded(
               child: Text(
                 services[index]["title"]!,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.montserrat(
                   fontSize: 15,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                   color: isSelected
