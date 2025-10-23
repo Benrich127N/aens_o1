@@ -8,30 +8,33 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min, // ✅ prevents forcing full width
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logomain.png', // replace with your actual image path
-          height: fontSize + 6,
-          fit: BoxFit.contain,
-        ),
-        const SizedBox(width: 8),
-        Flexible(
-          // ✅ ensures long text wraps or scales properly
-          child: Text(
-            'AENS ENGINEERING',
-            overflow: TextOverflow.ellipsis, // ✅ no overflow
-            style: GoogleFonts.montserrat(
-              fontSize: fontSize,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.4,
-              color: Colors.black.withOpacity(0.76),
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, '/home'),
+      child: Row(
+        mainAxisSize: MainAxisSize.min, // ✅ prevents forcing full width
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/logomain.png', // replace with your actual image path
+            height: fontSize + 6,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            // ✅ ensures long text wraps or scales properly
+            child: Text(
+              'AENS ENGINEERING',
+              overflow: TextOverflow.ellipsis, // ✅ no overflow
+              style: GoogleFonts.montserrat(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.4,
+                color: Colors.black.withOpacity(0.76),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
