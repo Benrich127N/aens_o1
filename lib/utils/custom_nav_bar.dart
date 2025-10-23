@@ -12,50 +12,90 @@ class CustomNavBar extends StatefulWidget {
 }
 
 class _CustomNavBarState extends State<CustomNavBar> {
-  bool _isDrawerOpen = false;
+  bool _isMenuOpen = false; // controls the mobile dropdown menu
 
   @override
   Widget build(BuildContext context) {
     final bool isMobile = MediaQuery.of(context).size.width < 800;
 
     return Container(
-      //container color
-      //
-      //
-      color: const Color.fromARGB(255, 255, 255, 255),
+      color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Stack(
-        children: [
-          // Main Row (Logo + menu / hamburger)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Left side - Logo or Hamburger
-              Row(
-                children: [
-                  if (isMobile)
-                    IconButton(
-                      icon: const Icon(
-                        Icons.menu,
-                        //color for icon menu when shrinked nav bar
-                        //
-                        //
-                        color: Color.fromARGB(255, 5, 5, 5),
-                      ),
-                      onPressed: () {
-                        setState(() => _isDrawerOpen = true);
-                      },
-                    )
-                  else
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top row: logo + hamburger
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/'),
                       child: const AppLogo(fontSize: 18),
                     ),
-                ],
-              ),
+                    IconButton(
+                      icon: Icon(
+                        _isMenuOpen ? Icons.close : Icons.menu,
+                        color: Colors.black,
+                      ),
+                      onPressed: () =>
+                          setState(() => _isMenuOpen = !_isMenuOpen),
+                    ),
+                  ],
+                ),
 
-              // Right side - Menu for Desktop
-              if (!isMobile)
+                // Collapsible menu for mobile
+                AnimatedCrossFade(
+                  firstChild: const SizedBox.shrink(),
+                  secondChild: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      _NavItem(
+                        label: 'ABOUT US',
+                        route: '/about',
+                        currentRoute: widget.currentRoute,
+                        isMobile: true,
+                        onTap: _closeMenu,
+                      ),
+                      _NavItem(
+                        label: 'SERVICES',
+                        route: '/services',
+                        currentRoute: widget.currentRoute,
+                        isMobile: true,
+                        onTap: _closeMenu,
+                      ),
+                      _NavItem(
+                        label: 'OUR PRODUCTS',
+                        route: '/works',
+                        currentRoute: widget.currentRoute,
+                        isMobile: true,
+                        onTap: _closeMenu,
+                      ),
+                      _NavItem(
+                        label: 'CONTACT US',
+                        route: '/contact',
+                        currentRoute: widget.currentRoute,
+                        isMobile: true,
+                        onTap: _closeMenu,
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                  crossFadeState: _isMenuOpen
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 250),
+                ),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/'),
+                  child: const AppLogo(fontSize: 18),
+                ),
                 Row(
                   children: [
                     _NavItem(
@@ -83,145 +123,57 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     ),
                   ],
                 ),
-            ],
-          ),
-
-          // Drawer Overlay for Mobile
-          if (isMobile && _isDrawerOpen)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () => setState(() => _isDrawerOpen = false),
-                child: Container(color: Colors.black54),
-              ),
+              ],
             ),
-
-          // Slide-out Drawer
-          //color
-          //
-          //
-          if (isMobile && _isDrawerOpen)
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              left: _isDrawerOpen ? 0 : -250,
-              top: 0,
-              bottom: 0,
-              child: Container(
-                width: 250,
-                color: const Color.fromARGB(255, 211, 208, 208),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 50,
-                  horizontal: 20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AppLogo(fontSize: 20),
-                    const SizedBox(height: 30),
-                    _DrawerNavItem(
-                      label: 'ABOUT US',
-                      route: '/about',
-                      currentRoute: widget.currentRoute,
-                      onClose: () => setState(() => _isDrawerOpen = false),
-                    ),
-                    _DrawerNavItem(
-                      label: 'SERVICES',
-                      route: '/services',
-                      currentRoute: widget.currentRoute,
-                      onClose: () => setState(() => _isDrawerOpen = false),
-                    ),
-                    _DrawerNavItem(
-                      label: 'OUR PRODUCTS',
-                      route: '/works',
-                      currentRoute: widget.currentRoute,
-                      onClose: () => setState(() => _isDrawerOpen = false),
-                    ),
-                    _DrawerNavItem(
-                      label: 'CONTACT US',
-                      route: '/contact',
-                      currentRoute: widget.currentRoute,
-                      onClose: () => setState(() => _isDrawerOpen = false),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
     );
+  }
+
+  void _closeMenu() {
+    setState(() => _isMenuOpen = false);
   }
 }
 
-// --- Desktop Menu Item ---
+// --- Menu Item Widget ---
 class _NavItem extends StatelessWidget {
   final String label;
   final String route;
   final String currentRoute;
+  final bool isMobile;
+  final VoidCallback? onTap;
 
   const _NavItem({
     required this.label,
     required this.route,
     required this.currentRoute,
+    this.isMobile = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool isActive = route == currentRoute;
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, route),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, route);
+        if (onTap != null) onTap!();
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: isMobile ? 10 : 0,
+          horizontal: isMobile ? 8 : 0,
+        ),
         child: Text(
           label,
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: isMobile ? 15 : 14,
             fontWeight: FontWeight.w600,
             color: isActive
-                //color for shrinked nav bar text
-                //
-                //
                 ? AppColors.accentColor
-                : const Color.fromARGB(255, 0, 0, 0).withOpacity(0.85),
+                : Colors.black.withOpacity(0.85),
           ),
         ),
       ),
-    );
-  }
-}
-
-// --- Drawer Menu Item (for Mobile) ---
-class _DrawerNavItem extends StatelessWidget {
-  final String label;
-  final String route;
-  final String currentRoute;
-  final VoidCallback onClose;
-
-  const _DrawerNavItem({
-    required this.label,
-    required this.route,
-    required this.currentRoute,
-    required this.onClose,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isActive = route == currentRoute;
-
-    return ListTile(
-      title: Text(
-        label,
-        style: GoogleFonts.poppins(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: isActive
-              ? AppColors.accentColor
-              : const Color.fromARGB(99, 9, 8, 8),
-        ),
-      ),
-      onTap: () {
-        onClose();
-        Navigator.pushNamed(context, route);
-      },
     );
   }
 }
